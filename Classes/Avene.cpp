@@ -2,6 +2,7 @@
 #include "SimpleAudioEngine.h"
 #include "Avene.h"
 #include "Help.h"
+#include "GameScene.h"
 
 USING_NS_CC;
 
@@ -50,7 +51,10 @@ bool Avene::init()
 }
 
 void Avene::Av55CallBack(cocos2d::Ref* pSender) {
-
+	auto gameCreate = GameScene::createScene();
+	auto gameCreateChange = TransitionFadeTR::create(1.0f, gameCreate);
+	Director::getInstance()->pushScene(gameCreateChange);
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("effectmusic1.wav", false);
 }
 
 void Avene::Av11CallBack(cocos2d::Ref* pSender) {

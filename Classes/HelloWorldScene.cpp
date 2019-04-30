@@ -27,6 +27,7 @@
 #include "Help.h"
 #include "Avene.h"
 #include "Setting.h"
+#include "GameScene.h"
 
 USING_NS_CC;
 
