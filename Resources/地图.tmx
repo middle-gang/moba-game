@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="49" height="9" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="5">
+ <tileset firstgid="1" source="dg_grounds32.tsx"/>
+ <tileset firstgid="172" source="collidable_tiles.tsx"/>
+ <layer id="1" name="background" width="49" height="9">
+  <data encoding="base64" compression="zlib">
+   eJzjYmBg4BrFDLmDwA3IOI5EcVr5g1x3xCFhYsSx+YMQJtb95LgjDgvGJ04rf1DqDkrjgRb+IMcd5KZDUjEx/qCHO2jtj5GEAd1hLkg=
+  </data>
+ </layer>
+ <layer id="3" name="collidable" width="49" height="9">
+  <data encoding="base64" compression="zlib">
+   eJxbw8DAsGYYYQYcfGSwBgebkPwaBuzqCZmJz1243I9NPSF7qSFHSA8x7sRnBjHy1AbEuodY98PU4Eo75PqPUjNJ9cdgjgdq5wda5SFC7qRmuYRsBrF6qFUuDWUMAN0+g7E=
+  </data>
+ </layer>
+ <layer id="2" name="ground" width="49" height="9">
+  <data encoding="base64" compression="zlib">
+   eJzdVEEKwDAIy6926rcK+0T/sV/usAZC0erBw7ZAYSZVM4o2AO0n58CDIRyEhxGvGvOt78u5H9VkTE9DeM8/+ykf9V0xNlrmPyytTV9an3yf8YU9zkCvRtSPfrP+WbM7fCbf82F57Q5v5fO+xh7e/A7V81A9J9R281C9l8jru3q7KlMzu5e+fm6I5zuB
+  </data>
+ </layer>
+ <objectgroup id="4" name="objects">
+  <object id="4" name="houyi" x="128" y="128" width="32" height="32"/>
+ </objectgroup>
+</map>

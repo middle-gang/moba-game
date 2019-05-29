@@ -14,6 +14,7 @@
     <ProjectGuid>{76A39BB2-9B84-4C65-98A5-654D86B86F2A}</ProjectGuid>
     <RootNamespace>test_win32</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -37,7 +38,6 @@
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '14.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v140_xp</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v141_xp</PlatformToolset>
-    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -153,6 +153,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Arthur.cpp" />
     <ClCompile Include="..\Classes\Avene.cpp" />
+    <ClCompile Include="..\Classes\Blood.cpp" />
     <ClCompile Include="..\Classes\Daji.cpp" />
     <ClCompile Include="..\Classes\GameScene.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
@@ -160,6 +161,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Hero.cpp" />
     <ClCompile Include="..\Classes\Houyi.cpp" />
     <ClCompile Include="..\Classes\menuScene1st.cpp" />
+    <ClCompile Include="..\Classes\MinionController.cpp" />
+    <ClCompile Include="..\Classes\Object.cpp" />
     <ClCompile Include="..\Classes\Setting.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -167,6 +170,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Arthur.h" />
     <ClInclude Include="..\Classes\Avene.h" />
+    <ClInclude Include="..\Classes\Blood.h" />
     <ClInclude Include="..\Classes\Daji.h" />
     <ClInclude Include="..\Classes\GameScene.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
@@ -174,6 +178,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\hero.h" />
     <ClInclude Include="..\Classes\Houyi.h" />
     <ClInclude Include="..\Classes\menuScene1st.h" />
+    <ClInclude Include="..\Classes\MinionController.h" />
+    <ClInclude Include="..\Classes\Object.h" />
     <ClInclude Include="..\Classes\Setting.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
