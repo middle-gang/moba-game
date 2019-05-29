@@ -1,45 +1,42 @@
-/****************************************************************************
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
- 
- http://www.cocos2d-x.org
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
+//
+//  Created by 关东升 on 2014-5-18.
+//  本书网站：http://www.cocoagame.net
+//  智捷iOS课堂在线课堂：http://v.51work6.com
+//  智捷iOS课堂新浪微博：http://weibo.com/u/3215753973
+//  作者微博：http://weibo.com/516inc
+//  QQ：1575716557 邮箱：jylong06@163.com
+//  QQ交流群：389037167/327403678
+//
+
 
 #ifndef __HELLOWORLD_SCENE_H__
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
-using namespace cocos2d;
+#include "SimpleAudioEngine.h"
 
-class HelloWorld : public cocos2d::Scene
+
+class HelloWorld : public cocos2d::Layer
 {
+	cocos2d::TMXTiledMap* _tileMap;
+	cocos2d::TMXLayer* _collidable;
+    cocos2d::Sprite *_player;
 public:
+    // there's no 'id' in cpp, so we recommend returning the class instance Vec2er
     static cocos2d::Scene* createScene();
 
-    virtual bool init();
-	// a selector callback
-	void menuCloseCallback(cocos2d::Ref* pSender);
-	void menuStartCallback(cocos2d::Ref* pSender);
-	void settingCallback(cocos2d::Ref* pSender);
-	void helpCallback(cocos2d::Ref* pSender);
-	void musicCallback(cocos2d::Ref* pSender);
+    // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
+    virtual bool init(); 
+
+	virtual bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
+    virtual void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
+    virtual void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
+	
+	void setPlayerPosition(cocos2d::Vec2 position);
+    cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);
+    void setViewpointCenter(cocos2d::Vec2 position);
+
+    virtual void update(float delta);
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 };

@@ -1,188 +1,153 @@
-/****************************************************************************
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
- 
- http://www.cocos2d-x.org
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
+//
+//  Created by 关东升 on 2016-3-18.
+//  本书网站：http://www.51work6.com
+//  智捷课堂在线课堂：http://www.zhijieketang.com/
+//  智捷课堂微信公共号：zhijieketang
+//  作者微博：@tony_关东升
+//  作者微信：tony关东升
+//  QQ：569418560 邮箱：eorient@sina.com
+//  QQ交流群：162030268
+//
 
 #include "HelloWorldScene.h"
-#include "SimpleAudioEngine.h"
-#include "Help.h"
-#include "Avene.h"
-#include "Setting.h"
-#include "GameScene.h"
 
 USING_NS_CC;
 
 Scene* HelloWorld::createScene()
 {
-    return HelloWorld::create();
-}
+	// 'scene' is an autorelease object
+	auto scene = Scene::create();
 
-// Print useful error message instead of segfaulting when files are not there.
-static void problemLoading(const char* filename)
-{
-    printf("Error while loading: %s\n", filename);
-    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
+	// 'layer' is an autorelease object
+	auto layer = HelloWorld::create();
+
+	// add layer as a child to scene
+	scene->addChild(layer);
+
+	// return the scene
+	return scene;
 }
 
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
-    //////////////////////////////
-    // 1. super init first
-    if ( !Scene::init() )
-    {
-        return false;
-    }
-	CocosDenshion::SimpleAudioEngine::sharedEngine()
-		->playBackgroundMusic("Ariana Grande - 7 rings (Explicit) [mqms2].mp3", true);
-	//CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("Summer.mp3", true);
+	//////////////////////////////
+	// 1. super init first
+	if ( !Layer::init() )
+	{
+		return false;
+	}
 
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	_tileMap = TMXTiledMap::create("map/MiddleMap.tmx");
+	addChild(_tileMap,0,100);
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
+	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
+	ValueMap spawnPoint = group->getObject("hero");
 
-    // add a "close" icon to exit the progress. it's an autorelease object
-	auto startItem = MenuItemImage::create("StartButton.jpg",
-											"StartButton2.jpg",
-										   CC_CALLBACK_1(HelloWorld::menuStartCallback,this));
-	startItem->setPosition(500, 105);
+	float x = spawnPoint["x"].asFloat();
+	float y = spawnPoint["y"].asFloat();
 
-	auto settingItem = MenuItemImage::create("settings.jpg",
-		"settings.jpg",
-		CC_CALLBACK_1(HelloWorld::settingCallback, this));
+	_player = Sprite::create("ninja.png");
+	_player->setPosition(Vec2(x,y));
+	addChild(_player, 2, 200);
+    
+    setTouchEnabled(true);
+    setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 
-	auto helpItem = MenuItemImage::create("Help.png",
-											"Help.png",
-											CC_CALLBACK_1(HelloWorld::helpCallback,this));
-	helpItem->setPosition(visibleSize.width-helpItem->getContentSize().width,
-		                  visibleSize.height-helpItem->getContentSize().height);
-	
-	settingItem->setPosition( helpItem->getContentSize().width,
-		visibleSize.height - helpItem->getContentSize().height);
+	//setViewpointCenter(_player->getPosition());
+    
+    scheduleUpdate();
 
+	_collidable = _tileMap->getLayer("collidable");
+    _collidable->setVisible(false);
+    
+    return true;
 
-    auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+}
 
+void HelloWorld::update(float delta){
+    setViewpointCenter(_player->getPosition());
+}
 
-    if (closeItem == nullptr ||
-        closeItem->getContentSize().width <= 0 ||
-        closeItem->getContentSize().height <= 0)
-    {
-        problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
-    }
-    else
-    {
-        float x = origin.x + visibleSize.width- closeItem->getContentSize().width/2;
-        float y = origin.y + closeItem->getContentSize().height/2;
-        closeItem->setPosition(Vec2(x,y));
-    }
-
-
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(startItem,helpItem,closeItem,settingItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 10);
-
-    /////////////////////////////
-    // 3. add your codes below...
-
-    // add a label shows "Hello World"
-    // create and initialize a label
-
-    auto label = Label::createWithTTF("TJU-Middle-Gang", "fonts/Marker Felt.ttf", 24);
-    if (label == nullptr)
-    {
-        problemLoading("'fonts/Marker Felt.ttf'");
-    }
-    else
-    {
-        // position the label on the center of the screen
-        label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                                origin.y + visibleSize.height - label->getContentSize().height));
-
-        // add the label as a child to this layer
-        this->addChild(label, 5);
-    }
-
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("Entrance.png");
-    if (sprite == nullptr)
-    {
-        problemLoading("'Entrance.png'");
-    }
-    else
-    {
-        // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-        // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
-    }
+bool HelloWorld::onTouchBegan(Touch* touch, Event* event)
+{
+    log("onTouchBegan");
+    auto target = static_cast<Sprite*>(event->getCurrentTarget());
+    Point locationInNode = target -> convertToNodeSpace(touch->getLocation());
+    auto curveMove = MoveTo::create(0.5f,locationInNode);
+    this->_player->runAction(curveMove);
     return true;
 }
 
-
-void HelloWorld::menuCloseCallback(Ref* pSender)
+void HelloWorld::onTouchMoved(Touch *touch, Event *event)
 {
-    //Close the cocos2d-x game scene and quit the application
-    Director::getInstance()->end();
-
-    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
-
-    //EventCustom customEndEvent("game_scene_close_event");
-    //_eventDispatcher->dispatchEvent(&customEndEvent);
-
-
+	log("onTouchMoved");
 }
 
-void HelloWorld::menuStartCallback(cocos2d::Ref* pSender) {
-	auto startCreate = Avene::createScene();
-	auto startCreateChange = TransitionFadeTR::create(1.0f, startCreate);
-	Director::getInstance()->pushScene(startCreateChange);
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("effectmusic1.wav",false);
+void HelloWorld::onTouchEnded(Touch *touch, Event *event)
+{
+	log("onTouchEnded");
 }
 
-void HelloWorld::helpCallback(cocos2d::Ref* pSender) {
-	auto helpCreate = helpScene::createScene();
-	auto helpCreateChange = TransitionFadeTR::create(1.0f, helpCreate);
-	Director::getInstance()->pushScene(helpCreateChange);
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("effectmusic1.wav", false);
+void HelloWorld::setPlayerPosition(Vec2 position)
+{
+	//从像素点坐标转化为瓦片坐标
+	Vec2 tileCoord =  this->tileCoordFromPosition(position);
+	//获得瓦片的Gid
+	int tileGid = _collidable->getTileGIDAt(tileCoord);
+
+	if (tileGid > 0) {
+		Value prop = _tileMap->getPropertiesForGID(tileGid);
+		ValueMap propValueMap = prop.asValueMap();
+
+		std::string collision = propValueMap["Collidable"].asString();
+		
+		if (collision == "true") { //碰撞检测成功
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("empty.wav");
+			return;
+		}
+	}
+	//移动精灵
+	_player->setPosition(position);
+	//滚动地图
+	this->setViewpointCenter(_player->getPosition());
 }
 
-void HelloWorld::settingCallback(cocos2d::Ref* pSender) {
-	auto settingCreate = SettingScene::createScene();
-	auto settingCreateChange = TransitionFadeTR::create(1.0f, settingCreate);
-	Director::getInstance()->pushScene(settingCreateChange);
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("effectmusic1.wav", false);
+Vec2 HelloWorld::tileCoordFromPosition(Vec2 pos) 
+{
+	int x = pos.x / _tileMap->getTileSize().width;
+	int y = ((_tileMap->getMapSize().height * _tileMap->getTileSize().height) - pos.y) / _tileMap->getTileSize().height;
+	return Vec2(x,y);
 }
 
-void HelloWorld::musicCallback(cocos2d::Ref* pSender) {
-	//CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("Summer.mp3", true);
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("Taylor Swift _ Brendon Urie - ME! (feat. Brendon Urie of Panic! At The Disco).mp3", true);
+void HelloWorld::setViewpointCenter(Vec2 position)
+{
+	log("setViewpointCenter");
+
+	log("position (%f ,%f) ",position.x,position.y);
+
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    //可以防止，视图左边超出屏幕之外。
+    int x = MAX(position.x, visibleSize.width / 2);
+    int y = MAX(position.y, visibleSize.height / 2);
+    //可以防止，视图右边超出屏幕之外。
+    x = MIN(x, (_tileMap->getMapSize().width * _tileMap->getTileSize().width)
+            - visibleSize.width / 2);
+    y = MIN(y, (_tileMap->getMapSize().height * _tileMap->getTileSize().height)
+            - visibleSize.height/2);
+
+    //屏幕中心点
+    Vec2 pointA = Vec2(visibleSize.width/2, visibleSize.height/2);
+	//使精灵处于屏幕中心，移动地图目标位置
+    Vec2 pointB = Vec2(x, y);
+	log("目标位置 (%f ,%f) ",pointB.x,pointB.y);
+
+    //地图移动偏移量
+    Vec2 offset =pointA - pointB;
+    log("offset (%f ,%f) ",offset.x, offset.y);
+    this->setPosition(offset);
+
 }
