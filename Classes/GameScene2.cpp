@@ -30,8 +30,8 @@ bool GameScene2::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	_tileMap = TMXTiledMap::create("MiddleMap.tmx");
-	addChild(_tileMap,0,100);
+	_tileMap = TMXTiledMap::create("map/MiddleMap.tmx");
+	addChild(_tileMap, 0, 100);
 
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
 	ValueMap spawnPoint = group->getObject("hero");
@@ -40,9 +40,45 @@ bool GameScene2::init()
 	float y = spawnPoint["y"].asFloat();
 
 	_player = Sprite::create("ninja.png");
-	_player->setPosition(Vec2(x,y));
+	_player->setPosition(Vec2(x, y));
 	addChild(_player, 2, 200);
-    
+
+	ValueMap myCrystalPoint = group->getObject("myCrystal");
+
+	x = myCrystalPoint["x"].asFloat();
+	y = myCrystalPoint["y"].asFloat();
+
+	_myCrystal = Sprite::create("myCrystal.png");
+	_myCrystal->setPosition(Vec2(x, y));
+	addChild(_myCrystal, 2, 200);
+
+	ValueMap myTowerPoint = group->getObject("myTower");
+
+	x = myTowerPoint["x"].asFloat();
+	y = myTowerPoint["y"].asFloat();
+
+	_myTower = Sprite::create("myTower.png");
+	_myTower->setPosition(Vec2(x, y));
+	addChild(_myTower, 2, 200);
+
+	ValueMap enemyCrystalPoint = group->getObject("enemyCrystal");
+
+	x = enemyCrystalPoint["x"].asFloat();
+	y = enemyCrystalPoint["y"].asFloat();
+
+	_enemyCrystal = Sprite::create("enemyCrystal.png");
+	_enemyCrystal->setPosition(Vec2(x, y));
+	addChild(_enemyCrystal, 2, 200);
+
+	ValueMap enemyTowerPoint = group->getObject("enemyTower");
+
+	x = enemyTowerPoint["x"].asFloat();
+	y = enemyTowerPoint["y"].asFloat();
+
+	_enemyTower = Sprite::create("enemyTower.png");
+	_enemyTower->setPosition(Vec2(x, y));
+	addChild(_enemyTower, 2, 200);
+
     setTouchEnabled(true);
     setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 

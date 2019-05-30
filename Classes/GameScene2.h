@@ -11,6 +11,11 @@ class GameScene2 : public cocos2d::Layer
 	cocos2d::TMXTiledMap* _tileMap;
 	cocos2d::TMXLayer* _collidable;
     cocos2d::Sprite *_player;
+	cocos2d::Sprite *_myCrystal;
+	cocos2d::Sprite *_myTower;
+	cocos2d::Sprite *_enemyCrystal;
+	cocos2d::Sprite *_enemyTower;
+
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance Vec2er
     static cocos2d::Scene* createScene();
