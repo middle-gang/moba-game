@@ -11,6 +11,7 @@ void ObjectBase::Die() {
 	isAlive = false;
 	m_death++;
 	Charac->setPosition(Vec2(-10000,-10000));
+	Position = Charac->getPosition();
 }
 
 void ObjectBase::Kill_reward(ObjectBase& ene) {
@@ -18,7 +19,7 @@ void ObjectBase::Kill_reward(ObjectBase& ene) {
 	m_exp += ene.e_exp;
 }
 
-bool ObjectBase::Dealth() {
+bool ObjectBase::Death() {
 	if (!isAlive) return true;
 	return false;
 }
@@ -55,6 +56,7 @@ int& ObjectBase::AttackPower() {
 void ObjectBase::revive() {
 	isAlive = true;
 	Charac->setPosition(Spawn);
+	Position = Charac->getPosition();
 	health = 100;
 }
 
@@ -78,7 +80,7 @@ int& ObjectBase::healthPower() {
 	return health;
 }
 
-int ObjectBase::getRadium() {
+int& ObjectBase::getRadium() {
 	return radium;
 }
 
@@ -87,6 +89,7 @@ void ObjectBase::setImage(std::string str) {
 }
 
 void ObjectBase::Move(Vec2 dest) {
+	Charac->stopAllActions();
 	float cost = dest.distance(Position)/velocity;
 	Charac->runAction(MoveTo::create(cost, dest));
 }
@@ -108,4 +111,8 @@ bool& ObjectBase::isAttacking() {
 
 float ObjectBase::attackDelay() {
 	return atkdelay;
+}
+
+void ObjectBase::attachToSprite(Sprite* spr) {
+	Charac = spr;
 }

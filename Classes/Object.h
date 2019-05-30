@@ -20,10 +20,10 @@ public:
 	}
 	
 	bool InRange(Vec2 ene);
-	bool Dealth();//ÅĞ¶ÏÊÇ·ñËÀÍö
+	bool Death();//ÅĞ¶ÏÊÇ·ñËÀÍö
 	bool& isAttacking();
 	
-	int getRadium();
+	int& getRadium();
 	int getVelocity();
 	int Money();
 	int Attack(ObjectBase& ene); //»ñÈ¡¹¥»÷Á¦
@@ -36,6 +36,7 @@ public:
 	void setVelocity(int v);
 	void Move(Vec2 dest);
 	void revive();
+	void attachToSprite(Sprite* spr);
 	void setImage(std::string str);
 	void Kill_reward(ObjectBase& ene);
 	void setSpawnPoint(Vec2 spawn);

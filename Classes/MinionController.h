@@ -15,17 +15,35 @@ class MinionController
 	bool aware[999];
 	bool moving=false;
 	ObjectBase ene[999];
-	Vec2 MinionSpawn = Vec2(0, 0);
-	Vec2 Destination = Vec2(1000, 473);
+	Vec2 MinionSpawn;
+	Vec2 Destination = Vec2(1000, 0);
 	Vec2 Plan[999];
 public:
 	MinionController() {
 	}
 	std::vector<ObjectBase>& Container();
 	void MoveAndAttack();
+	void setminionSpawn(Vec2 pos) {
+		MinionSpawn = pos;
+	}
+	void setminionDes(Vec2 pos) {
+		Destination = pos;
+	}
 	bool CheckAware(ObjectBase* Sub);
-	Sprite* NewMinion(int n);
+	Sprite* NewMinion();
 	void Stop();
+	void minionInit(ObjectBase& mini) {
+		mini.AttackPower() = minion_attack;
+		mini.healthPower() = minion_hp;
+		mini.getRadium() = minion_r;
+		mini.setVelocity(minion_v);
+	}
+	Vec2 GetSpawn() {
+		return MinionSpawn;
+	}
+	Vec2 GetDes() {
+		return Destination;
+	}
 	int flag;
 };
 

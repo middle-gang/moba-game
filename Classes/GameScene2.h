@@ -4,7 +4,8 @@
 
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
-
+#include "Object.h"
+#include "MinionController.h"
 
 class GameScene2 : public cocos2d::Layer
 {
@@ -15,6 +16,11 @@ class GameScene2 : public cocos2d::Layer
 	cocos2d::Sprite *_myTower;
 	cocos2d::Sprite *_enemyCrystal;
 	cocos2d::Sprite *_enemyTower;
+
+	MinionController flag[2];
+
+	ObjectBase Hero;
+	ObjectBase Tower;
 
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance Vec2er
@@ -30,6 +36,8 @@ public:
 	void setPlayerPosition(cocos2d::Vec2 position);
     cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);
     void setViewpointCenter(cocos2d::Vec2 position);
+
+	void newMinion();
 
     virtual void update(float delta);
     // implement the "static create()" method manually

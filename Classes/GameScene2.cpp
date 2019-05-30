@@ -2,6 +2,9 @@
 
 USING_NS_CC;
 
+float m_atktime = 0, t_atktime = 0, deathtime = 0;
+float minionborn = 10,minioncount=0;
+float minionMove = 1, minionCnt = 0;
 Scene* GameScene2::createScene()
 {
 	// 'scene' is an autorelease object
@@ -15,6 +18,16 @@ Scene* GameScene2::createScene()
 
 	// return the scene
 	return scene;
+}
+
+void GameScene2::newMinion() {
+	Sprite* minionBuf=Sprite::create("ninja.png");
+	ObjectBase minionbuf;
+	flag[0].minionInit(minionbuf);
+	minionbuf.attachToSprite(minionBuf);
+	minionBuf->setPosition(flag[0].GetSpawn());
+	flag[0].Container().push_back(minionbuf);
+	this->addChild(minionBuf, 2);
 }
 
 // on "init" you need to initialize your instance
@@ -43,6 +56,13 @@ bool GameScene2::init()
 	_player->setPosition(Vec2(x, y));
 	addChild(_player, 2, 200);
 
+	Hero.attachToSprite( _player);
+	Hero.healthPower() = 100;
+	Hero.getRadium() = 100;
+	Hero.AttackPower() = 100;
+	Hero.setVelocity(100);
+	Hero.setSpawnPoint(Vec2(x,y));
+
 	ValueMap myCrystalPoint = group->getObject("myCrystal");
 
 	x = myCrystalPoint["x"].asFloat();
@@ -51,6 +71,9 @@ bool GameScene2::init()
 	_myCrystal = Sprite::create("myCrystal.png");
 	_myCrystal->setPosition(Vec2(x, y));
 	addChild(_myCrystal, 2, 200);
+		
+	flag[0].setminionSpawn(Vec2(x, y));
+	flag[1].setminionDes(Vec2(x, y));
 
 	ValueMap myTowerPoint = group->getObject("myTower");
 
@@ -61,6 +84,7 @@ bool GameScene2::init()
 	_myTower->setPosition(Vec2(x, y));
 	addChild(_myTower, 2, 200);
 
+
 	ValueMap enemyCrystalPoint = group->getObject("enemyCrystal");
 
 	x = enemyCrystalPoint["x"].asFloat();
@@ -69,6 +93,9 @@ bool GameScene2::init()
 	_enemyCrystal = Sprite::create("enemyCrystal.png");
 	_enemyCrystal->setPosition(Vec2(x, y));
 	addChild(_enemyCrystal, 2, 200);
+
+	flag[0].setminionDes(Vec2(x, y));
+	flag[1].setminionSpawn(Vec2(x, y));
 
 	ValueMap enemyTowerPoint = group->getObject("enemyTower");
 
@@ -84,6 +111,12 @@ bool GameScene2::init()
 
 	//setViewpointCenter(_player->getPosition());
     
+	Tower.attachToSprite(_enemyTower);
+	Tower.healthPower() = 1000;
+	Tower.AttackPower() = 20;
+	Tower.getRadium() = 200;
+	Tower.getPosition() = _enemyTower->getPosition();
+
     scheduleUpdate();
 
 	_collidable = _tileMap->getLayer("collidable");
@@ -94,6 +127,47 @@ bool GameScene2::init()
 }
 
 void GameScene2::update(float delta){
+	Hero.getPosition() = Hero.getSprite()->getPosition();	
+	for (int i = 0; i < flag[0].Container().size(); i++) {
+		flag[0].Container()[i].getPosition() = flag[0].Container()[i].getSprite()->getPosition();
+	}
+
+	minioncount += delta;
+	if (minioncount > minionborn) {
+		minioncount = 0;
+		newMinion();
+	}
+	minionCnt += delta;
+	if (flag[0].Container().size() != 0 && minionCnt > minionMove) {
+		flag[0].Stop();
+		flag[0].CheckAware(&Tower);
+		flag[0].MoveAndAttack();
+		minionCnt = 0;
+	}
+	m_atktime += delta;
+	if (m_atktime > Hero.attackDelay()) {
+		m_atktime = 0;
+		Hero.isAttacking() = false;
+	}
+
+	t_atktime += delta;
+	if (t_atktime > Tower.attackDelay()) {
+		t_atktime = 0;
+		Tower.isAttacking() = false;
+	}
+
+	if (Hero.Death()) {
+		deathtime += delta;
+		if (deathtime > Hero.DeadTime) {
+			Hero.revive();
+			deathtime = 0;
+		}
+	}
+
+	Tower.Attack(Hero);
+
+	//log("%d", Tower.healthPower());
+
     setViewpointCenter(_player->getPosition());
 }
 
@@ -102,8 +176,14 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
     log("onTouchBegan");
     auto target = static_cast<Sprite*>(event->getCurrentTarget());
     Point locationInNode = target -> convertToNodeSpace(touch->getLocation());
-    auto curveMove = MoveTo::create(0.5f,locationInNode);
-    this->_player->runAction(curveMove);
+	//log("%f %f", locationInNode.x, locationInNode.y);
+	Hero.Move(locationInNode);
+
+
+	if(locationInNode.distance(Tower.getPosition()) < Hero.getRadium()) {
+		Hero.Attack(Tower);
+	}
+
     return true;
 }
 

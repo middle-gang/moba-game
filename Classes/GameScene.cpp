@@ -139,7 +139,7 @@ void GameScene::update(float delta) {
 
 	for (int i = 0; i < ene.size(); i++) {
 		ene[0].getPosition() = ene[0].getSprite()->getPosition();
-		if (ene[i].Dealth()) {
+		if (ene[i].Death()) {
 			ddl[i] += delta;
 			if (ddl[i] > ene[i].DeadTime) {
 				ene[i].revive();

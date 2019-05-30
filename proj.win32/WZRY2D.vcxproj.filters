@@ -36,9 +36,6 @@
     <ClCompile Include="..\Classes\Avene.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameScene.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Hero.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
@@ -84,9 +81,6 @@
       <Filter>src\Image</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Avene.h">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameScene.h">
       <Filter>src\Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\hero.h">
