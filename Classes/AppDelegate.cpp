@@ -120,12 +120,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-	auto scene = GameLogoLayer::createScene();
+	auto scene = HelloWorld::createScene();
 
 	// run
 	director->runWithScene(scene);
 	
-	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("Summer.mp3");
+	//CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("Summer.mp3");
     
 	return true;
 }

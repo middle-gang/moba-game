@@ -1,11 +1,12 @@
-#ifndef __HELLOWORLD_SCENE_H__
-#define __HELLOWORLD_SCENE_H__
+
+#ifndef __GAMESCENE2_SCENE_H__
+#define __GAMESCENE2_SCENE_H__
 
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
 
 
-class HelloWorld : public cocos2d::Layer
+class GameScene2 : public cocos2d::Layer
 {
 	cocos2d::TMXTiledMap* _tileMap;
 	cocos2d::TMXLayer* _collidable;
@@ -25,8 +26,9 @@ public:
     cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);
     void setViewpointCenter(cocos2d::Vec2 position);
 
+    virtual void update(float delta);
     // implement the "static create()" method manually
-    CREATE_FUNC(HelloWorld);
+    CREATE_FUNC(GameScene2);
 };
 
 #endif // __HELLOWORLD_SCENE_H__
