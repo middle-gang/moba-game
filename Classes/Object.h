@@ -26,9 +26,9 @@ public:
 	int& getRadium();
 	int getVelocity();
 	int Money();
-	int Attack(ObjectBase& ene); //获取攻击力
+	int Attack(ObjectBase& ene);
 	int& AttackPower();
-	int& healthPower();//获得生命力
+	int& healthPower();//获得生命
 
 	void Die();
 	void BloodInit();
@@ -36,10 +36,12 @@ public:
 	void setVelocity(int v);
 	void Move(Vec2 dest);
 	void revive();
+	void setAttackingSpeed(float tms);
 	void attachToSprite(Sprite* spr);
 	void setImage(std::string str);
 	void Kill_reward(ObjectBase& ene);
 	void setSpawnPoint(Vec2 spawn);
+	void Judge(float& jt);
 
 	float attackDelay();
 	
@@ -67,7 +69,7 @@ protected:
 
 	bool isAlive=true;
 	bool attackingFlag=false;
-	
+
 	float atkdelay=1;
 	Vec2 Position;
 	Vec2 Spawn;

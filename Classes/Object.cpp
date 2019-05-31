@@ -1,7 +1,7 @@
 #include "Object.h"
 
 bool ObjectBase::InRange(Vec2 ene) {
-	if (radium*radium > Position.distanceSquared(ene)) {
+	if (radium > Position.distance(ene)) {
 		return true;
 	}
 	return false;
@@ -26,7 +26,7 @@ bool ObjectBase::Death() {
 
 void ObjectBase::BeAttack(int damage) {
 	health -= damage;
-	Blink* blink = Blink::create(0.3, 1);
+	Blink* blink = Blink::create(0.01, 1);
 	Charac->runAction(blink);
 	if (health <= 0) {
 		Die();
@@ -37,16 +37,19 @@ int ObjectBase::Attack(ObjectBase& ene) {
 	if (InRange(ene.getPosition())&&!attackingFlag) {
 		attackingFlag = true;
 		Charac->stopAllActions();
-		if (InRange(ene.getPosition())) {
-			ene.BeAttack(attack);
-			if (attack > ene.healthPower()) {
-				Kill_reward(ene);
-				m_kill++;
-				ene.Die();
-			}
+		ene.BeAttack(attack);
+		if (ene.healthPower() <= 0) {
+			ene.Die();
 		}
 	}
 	return attack;
+}
+
+void ObjectBase::Judge(float& jt) {
+	if (jt > atkdelay) {
+		attackingFlag = false;
+		jt = 0;
+	}
 }
 
 int& ObjectBase::AttackPower() {
@@ -115,4 +118,8 @@ float ObjectBase::attackDelay() {
 
 void ObjectBase::attachToSprite(Sprite* spr) {
 	Charac = spr;
+}
+
+void ObjectBase::setAttackingSpeed(float tms) {
+	atkdelay = tms;
 }

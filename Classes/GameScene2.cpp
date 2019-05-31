@@ -2,9 +2,12 @@
 
 USING_NS_CC;
 
-float m_atktime = 0, t_atktime = 0, deathtime = 0;
-float minionborn = 10,minioncount=0;
+float m_atktime = 0, mt_atktime = 0,et_atktime=0, deathtime = 0;
+float minionborn = 5,minioncount=0;
 float minionMove = 1, minionCnt = 0;
+float m_minionatk[999];
+float e_minionatk[999];
+
 Scene* GameScene2::createScene()
 {
 	// 'scene' is an autorelease object
@@ -20,13 +23,13 @@ Scene* GameScene2::createScene()
 	return scene;
 }
 
-void GameScene2::newMinion() {
+void GameScene2::newMinion(int i) {
 	Sprite* minionBuf=Sprite::create("ninja.png");
 	ObjectBase minionbuf;
-	flag[0].minionInit(minionbuf);
+	flag[i].minionInit(minionbuf);
 	minionbuf.attachToSprite(minionBuf);
-	minionBuf->setPosition(flag[0].GetSpawn());
-	flag[0].Container().push_back(minionbuf);
+	minionBuf->setPosition(flag[i].GetSpawn());
+	flag[i].Container().push_back(minionbuf);
 	this->addChild(minionBuf, 2);
 }
 
@@ -111,11 +114,19 @@ bool GameScene2::init()
 
 	//setViewpointCenter(_player->getPosition());
     
-	Tower.attachToSprite(_enemyTower);
-	Tower.healthPower() = 1000;
-	Tower.AttackPower() = 20;
-	Tower.getRadium() = 200;
-	Tower.getPosition() = _enemyTower->getPosition();
+	Tower[0].attachToSprite(_enemyTower);
+	Tower[0].healthPower() = 1000;
+	Tower[0].AttackPower() = 50;
+	Tower[0].getRadium() = 150;
+	Tower[0].setAttackingSpeed(1.5);
+	Tower[0].getPosition() = _enemyTower->getPosition();
+
+	Tower[1].attachToSprite(_myTower);
+	Tower[1].healthPower() = 1000;
+	Tower[1].AttackPower() = 50;
+	Tower[1].getRadium() = 150;
+	Tower[1].setAttackingSpeed(1.5);
+	Tower[1].getPosition() = _myTower->getPosition();
 
     scheduleUpdate();
 
@@ -128,32 +139,66 @@ bool GameScene2::init()
 
 void GameScene2::update(float delta){
 	Hero.getPosition() = Hero.getSprite()->getPosition();	
-	for (int i = 0; i < flag[0].Container().size(); i++) {
-		flag[0].Container()[i].getPosition() = flag[0].Container()[i].getSprite()->getPosition();
-	}
+	
 
 	minioncount += delta;
 	if (minioncount > minionborn) {
 		minioncount = 0;
-		newMinion();
-	}
-	minionCnt += delta;
-	if (flag[0].Container().size() != 0 && minionCnt > minionMove) {
-		flag[0].Stop();
-		flag[0].CheckAware(&Tower);
-		flag[0].MoveAndAttack();
-		minionCnt = 0;
-	}
-	m_atktime += delta;
-	if (m_atktime > Hero.attackDelay()) {
-		m_atktime = 0;
-		Hero.isAttacking() = false;
+		newMinion(0);
+		newMinion(1);
 	}
 
-	t_atktime += delta;
-	if (t_atktime > Tower.attackDelay()) {
-		t_atktime = 0;
-		Tower.isAttacking() = false;
+	for (int i = 0; i < flag[0].Container().size(); i++) {
+		flag[0].Container()[i].getPosition() = flag[0].Container()[i].getSprite()->getPosition();
+		Tower[0].Attack(flag[0].Container()[i]);
+		flag[1].CheckAware(&flag[0].Container()[i]);
+		//flag[1].CheckAware(&Hero);
+		if (flag[0].Container()[i].isAttacking()) {
+			m_minionatk[i] += delta;
+			flag[0].Container()[i].Judge(m_minionatk[i]);
+		}
+	}
+
+	for (int i = 0; i < flag[1].Container().size(); i++) {
+		flag[1].Container()[i].getPosition() = flag[1].Container()[i].getSprite()->getPosition();
+		Tower[1].Attack(flag[1].Container()[i]);
+		flag[0].CheckAware(&flag[1].Container()[i]);
+		//flag[0].CheckAware(&Hero);
+		if (flag[1].Container()[i].isAttacking()) {
+			m_minionatk[i] += delta;
+			flag[1].Container()[i].Judge(m_minionatk[i]);
+		}
+	}
+	
+	minionCnt += delta;
+	if (minionCnt > 1) {
+		if (flag[0].Container().size() != 0) {
+			flag[0].Stop();
+			//flag[0].CheckAware(&Tower[0]);
+			flag[0].MoveAndAttack();
+		}
+		
+		if (flag[1].Container().size() != 0) {
+			flag[1].Stop();
+			//flag[1].CheckAware(&Tower[1]);
+			flag[1].MoveAndAttack();
+		}
+		minionCnt = 0;
+	}
+
+	if (Hero.isAttacking()) {
+		m_atktime += delta;
+		Hero.Judge(m_atktime);
+	}
+
+	if (Tower[0].isAttacking()) {
+		mt_atktime += delta;
+		Tower[0].Judge(mt_atktime);
+	}
+
+	if (Tower[1].isAttacking()) {
+		et_atktime += delta;
+		Tower[1].Judge(et_atktime);
 	}
 
 	if (Hero.Death()) {
@@ -164,8 +209,8 @@ void GameScene2::update(float delta){
 		}
 	}
 
-	Tower.Attack(Hero);
 
+	Tower[0].Attack(Hero);
 	//log("%d", Tower.healthPower());
 
     setViewpointCenter(_player->getPosition());
@@ -180,8 +225,8 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 	Hero.Move(locationInNode);
 
 
-	if(locationInNode.distance(Tower.getPosition()) < Hero.getRadium()) {
-		Hero.Attack(Tower);
+	if(locationInNode.distance(Tower[0].getPosition()) < Hero.getRadium()) {
+		Hero.Attack(Tower[0]);
 	}
 
     return true;

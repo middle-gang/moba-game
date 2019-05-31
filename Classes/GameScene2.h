@@ -20,7 +20,7 @@ class GameScene2 : public cocos2d::Layer
 	MinionController flag[2];
 
 	ObjectBase Hero;
-	ObjectBase Tower;
+	ObjectBase Tower[2];
 
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance Vec2er
@@ -37,7 +37,7 @@ public:
     cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);
     void setViewpointCenter(cocos2d::Vec2 position);
 
-	void newMinion();
+	void newMinion(int i);
 
     virtual void update(float delta);
     // implement the "static create()" method manually
