@@ -10,7 +10,8 @@ bool ObjectBase::InRange(Vec2 ene) {
 void ObjectBase::Die() {
 	isAlive = false;
 	m_death++;
-	Charac->setPosition(Vec2(-10000,-10000));
+	Charac->setPosition(Vec2(-1000,-1000));
+	BloodView->setPosition(Charac->getPosition());
 	Position = Charac->getPosition();
 }
 
@@ -26,7 +27,7 @@ bool ObjectBase::Death() {
 
 void ObjectBase::BeAttack(int damage) {
 	health -= damage;
-	Blink* blink = Blink::create(0.01, 1);
+	Blink* blink = Blink::create(0.1, 1);
 	Charac->runAction(blink);
 	if (health <= 0) {
 		Die();
@@ -34,7 +35,7 @@ void ObjectBase::BeAttack(int damage) {
 }
 
 int ObjectBase::Attack(ObjectBase& ene) {
-	if (InRange(ene.getPosition())&&!attackingFlag) {
+	if (!attackingFlag) {
 		attackingFlag = true;
 		Charac->stopAllActions();
 		ene.BeAttack(attack);
@@ -43,6 +44,10 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		}
 	}
 	return attack;
+}
+
+void ObjectBase::setMoveablity(bool mab) {
+	Moveable = mab;
 }
 
 void ObjectBase::Judge(float& jt) {
@@ -95,6 +100,20 @@ void ObjectBase::Move(Vec2 dest) {
 	Charac->stopAllActions();
 	float cost = dest.distance(Position)/velocity;
 	Charac->runAction(MoveTo::create(cost, dest));
+
+	Animation * animation = Animation::create();
+	for (int i = 1; i <= 6; i++) {
+		__String * frameName = __String::createWithFormat("BowmanRun%d.png",i);
+		log("frameName = %s", frameName->getCString());
+		SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+		animation->addSpriteFrame(spriteFrame);
+	}
+
+	animation->setDelayPerUnit(0.08f);
+	animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+	Animate * action = Animate::create(animation);
+	Charac->runAction(RepeatForever::create(action));
 }
 
 int ObjectBase::Money() {
@@ -122,4 +141,18 @@ void ObjectBase::attachToSprite(Sprite* spr) {
 
 void ObjectBase::setAttackingSpeed(float tms) {
 	atkdelay = tms;
+}
+
+void ObjectBase::initBloodScale() {
+	BloodView = new ProgressView();
+	BloodView->setPosition(Vec2(0, 0));
+	BloodView->setScale(0.05f);
+	BloodView->setBackgroundTexture("bar.png");
+	BloodView->setForegroundTexture("blood.png");
+	BloodView->setTotalProgress(100);
+	BloodView->setCurrentProgress(100);
+}
+
+void ObjectBase::setFrame(std::string str) {
+	frameSet = str;
 }

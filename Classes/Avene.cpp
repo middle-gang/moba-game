@@ -4,6 +4,7 @@
 #include "Help.h"
 #include "GameScene.h"
 #include "GameScene2.h"
+#include "AnimationEdition.h"
 
 USING_NS_CC;
 
@@ -59,5 +60,5 @@ void Avene::Av55CallBack(cocos2d::Ref* pSender) {
 }
 
 void Avene::Av11CallBack(cocos2d::Ref* pSender) {
-
+	Director::getInstance()->pushScene(SceneWithAnimation::createScene());
 }

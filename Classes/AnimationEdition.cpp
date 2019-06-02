@@ -1,27 +1,16 @@
-//
-//  Created by 关东升 on 2016-3-18.
-//  本书网站：http://www.51work6.com
-//  智捷课堂在线课堂：http://www.zhijieketang.com/
-//  智捷课堂微信公共号：zhijieketang
-//  作者微博：@tony_关东升
-//  作者微信：tony关东升
-//  QQ：569418560 邮箱：eorient@sina.com
-//  QQ交流群：162030268
-//
-
 #include "AnimationEdition.h"
 
 USING_NS_CC;
 bool face=true;
 Vec2 preLocation=Vec2(-100,-100);
 
-Scene* HelloWorld::createScene()
+Scene* SceneWithAnimation::createScene()
 {
 	// 'scene' is an autorelease object
 	auto scene = Scene::create();
 
 	// 'layer' is an autorelease object
-	auto layer = HelloWorld::create();
+	auto layer = SceneWithAnimation::create();
 
 	// add layer as a child to scene
 	scene->addChild(layer);
@@ -31,7 +20,7 @@ Scene* HelloWorld::createScene()
 }
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init()
+bool SceneWithAnimation::init()
 {
 	//////////////////////////////
 	// 1. super init first
@@ -46,8 +35,10 @@ bool HelloWorld::init()
 	_tileMap = TMXTiledMap::create("map/MiddleMap.tmx");
 	addChild(_tileMap,0,100);
 
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("CloseWarriorRun.plist");
-    
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("BowmanRun.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("CloseWarriorRun.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("DistantWarriorWarriorRun.plist");
+
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
 	ValueMap spawnPoint = group->getObject("hero");
 
@@ -108,7 +99,7 @@ bool HelloWorld::init()
 
 }
 
-void HelloWorld::update(float delta)
+void SceneWithAnimation::update(float delta)
 {
     setViewpointCenter(_player->getPosition());
     if(_player->getPosition()==preLocation){
@@ -117,7 +108,7 @@ void HelloWorld::update(float delta)
     preLocation=_player->getPosition();
 }
 
-bool HelloWorld::onTouchBegan(Touch* touch, Event* event)
+bool SceneWithAnimation::onTouchBegan(Touch* touch, Event* event)
 {
     log("onTouchBegan");
     
@@ -147,25 +138,25 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* event)
     return true;
 }
 
-void HelloWorld::onTouchMoved(Touch *touch, Event *event)
+void SceneWithAnimation::onTouchMoved(Touch *touch, Event *event)
 {
 	log("onTouchMoved");
 }
 
-void HelloWorld::onTouchEnded(Touch *touch, Event *event)
+void SceneWithAnimation::onTouchEnded(Touch *touch, Event *event)
 {
 	log("onTouchEnded");
     
 }
 
-Vec2 HelloWorld::tileCoordFromPosition(Vec2 pos)
+Vec2 SceneWithAnimation::tileCoordFromPosition(Vec2 pos)
 {
     int x = pos.x / _tileMap->getTileSize().width;
     int y = ((_tileMap->getMapSize().height * _tileMap->getTileSize().height) - pos.y) / _tileMap->getTileSize().height;
     return Vec2(x,y);
 }
 
-void HelloWorld::setViewpointCenter(Vec2 position)
+void SceneWithAnimation::setViewpointCenter(Vec2 position)
 {
 	log("setViewpointCenter");
 

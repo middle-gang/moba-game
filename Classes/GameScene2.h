@@ -40,7 +40,9 @@ public:
 	void newMinion(int i);
 
     virtual void update(float delta);
-    // implement the "static create()" method manually
+	void timer1(float delta);
+	void timer2(float delta);
+	// implement the "static create()" method manually
     CREATE_FUNC(GameScene2);
 };
 

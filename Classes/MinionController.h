@@ -10,26 +10,27 @@ class MinionController
 	std::vector<ObjectBase> minion;
 	int minion_hp=100;
 	float minion_v=50;
-	int minion_r=100;
-	int minion_attack=10;
-	bool aware[999];
+	int minion_r=20;
+	int minion_attack=50;
 	bool moving=false;
 	ObjectBase ene[999];
 	Vec2 MinionSpawn;
 	Vec2 Destination = Vec2(1000, 0);
 	Vec2 Plan[999];
+	float attackingDelayTime[999] = {0};
 public:
 	MinionController() {
 	}
 	std::vector<ObjectBase>& Container();
-	void MoveAndAttack();
+	void MoveToTarget();
+	void Judge(int i, float delt);
 	void setminionSpawn(Vec2 pos) {
 		MinionSpawn = pos;
 	}
 	void setminionDes(Vec2 pos) {
 		Destination = pos;
 	}
-	bool CheckAware(ObjectBase* Sub);
+	bool CheckAware(ObjectBase& Sub);
 	Sprite* NewMinion();
 	void Stop();
 	void minionInit(ObjectBase& mini) {
@@ -37,6 +38,9 @@ public:
 		mini.healthPower() = minion_hp;
 		mini.getRadium() = minion_r;
 		mini.setVelocity(minion_v);
+	}
+	Vec2& getPlan(int i) {
+		return Plan[i];
 	}
 	Vec2 GetSpawn() {
 		return MinionSpawn;

@@ -9,14 +9,14 @@
 //
 
 
-#ifndef __HELLOWORLD_SCENE_H__
-#define __HELLOWORLD_SCENE_H__
+#ifndef __SWA_SCENE_H__
+#define __SWA_SCENE_H__
 
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
 
 
-class HelloWorld : public cocos2d::Layer
+class SceneWithAnimation : public cocos2d::Layer
 {
 	cocos2d::TMXTiledMap* _tileMap;
 	cocos2d::TMXLayer* _collidable;
@@ -44,7 +44,7 @@ public:
     
     virtual void update(float delta);
     // implement the "static create()" method manually
-    CREATE_FUNC(HelloWorld);
+    CREATE_FUNC(SceneWithAnimation);
 };
 
 #endif // __HELLOWORLD_SCENE_H__

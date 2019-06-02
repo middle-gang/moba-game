@@ -42,6 +42,9 @@ public:
 	void Kill_reward(ObjectBase& ene);
 	void setSpawnPoint(Vec2 spawn);
 	void Judge(float& jt);
+	void setMoveablity(bool mab);
+	void initBloodScale();
+	void setFrame(std::string str);
 
 	float attackDelay();
 	
@@ -69,6 +72,7 @@ protected:
 
 	bool isAlive=true;
 	bool attackingFlag=false;
+	bool Moveable = true;
 
 	float atkdelay=1;
 	Vec2 Position;
@@ -76,6 +80,8 @@ protected:
 	Sprite* Charac;
 	Sprite* Blood=Sprite::create("blood.png");
 	Sprite* Bar=Sprite::create("bar.png");
+
+	std::string frameSet;
 };
 
 #endif // __AVENE_SCENE_H__
