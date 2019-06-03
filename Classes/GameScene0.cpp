@@ -1,6 +1,5 @@
 #include "GameScene0.h"
 
-
 USING_NS_CC;
 
 Scene* GameScene0::createScene()
@@ -23,7 +22,7 @@ bool GameScene0::init()
 {
 	//////////////////////////////
 	// 1. super init first
-	if (!Scene::init())
+	if (!Layer::init())
 	{
 		return false;
 	}
@@ -45,10 +44,7 @@ bool GameScene0::init()
 	addChild(m_pGameScene2, 0);
 	m_pGameScene2->setVisible(true);
 
-
-
-
-	//setKeyboardEnabled(true);
+	setKeyboardEnabled(true);
 
 	return true;
 
@@ -59,21 +55,6 @@ bool GameScene0::init()
 void GameScene0::update(float delta) {
 	//setViewpointCenter(_player->getPosition());
 
-}
-
-
-void GameScene0::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event * event)
-{
-	switch (keyCode)
-	{
-	case EventKeyboard::KeyCode::KEY_ESCAPE:
-	{
-		Director::getInstance()->end();
-#if (CC_TARGET_PLATFORM==CC_PLATFORM_IOS)
-		exit(0);
-#endif
-	}
-	}
 }
 
 

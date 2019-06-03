@@ -8,7 +8,7 @@
 
 using namespace cocos2d;
 
-class GameScene0 : public cocos2d::Scene
+class GameScene0 : public cocos2d::Layer
 {
 public:
 
@@ -23,7 +23,6 @@ public:
 	static cocos2d::Scene* createScene();
 
 
-	virtual void GameScene0::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 	// Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
 	virtual void update(float delta);
 	virtual bool init();
