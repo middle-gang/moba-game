@@ -29,6 +29,7 @@ public:
 	int Attack(ObjectBase& ene);
 	int& AttackPower();
 	int& healthPower();//获得生命
+	int& totalHealth();
 
 	void Die();
 	void BloodInit();
@@ -45,11 +46,14 @@ public:
 	void setMoveablity(bool mab);
 	void initBloodScale();
 	void setFrame(std::string str);
+	void bulletRemove();
+	void setAnimeIdentifier(int i);
 
 	float attackDelay();
 	
 	Vec2& getPosition();
 	Sprite* getSprite();
+	Sprite* getBullet();
 	
 	ProgressView* BloodView;
 
@@ -62,13 +66,14 @@ public:
 	double waitTime = 0;
 protected:
 	int health;//生命值
+	int nowHealth;
 	int attack;//攻击力
 	int power;//法术强度
 	int radium;//攻击半径
 	float velocity;//速度
 	int m_money=0;
 	int m_exp;
-
+	int animeIdentifier;
 
 	bool isAlive=true;
 	bool attackingFlag=false;
@@ -80,9 +85,10 @@ protected:
 	Sprite* Charac;
 	Sprite* Blood=Sprite::create("blood.png");
 	Sprite* Bar=Sprite::create("bar.png");
+	Sprite* Bullet = Sprite::create("bulletTest.png");
 
 	std::string frameSet;
 };
 
-#endif // __AVENE_SCENE_H__
+#endif 
 	

@@ -10,9 +10,25 @@ bool ObjectBase::InRange(Vec2 ene) {
 void ObjectBase::Die() {
 	isAlive = false;
 	m_death++;
-	Charac->setPosition(Vec2(-1000,-1000));
-	BloodView->setPosition(Charac->getPosition());
-	Position = Charac->getPosition();
+	Animation * animation = Animation::create();
+	for (int i = 1; i <= 5; i++) {
+		__String * frameName = __String::createWithFormat("CloseWarriorDie%d.png", i);
+		log("frameName = %s", frameName->getCString());
+		SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+		animation->addSpriteFrame(spriteFrame);
+	}
+
+	animation->setDelayPerUnit(0.5f);
+	animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+	Animate * action = Animate::create(animation);
+
+	Sequence* seqAct = Sequence::create(action, DelayTime::create(0.5),MoveTo::create(0, Vec2(-1000, -1000)), NULL);
+
+	Charac->runAction(seqAct);
+
+	if(BloodView!=nullptr) BloodView->setPosition(Vec2(-1000,-1000));
+	Position = Vec2(-1000,-1000);
 }
 
 void ObjectBase::Kill_reward(ObjectBase& ene) {
@@ -26,7 +42,7 @@ bool ObjectBase::Death() {
 }
 
 void ObjectBase::BeAttack(int damage) {
-	health -= damage;
+	nowHealth -= damage;
 	Blink* blink = Blink::create(0.1, 1);
 	Charac->runAction(blink);
 	if (health <= 0) {
@@ -38,10 +54,59 @@ int ObjectBase::Attack(ObjectBase& ene) {
 	if (!attackingFlag) {
 		attackingFlag = true;
 		Charac->stopAllActions();
+		Animation * animation = Animation::create();
+		/*switch (animeIdentifier)
+		{
+		case 1:
+			//Animation * animation = Animation::create();
+			for (int i = 1; i <= 3; i++) {
+				__String * frameName = __String::createWithFormat("BowmanAttack%d.png", i);
+				log("frameName = %s", frameName->getCString());
+				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+				animation->addSpriteFrame(spriteFrame);
+			}
+
+			animation->setDelayPerUnit(0.08f);
+			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+			Animate * action = Animate::create(animation);
+			Charac->runAction(action);
+		case 2:
+			//Animation * animation = Animation::create();
+			for (int i = 1; i <= 3; i++) {
+				__String * frameName = __String::createWithFormat("SavageAttack%d.png", i);
+				log("frameName = %s", frameName->getCString());
+				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+				animation->addSpriteFrame(spriteFrame);
+			}
+
+			animation->setDelayPerUnit(0.08f);
+			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+			Animate * action = Animate::create(animation);
+			Charac->runAction(action);
+		case 3:
+			//Animation * animation = Animation::create();
+			for (int i = 1; i <= 4; i++) {
+				__String * frameName = __String::createWithFormat("WizardAttack%d.png", i);
+				log("frameName = %s", frameName->getCString());
+				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+				animation->addSpriteFrame(spriteFrame);
+			}
+
+			animation->setDelayPerUnit(0.08f);
+			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+			Animate * action = Animate::create(animation);
+			Charac->runAction(action);
+			break;
+		}*/
+
 		ene.BeAttack(attack);
 		if (ene.healthPower() <= 0) {
 			ene.Die();
 		}
+
 	}
 	return attack;
 }
@@ -85,6 +150,10 @@ Vec2& ObjectBase::getPosition() {
 }
 
 int& ObjectBase::healthPower() {
+	return nowHealth;
+}
+
+int& ObjectBase::totalHealth() {
 	return health;
 }
 
@@ -102,6 +171,7 @@ void ObjectBase::Move(Vec2 dest) {
 	Charac->runAction(MoveTo::create(cost, dest));
 
 	Animation * animation = Animation::create();
+	
 	for (int i = 1; i <= 6; i++) {
 		__String * frameName = __String::createWithFormat("BowmanRun%d.png",i);
 		log("frameName = %s", frameName->getCString());
@@ -149,10 +219,23 @@ void ObjectBase::initBloodScale() {
 	BloodView->setScale(0.05f);
 	BloodView->setBackgroundTexture("bar.png");
 	BloodView->setForegroundTexture("blood.png");
-	BloodView->setTotalProgress(100);
-	BloodView->setCurrentProgress(100);
+	BloodView->setTotalProgress(health);
+	BloodView->setCurrentProgress(nowHealth);
+	BloodView->setPosition(Charac->getPosition());
 }
 
 void ObjectBase::setFrame(std::string str) {
 	frameSet = str;
+}
+
+Sprite* ObjectBase::getBullet() {
+	return Bullet;
+}
+
+void ObjectBase::bulletRemove() {
+	Bullet->setPosition(Vec2(-1000, -1000));
+}
+
+void ObjectBase::setAnimeIdentifier(int i) {
+	animeIdentifier = i;
 }
