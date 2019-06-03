@@ -35,6 +35,7 @@ public:
 	void Stop();
 	void minionInit(ObjectBase& mini) {
 		mini.AttackPower() = minion_attack;
+		mini.totalHealth() = minion_hp;
 		mini.healthPower() = minion_hp;
 		mini.getRadium() = minion_r;
 		mini.setVelocity(minion_v);

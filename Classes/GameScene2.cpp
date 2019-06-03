@@ -6,9 +6,12 @@ float m_atktime = 0, mt_atktime = 0,et_atktime=0, deathtime = 0;
 float minionborn = 10,minioncount=0;
 float minioncount1 = 0;
 float minionMove = 1, minionCnt = 0,minionCnt1=0;
+float animeEnded[2][999];
+float animeFinish[2][999];
 bool reverse = false;
 bool checkAlive[2][999];
 Vec2 prelocation;
+bool isRight = true;
 //std::map<ObjectBase, bool> minionAlive;
 
 Scene* GameScene2::createScene()
@@ -54,7 +57,9 @@ bool GameScene2::init()
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("BowmanRun.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("CloseWarriorRun.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("DistantWarriorWarriorRun.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("DistantWarriorRun.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("BowmanAttack.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("CloseWarriorDie.plist");
 
 	_tileMap = TMXTiledMap::create("map/MiddleMap.tmx");
 	addChild(_tileMap, 0, 100);
@@ -65,11 +70,13 @@ bool GameScene2::init()
 	float x = spawnPoint["x"].asFloat();
 	float y = spawnPoint["y"].asFloat();
 
+
 	_player = Sprite::createWithSpriteFrameName("BowmanRun1.png");
 	_player->setPosition(Vec2(x, y));
 	addChild(_player, 2, 200);
 
 	Hero.attachToSprite( _player);
+	Hero.totalHealth() = 100;
 	Hero.healthPower() = 100;
 	Hero.getRadium() = 100;
 	Hero.AttackPower() = 100;
@@ -79,6 +86,8 @@ bool GameScene2::init()
 	std::string HeroFrameName = "CloseWarriorRun";
 	Hero.setFrame(HeroFrameName);
 	addChild(Hero.BloodView, 2);
+	addChild(Hero.getBullet(), 2);
+
 
 	ValueMap myCrystalPoint = group->getObject("myCrystal");
 
@@ -129,19 +138,25 @@ bool GameScene2::init()
 	//setViewpointCenter(_player->getPosition());
     
 	Tower[0].attachToSprite(_enemyTower);
+	Tower[0].totalHealth() = 1000;
 	Tower[0].healthPower() = 1000;
 	Tower[0].AttackPower() = 50;
 	Tower[0].getRadium() = 150;
 	Tower[0].setAttackingSpeed(1.5);
 	Tower[0].setMoveablity(false);
+	Tower[0].initBloodScale();
+	this->addChild(Tower[0].BloodView,2);
 	Tower[0].getPosition() = _enemyTower->getPosition();
 
 	Tower[1].attachToSprite(_myTower);
+	Tower[1].totalHealth() = 1000;
 	Tower[1].healthPower() = 1000;
 	Tower[1].AttackPower() = 50;
 	Tower[1].getRadium() = 150;
 	Tower[1].setAttackingSpeed(1.5);
-	Tower[0].setMoveablity(false);
+	Tower[1].setMoveablity(false);
+	Tower[1].initBloodScale();
+	this->addChild(Tower[1].BloodView, 2);
 	Tower[1].getPosition() = _myTower->getPosition();
 
 
@@ -159,48 +174,62 @@ bool GameScene2::init()
 void GameScene2::update(float delta){
 	Hero.getPosition() = Hero.getSprite()->getPosition();
 	
+	Tower[0].BloodView->setCurrentProgress(Tower[0].healthPower());
+	Tower[1].BloodView->setCurrentProgress(Tower[1].healthPower());
+
+	log("%f", Tower[0].healthPower());
+
 	if (_player->getPosition() == prelocation) {
 		_player->stopAllActions();
 	}
 	prelocation = _player->getPosition();
 
 	Hero.BloodView->setPosition(Vec2(Hero.getPosition().x, Hero.getPosition().y + 15));
+
 	for (int i = 0; i < flag[0].Container().size(); i++) {
-		/*if (flag[0].Container()[i].healthPower() <= 0) {
-			minionAlive[flag[0].Container()[i]] = false;
-		}*/
 		if (checkAlive[0][i]) continue;
 		if (flag[0].Container()[i].healthPower() <= 0&&!checkAlive[0][i]) {
-			this->removeChild(flag[0].Container()[i].getSprite());
 			checkAlive[0][i] = true;
+			this->removeChild(flag[0].Container()[i].getSprite());
 			continue;
 		}
 
-		if (flag[0].Container()[i].isAttacking()) {
+		if (flag[0].Container()[i].isAttacking()&& flag[0].Container()[i].healthPower()>0) {
 			flag[0].Judge(i, delta);
 		}
-		flag[0].Container()[i].getPosition() = flag[0].Container()[i].getSprite()->getPosition();
-		flag[0].Container()[i].BloodView->setPosition(Vec2(flag[0].Container()[i]
-			.getPosition().x, flag[0].Container()[i].getPosition().y + 15));
-		flag[0].Container()[i].BloodView->setCurrentProgress(flag[0].Container()[i].healthPower());
+		if (flag[0].Container()[i].healthPower() > 0) {
+			flag[0].Container()[i].getPosition() = flag[0].Container()[i].getSprite()->getPosition();
+			flag[0].Container()[i].BloodView->setPosition(Vec2(flag[0].Container()[i]
+				.getPosition().x, flag[0].Container()[i].getPosition().y + 15));
+			flag[0].Container()[i].BloodView->setCurrentProgress(flag[0].Container()[i].healthPower());
+		}
 
+		if (flag[0].Container()[i].getPosition().distance(Tower[0].getPosition()) < Tower->getRadium()
+			&& flag[0].Container()[i].healthPower() > 0) {
+			Tower[0].Attack(flag[0].Container()[i]);
+		}
 	}
 
 	for (int i = 0; i < flag[1].Container().size() ; i++) {
 		if (checkAlive[1][i]) continue;
-		if (flag[1].Container()[i].healthPower() <= 0&&!checkAlive[1][i]) {
-			this->removeChild(flag[1].Container()[i].getSprite());
+		if (flag[1].Container()[i].healthPower() <= 0 && !checkAlive[1][i]) {
 			checkAlive[1][i] = true;
+			this->removeChild(flag[1].Container()[i].getSprite());
 			continue;
 		}
 
 		if (flag[1].Container()[i].isAttacking()) {
 			flag[1].Judge(i, delta);
 		}
+		
 		flag[1].Container()[i].getPosition() = flag[1].Container()[i].getSprite()->getPosition();
 		flag[1].Container()[i].BloodView->setPosition(Vec2(flag[1].Container()[i]
 			.getPosition().x, flag[1].Container()[i].getPosition().y + 15));
 		flag[1].Container()[i].BloodView->setCurrentProgress(flag[1].Container()[i].healthPower());
+	
+		if(flag[1].Container()[i].getPosition().distance(Tower[1].getPosition()) < Tower->getRadium() ) {
+			Tower[1].Attack(flag[1].Container()[i]);
+		}
 	}
 
 	minionCnt += delta;
@@ -224,9 +253,11 @@ void GameScene2::update(float delta){
 					ck = true;
 				}
 			}
+			
 			if (!ck) {
 				flag[0].getPlan(i) = flag[0].GetDes();
 			}
+			
 			if (tarck) {
 				flag[0].Container()[i].Attack(*target);
 				reverse = !reverse;
@@ -367,28 +398,30 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 {
     log("onTouchBegan");
 
+	Vec2 faceDirection = touch->getLocation() - Hero.getPosition();
+	if (faceDirection.x < 0 && !isRight) {
+		isRight = true;
+		Hero.getSprite()->setFlippedX(true);
+	}
+	else if (faceDirection.x > 0 && isRight) {
+		isRight = false;
+		Hero.getSprite()->setFlippedX(false);
+	}
+
     auto target = static_cast<Sprite*>(event->getCurrentTarget());
     Point locationInNode = target -> convertToNodeSpace(touch->getLocation());
 	//log("%f %f", locationInNode.x, locationInNode.y);
 	Hero.Move(locationInNode);
 
 	if(locationInNode.distance(Tower[0].getPosition()) < Hero.getRadium()) {
+		if (!Hero.isAttacking()) {
+			Hero.getBullet()->setPosition(Hero.getSprite()->getPosition());
+			Sequence* actionSeq = Sequence::create(MoveTo::create(0.2, Tower[0].getPosition()), MoveTo::create(0, Vec2(-1000, -1000)), NULL);
+			Hero.getBullet()->runAction(actionSeq);
+		}
+		
 		Hero.Attack(Tower[0]);
 	}
-
-	/*Animation * animation = Animation::create();
-	for (int i = 1; i <= 6; i++) {
-		__String * frameName = __String::createWithFormat("CloseWarriorRun%d.png", i);
-		log("frameName = %s", frameName->getCString());
-		SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
-		animation->addSpriteFrame(spriteFrame);
-	}
-
-	animation->setDelayPerUnit(0.08f);
-	animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
-
-	Animate * action = Animate::create(animation);
-	this->_player->runAction(RepeatForever::create(action));*/
 
     return true;
 }
@@ -432,6 +465,10 @@ Vec2 GameScene2::tileCoordFromPosition(Vec2 pos)
 	int x = pos.x / _tileMap->getTileSize().width;
 	int y = ((_tileMap->getMapSize().height * _tileMap->getTileSize().height) - pos.y) / _tileMap->getTileSize().height;
 	return Vec2(x,y);
+}
+
+void GameScene2::onMouseMove() {
+
 }
 
 void GameScene2::setViewpointCenter(Vec2 position)
