@@ -75,8 +75,16 @@
     <ClCompile Include="..\Classes\GameScene0.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="..\Classes\GameLogoLayer.cpp">
       <Filter>src\Scene</Filter>
+=======
+    <ClCompile Include="..\Classes\ChooseCharacter.cpp">
+      <Filter>src\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameLogoLayer.cpp">
+      <Filter>src\UI</Filter>
+>>>>>>> f9ee44670c4068f7965350b4300e112c86bb04db
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,8 +142,16 @@
     <ClInclude Include="..\Classes\GameScene0.h">
       <Filter>src\Scene</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="..\Classes\GameLogoLayer.h">
       <Filter>src\Scene</Filter>
+=======
+    <ClInclude Include="..\Classes\ChooseCharacter.h">
+      <Filter>src\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameLogoLayer.h">
+      <Filter>src\UI</Filter>
+>>>>>>> f9ee44670c4068f7965350b4300e112c86bb04db
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

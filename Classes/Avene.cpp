@@ -6,6 +6,7 @@
 #include "GameScene2.h"
 #include "AnimationEdition.h"
 #include"GameScene0.h"
+#include"ChooseCharacter.h"
 
 USING_NS_CC;
 
@@ -56,7 +57,7 @@ bool Avene::init()
 void Avene::Av55CallBack(cocos2d::Ref* pSender) {
 	//auto gameCreate = GameScene::createScene();
 	//auto gameCreateChange = TransitionFadeTR::create(1.0f, gameCreate);
-	Director::getInstance()->pushScene(GameScene0::createScene());
+	Director::getInstance()->pushScene(ChooseCharacter::createScene());
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("effectmusic1.wav", false);
 }
 
