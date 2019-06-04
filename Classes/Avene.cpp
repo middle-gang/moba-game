@@ -57,7 +57,7 @@ bool Avene::init()
 void Avene::Av55CallBack(cocos2d::Ref* pSender) {
 	//auto gameCreate = GameScene::createScene();
 	//auto gameCreateChange = TransitionFadeTR::create(1.0f, gameCreate);
-	Director::getInstance()->pushScene(ChooseCharacter::createScene());
+	Director::getInstance()->pushScene(GameScene0::createScene());
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("effectmusic1.wav", false);
 }
 
