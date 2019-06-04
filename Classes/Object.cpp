@@ -11,12 +11,12 @@ void ObjectBase::Die() {
 	isAlive = false;
 	m_death++;
 	Animation * animation = Animation::create();
-	/*for (int i = 1; i <= 5; i++) {
+	for (int i = 1; i <= 5; i++) {
 		__String * frameName = __String::createWithFormat("CloseWarriorDie%d.png", i);
 		log("frameName = %s", frameName->getCString());
 		SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 		animation->addSpriteFrame(spriteFrame);
-	}*/
+	}
 
 	animation->setDelayPerUnit(0.5f);
 	animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
