@@ -1,4 +1,5 @@
 #include "GameScene2.h"
+#include "HelloWorldScene.h"
 
 USING_NS_CC;
 
@@ -93,12 +94,11 @@ bool GameScene2::init()
 	float x = spawnPoint["x"].asFloat();
 	float y = spawnPoint["y"].asFloat();
 
-
 	_player = Sprite::createWithSpriteFrameName("BowmanRun1.png");
 	_player->setPosition(Vec2(x, y));
 	addChild(_player, 2, 200);
-
-	Hero.attachToSprite( _player);
+	//Hero.setAnimeIdentifier(1);
+	Hero.attachToSprite(_player);
 	Hero.setAnimeIdentifier(1);
 	Hero.totalHealth() = 100;
 	Hero.healthPower() = 100;
@@ -107,8 +107,6 @@ bool GameScene2::init()
 	Hero.setVelocity(100);
 	Hero.setSpawnPoint(Vec2(x,y));
 	Hero.initBloodScale();
-	std::string HeroFrameName = "CloseWarriorRun";
-	Hero.setFrame(HeroFrameName);
 	addChild(Hero.BloodView, 2);
 	addChild(Hero.getBullet(), 2);
 
@@ -201,7 +199,9 @@ void GameScene2::update(float delta){
 	
 	Tower[0].BloodView->setCurrentProgress(Tower[0].healthPower());
 	Tower[1].BloodView->setCurrentProgress(Tower[1].healthPower());
-
+	if(cryInit[0]) Crystal[0].BloodView->setCurrentProgress(Crystal[0].healthPower());
+	if(cryInit[1]) Crystal[1].BloodView->setCurrentProgress(Crystal[1].healthPower());
+	
 	if (Tower[0].healthPower() <= 0&&!cryInit[0]) {
 		cryInit[0] = true;
 		_enemyCrystal->setAnchorPoint(Vec2(0.5, 0.5));
@@ -232,7 +232,7 @@ void GameScene2::update(float delta){
 		Crystal[0].getPosition() = _myCrystal->getPosition();
 	}
 
-	log("%f", Tower[0].healthPower());
+	if (Tower[0].healthPower() <= 0 && Crystal[0].healthPower() <= 0) Director::getInstance()->replaceScene(HelloWorld::createScene());
 
 	if (_player->getPosition() == prelocation) {
 		_player->stopAllActions();
@@ -308,7 +308,17 @@ void GameScene2::update(float delta){
 					ck = true;
 				}
 			}
-			
+			if (Tower[0].healthPower() > 0) {
+				float dis = flag[0].Container()[i].getPosition().distance(Tower[0].getPosition());
+				if (dis < Tower[0].getRadium()) {
+					flag[0].getPlan(i) = Tower[0].getPosition();
+					if (dis < flag[0].Container()[i].getRadium()) {
+						target = &Tower[0];
+						tarck = true;
+					}
+					ck = true;
+				}
+			}
 			if (!ck) {
 				flag[0].getPlan(i) = flag[0].GetDes();
 			}
@@ -334,6 +344,17 @@ void GameScene2::update(float delta){
 					flag[1].getPlan(i) = flag[0].Container()[j].getPosition();
 					if (dis < flag[1].Container()[i].getRadium()) {
 						target = &flag[0].Container()[j];
+						tarck = true;
+					}
+					ck = true;
+				}
+			}
+			if (Tower[1].healthPower() > 0) {
+				float dis = flag[1].Container()[i].getPosition().distance(Tower[1].getPosition());
+				if (dis < Tower[1].getRadium()) {
+					flag[1].getPlan(i) = Tower[1].getPosition();
+					if (dis < flag[1].Container()[i].getRadium()) {
+						target = &Tower[1];
 						tarck = true;
 					}
 					ck = true;
@@ -374,6 +395,17 @@ void GameScene2::update(float delta){
 					ck = true;
 				}
 			}
+			if (Tower[1].healthPower() > 0) {
+				float dis = flag[1].Container()[i].getPosition().distance(Tower[1].getPosition());
+				if (dis < Tower[1].getRadium()) {
+					flag[1].getPlan(i) = Tower[1].getPosition();
+					if (dis < flag[1].Container()[i].getRadium()) {
+						target = &Tower[1];
+						tarck = true;
+					}
+					ck = true;
+				}
+			}
 			if (!ck) {
 				flag[1].getPlan(i) = flag[1].GetDes();
 				reverse = !reverse;
@@ -398,6 +430,17 @@ void GameScene2::update(float delta){
 					flag[0].getPlan(i) = flag[1].Container()[j].getPosition();
 					if (dis < flag[0].Container()[i].getRadium()) {
 						target = &flag[1].Container()[j];
+						tarck = true;
+					}
+					ck = true;
+				}
+			}
+			if (Tower[0].healthPower() > 0) {
+				float dis = flag[0].Container()[i].getPosition().distance(Tower[0].getPosition());
+				if (dis < Tower[0].getRadium()) {
+					flag[0].getPlan(i) = Tower[0].getPosition();
+					if (dis < flag[0].Container()[i].getRadium()) {
+						target = &Tower[0];
 						tarck = true;
 					}
 					ck = true;
@@ -479,7 +522,7 @@ void GameScene2::update(float delta){
 
 bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 {
-    log("onTouchBegan");
+    //log("onTouchBegan");
 
 	Vec2 faceDirection = touch->getLocation() - Hero.getPosition();
 	if (faceDirection.x < 0 && !isRight) {
@@ -507,11 +550,6 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 	}
 	else {
 		//log("%f %f", locationInNode.x, locationInNode.y);
-		int xs = tileCoordFromPosition(Hero.getPosition()).x;
-		int ys = tileCoordFromPosition(Hero.getPosition()).y;
-		int xe = tileCoordFromPosition(locationInNode).x;
-		int ye = tileCoordFromPosition(locationInNode).y;
-		
 		Hero.Move(locationInNode);
 	}
 
@@ -520,28 +558,33 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 	bool mouseTarCheck = false;
 	for (int i = 0; i < flag[1].Container().size(); i++) {
 		if (!Hero.InRange(flag[1].Container()[i].getPosition())) continue;
-		float disMouse = touch->getLocation().distance(flag[1].Container()[i].getPosition());
-		if (disMouse < TargetMinimum&&disMouse<20) {
+		float disMouse = locationInNode.distance(flag[1].Container()[i].getPosition());
+		if (disMouse < TargetMinimum&&disMouse<30) {
 			TargetMinimum = disMouse;
 			MouseTar = &(flag[1].Container()[i]);
 		}
 	}
+
 	if (Tower[0].healthPower() > 0) {
-		float disMouseTower = touch->getLocation().distance(Tower[0].getPosition());
-		if(Hero.InRange(Tower[0].getPosition())&&disMouseTower < TargetMinimum&&disMouseTower<10) {
+		float disMouseTower = locationInNode.distance(Tower[0].getPosition());
+		log("%f", disMouseTower);
+		if(Hero.InRange(Tower[0].getPosition())&&disMouseTower < TargetMinimum&&disMouseTower<20) {
 			MouseTar = &Tower[0];
 		}
 	}
 	else{
-		//log("aaaaaaaaaaaaaaa");
-		float disMouseTower = touch->getLocation().distance(Crystal[0].getPosition());
+		float disMouseTower = locationInNode.distance(Crystal[0].getPosition());
 		if (disMouseTower < TargetMinimum&&disMouseTower < 20){
 			MouseTar = &Crystal[0];
 		}
 	}
 	if (MouseTar != nullptr) {
-		log("aaaaaaaaaaa");		
+		log("aaaaaaaaaaaaaaaaaaaaaaaaa");		
+		Hero.getSprite()->stopAllActions();
 		Hero.Attack(*MouseTar);
+	}
+	else {
+		log("bbbbbbbbbbbbbbbbbbbbbbbbbb");
 	}
 
     return true;
@@ -549,12 +592,12 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 
 void GameScene2::onTouchMoved(Touch *touch, Event *event)
 {
-	log("onTouchMoved");
+	//log("onTouchMoved");
 }
 
 void GameScene2::onTouchEnded(Touch *touch, Event *event)
 {
-	log("onTouchEnded");
+	//log("onTouchEnded");
 }
 
 void GameScene2::setPlayerPosition(Vec2 position)
@@ -590,9 +633,9 @@ Vec2 GameScene2::tileCoordFromPosition(Vec2 pos)
 
 void GameScene2::setViewpointCenter(Vec2 position)
 {
-	log("setViewpointCenter");
+	//log("setViewpointCenter");
 
-	log("position (%f ,%f) ",position.x,position.y);
+	//log("position (%f ,%f) ",position.x,position.y);
 
     Size visibleSize = Director::getInstance()->getVisibleSize();
     //可以防止，视图左边超出屏幕之外。
@@ -608,11 +651,11 @@ void GameScene2::setViewpointCenter(Vec2 position)
     Vec2 pointA = Vec2(visibleSize.width/2, visibleSize.height/2);
 	//使精灵处于屏幕中心，移动地图目标位置
     Vec2 pointB = Vec2(x, y);
-	log("目标位置 (%f ,%f) ",pointB.x,pointB.y);
+	//log("目标位置 (%f ,%f) ",pointB.x,pointB.y);
 
     //地图移动偏移量
     Vec2 offset =pointA - pointB;
-    log("offset (%f ,%f) ",offset.x, offset.y);
+   // log("offset (%f ,%f) ",offset.x, offset.y);
     this->setPosition(offset);
 
 }

@@ -84,9 +84,6 @@ bool ChooseCharacter::init()
 	pMenu->setPosition(Vec2::ZERO);
 	addChild(pMenu, 1);
 
-	
-
-
 	return true;
 }
 

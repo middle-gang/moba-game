@@ -30,6 +30,7 @@ public:
 	int& AttackPower();
 	int& healthPower();//»ñµÃÉúÃü
 	int& totalHealth();
+	int HeroIdentifier=1;
 
 	void Die();
 	void BloodInit();
@@ -48,6 +49,9 @@ public:
 	void setFrame(std::string str);
 	void bulletRemove();
 	void setAnimeIdentifier(int i);
+	void setAnimeIdentifierFromChoice(int i);
+	void HeroSet(int i);
+	void HeroInit(Sprite* player, Vec2 spawnP);
 
 	float attackDelay();
 	

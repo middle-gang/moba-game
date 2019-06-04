@@ -200,7 +200,7 @@ void ObjectBase::Move(Vec2 dest) {
 		//Animation * animation = Animation::create();
 		for (int i = 1; i <= 7; i++) {
 			__String * frameName = __String::createWithFormat("BowmanRun%d.png", i);
-			log("frameName = %s", frameName->getCString());
+			//log("frameName = %s", frameName->getCString());
 			SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 			animation->addSpriteFrame(spriteFrame);
 		}
@@ -215,7 +215,7 @@ void ObjectBase::Move(Vec2 dest) {
 	else if (animeIdentifier == 2) {
 		for (int i = 1; i <= 6; i++) {
 			__String * frameName = __String::createWithFormat("SavageRun%d.png", i);
-			log("frameName = %s", frameName->getCString());
+			//log("frameName = %s", frameName->getCString());
 			SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 			animation->addSpriteFrame(spriteFrame);
 		}
@@ -229,7 +229,7 @@ void ObjectBase::Move(Vec2 dest) {
 	else if (animeIdentifier == 3) {
 		for (int i = 1; i <= 8; i++) {
 			__String * frameName = __String::createWithFormat("WizardRun%d.png", i);
-			log("frameName = %s", frameName->getCString());
+			//log("frameName = %s", frameName->getCString());
 			SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 			animation->addSpriteFrame(spriteFrame);
 		}
@@ -243,7 +243,7 @@ void ObjectBase::Move(Vec2 dest) {
 	else if (animeIdentifier == 5) {
 		for (int i = 1; i <= 8; i++) {
 			__String * frameName = __String::createWithFormat("CloseWarriorRun%d.png", i);
-			log("frameName = %s", frameName->getCString());
+			//log("frameName = %s", frameName->getCString());
 			SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 			animation->addSpriteFrame(spriteFrame);
 		}
@@ -257,7 +257,7 @@ void ObjectBase::Move(Vec2 dest) {
 	else if (animeIdentifier == 6) {
 		for (int i = 1; i <= 4; i++) {
 			__String * frameName = __String::createWithFormat("DistantWarriorRun%d.png", i);
-			log("frameName = %s", frameName->getCString());
+			//log("frameName = %s", frameName->getCString());
 			SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 			animation->addSpriteFrame(spriteFrame);
 		}
@@ -326,4 +326,24 @@ void ObjectBase::bulletRemove() {
 
 void ObjectBase::setAnimeIdentifier(int i) {
 	animeIdentifier = i;
+}
+
+void ObjectBase::setAnimeIdentifierFromChoice(int i) {
+}
+
+void ObjectBase::HeroSet(int i) {
+
+}
+
+void ObjectBase::HeroInit(Sprite* player,Vec2 spawnP) {
+	if(HeroIdentifier==1) player = Sprite::createWithSpriteFrameName("BowmanRun1.png");
+	if(HeroIdentifier==2) player = Sprite::createWithSpriteFrameName("SavageRun1.png");
+	if(HeroIdentifier==3) player = Sprite::createWithSpriteFrameName("WizardRun1.png");
+	totalHealth() = 100;
+	healthPower() = 100;
+	getRadium() = 200;
+	AttackPower() = 100;
+	setVelocity(100);
+	setSpawnPoint(spawnP);
+	initBloodScale();
 }

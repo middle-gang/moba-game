@@ -43,8 +43,6 @@ public:
 	void crystalInit();
 
     virtual void update(float delta);
-	void timer1(float delta);
-	void timer2(float delta);
 	// implement the "static create()" method manually
     CREATE_FUNC(GameScene2);
 };
