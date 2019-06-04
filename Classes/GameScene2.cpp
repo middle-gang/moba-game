@@ -521,7 +521,7 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 	for (int i = 0; i < flag[1].Container().size(); i++) {
 		if (!Hero.InRange(flag[1].Container()[i].getPosition())) continue;
 		float disMouse = touch->getLocation().distance(flag[1].Container()[i].getPosition());
-		if (disMouse < TargetMinimum&&disMouse<10) {
+		if (disMouse < TargetMinimum&&disMouse<20) {
 			TargetMinimum = disMouse;
 			MouseTar = &(flag[1].Container()[i]);
 		}
@@ -535,11 +535,12 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 	else{
 		//log("aaaaaaaaaaaaaaa");
 		float disMouseTower = touch->getLocation().distance(Crystal[0].getPosition());
-		if (disMouseTower < TargetMinimum&&disMouseTower < 10){
+		if (disMouseTower < TargetMinimum&&disMouseTower < 20){
 			MouseTar = &Crystal[0];
 		}
 	}
 	if (MouseTar != nullptr) {
+		log("aaaaaaaaaaa");		
 		Hero.Attack(*MouseTar);
 	}
 
