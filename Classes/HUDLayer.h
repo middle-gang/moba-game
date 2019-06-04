@@ -5,7 +5,7 @@
 #include "cocos2d.h"
 using namespace cocos2d;
 
-class HUDLayer : public cocos2d::Scene
+class HUDLayer : public cocos2d::Layer
 {
 private:
 	///时间
@@ -18,7 +18,32 @@ private:
 	cocos2d::Label *m_pTime_minText;
 	cocos2d::Label *m_pTime_secText;
 
-	////数值
+	////技能冷却
+	int m_Skill1Wait;
+	int m_Skill2Wait;
+	int m_Skill3Wait;
+	int m_Skill4Wait;
+	int m_Skill5Wait;
+
+	bool m_Skill1Up;
+	bool m_Skill2Up;
+	bool m_Skill3Up;
+	bool m_Skill4Up;
+	bool m_Skill5Up;
+
+	float m_pass1;
+	float m_pass2;
+	float m_pass3;
+	float m_pass4;
+	float m_pass5;
+
+	cocos2d::Label *m_pSkill1Text;
+	cocos2d::Label *m_pSkill2Text;
+	cocos2d::Label *m_pSkill3Text;
+	cocos2d::Label *m_pSkill4Text;
+	cocos2d::Label *m_pSkill5Text;
+
+	////属性
 	int m_kill;   //击杀对手数
 	int m_death;   //死亡数
 	//int m_assist;  //助攻数
@@ -27,6 +52,7 @@ private:
 	int m_money;
 	int m_Score;
 	int m_Level;
+
 private:
 	///数值显示
 	char m_Textbuffer[999];
@@ -38,6 +64,7 @@ private:
 	cocos2d::Label *m_pScoreText;
 
 	//属性面板背景及按钮
+	bool AttriIsOpen;
 	cocos2d::Sprite *m_AttriBack1;
 	cocos2d::Sprite *m_AttriBack2;
 	cocos2d::MenuItemImage *m_pOpAttriMii;
@@ -46,6 +73,7 @@ private:
 	cocos2d::Menu *m_pAttriMenu;
 
 	//商店面板及按钮
+	bool ShopIsOpen;
 	cocos2d::Sprite *m_ShopBack;
 	cocos2d::MenuItemImage *m_pRecomMii;
 	cocos2d::MenuItemImage *m_pAttackMii;
@@ -59,6 +87,7 @@ private:
 	cocos2d::Menu *m_pShopMenu;
 
 	//询问退出界面及按钮
+	bool ExitIsOpen;
 	cocos2d::Sprite *m_ExitBack;
 	cocos2d::MenuItemImage *m_pYesMii;
 	cocos2d::MenuItemImage *m_pNoMii;
@@ -84,14 +113,6 @@ private:
 
 	cocos2d::Menu *m_pSkillMenu;
 
-public:
-	static cocos2d::Scene* createScene();
-
-	virtual bool init();
-
-	virtual void update(float delta);
-
-	CREATE_FUNC(HUDLayer);
 
 public:
 	//属性面板函数
@@ -122,6 +143,17 @@ public:
 	void recover(cocos2d::Ref* pSender);
 	void cure(cocos2d::Ref* pSender);
 
+
+	public:
+	static cocos2d::Scene* createScene();
+
+	virtual void HUDLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+	virtual bool init();
+
+	virtual void update(float delta);
+
+
+	CREATE_FUNC(HUDLayer);
 };
 
 #endif // __HELLOWORLD_SCENE_H__
