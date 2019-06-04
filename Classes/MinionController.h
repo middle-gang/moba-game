@@ -8,10 +8,10 @@ using namespace cocos2d;
 class MinionController
 {
 	std::vector<ObjectBase> minion;
-	int minion_hp=100;
+	int minion_hp[2] = { 100,80 };
 	float minion_v=50;
-	int minion_r=20;
-	int minion_attack=50;
+	int minion_r[2] = { 20,100 };
+	int minion_attack[2] = { 50,30 };
 	bool moving=false;
 	ObjectBase ene[999];
 	Vec2 MinionSpawn;
@@ -33,11 +33,11 @@ public:
 	bool CheckAware(ObjectBase& Sub);
 	Sprite* NewMinion();
 	void Stop();
-	void minionInit(ObjectBase& mini) {
-		mini.AttackPower() = minion_attack;
-		mini.totalHealth() = minion_hp;
-		mini.healthPower() = minion_hp;
-		mini.getRadium() = minion_r;
+	void minionInit(ObjectBase& mini,int i) {
+		mini.AttackPower() = minion_attack[i];
+		mini.totalHealth() = minion_hp[i];
+		mini.healthPower() = minion_hp[i];
+		mini.getRadium() = minion_r[i];
 		mini.setVelocity(minion_v);
 	}
 	Vec2& getPlan(int i) {

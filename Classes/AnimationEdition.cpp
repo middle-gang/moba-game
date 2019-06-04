@@ -146,7 +146,7 @@ bool SceneWithAnimation::onTouchBegan(Touch* touch, Event* event)
         }
     }
     else{
-        auto curveMove = MoveTo::create(1.5f,locationInNode);
+		auto curveMove = MoveTo::create(1.5f,locationInNode);
         this->_player->runAction(curveMove);
     }
     

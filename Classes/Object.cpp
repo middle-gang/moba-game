@@ -11,12 +11,12 @@ void ObjectBase::Die() {
 	isAlive = false;
 	m_death++;
 	Animation * animation = Animation::create();
-	for (int i = 1; i <= 5; i++) {
+	/*for (int i = 1; i <= 5; i++) {
 		__String * frameName = __String::createWithFormat("CloseWarriorDie%d.png", i);
 		log("frameName = %s", frameName->getCString());
 		SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 		animation->addSpriteFrame(spriteFrame);
-	}
+	}*/
 
 	animation->setDelayPerUnit(0.5f);
 	animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
@@ -55,9 +55,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		attackingFlag = true;
 		Charac->stopAllActions();
 		Animation * animation = Animation::create();
-		/*switch (animeIdentifier)
-		{
-		case 1:
+		if (animeIdentifier == 1) {
 			//Animation * animation = Animation::create();
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("BowmanAttack%d.png", i);
@@ -71,8 +69,8 @@ int ObjectBase::Attack(ObjectBase& ene) {
 
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
-		case 2:
-			//Animation * animation = Animation::create();
+		}
+		else if (animeIdentifier == 2) {
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("SavageAttack%d.png", i);
 				log("frameName = %s", frameName->getCString());
@@ -85,8 +83,8 @@ int ObjectBase::Attack(ObjectBase& ene) {
 
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
-		case 3:
-			//Animation * animation = Animation::create();
+		}
+		else if (animeIdentifier == 3) {
 			for (int i = 1; i <= 4; i++) {
 				__String * frameName = __String::createWithFormat("WizardAttack%d.png", i);
 				log("frameName = %s", frameName->getCString());
@@ -99,8 +97,35 @@ int ObjectBase::Attack(ObjectBase& ene) {
 
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
-			break;
-		}*/
+		}
+		else if (animeIdentifier == 5) {
+			for (int i = 1; i <= 3; i++) {
+				__String * frameName = __String::createWithFormat("CloseWarriorAttack%d.png", i);
+				log("frameName = %s", frameName->getCString());
+				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+				animation->addSpriteFrame(spriteFrame);
+			}
+
+			animation->setDelayPerUnit(0.08f);
+			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+			Animate * action = Animate::create(animation);
+			Charac->runAction(action);
+		}
+		else if (animeIdentifier == 6) {
+			for (int i = 1; i <= 3; i++) {
+				__String * frameName = __String::createWithFormat("DistantWarriorAttack%d.png", i);
+				log("frameName = %s", frameName->getCString());
+				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+				animation->addSpriteFrame(spriteFrame);
+			}
+
+			animation->setDelayPerUnit(0.08f);
+			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+			Animate * action = Animate::create(animation);
+			Charac->runAction(action);
+		}
 
 		ene.BeAttack(attack);
 		if (ene.healthPower() <= 0) {
@@ -171,19 +196,82 @@ void ObjectBase::Move(Vec2 dest) {
 	Charac->runAction(MoveTo::create(cost, dest));
 
 	Animation * animation = Animation::create();
-	
-	for (int i = 1; i <= 6; i++) {
-		__String * frameName = __String::createWithFormat("BowmanRun%d.png",i);
-		log("frameName = %s", frameName->getCString());
-		SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
-		animation->addSpriteFrame(spriteFrame);
+	if (animeIdentifier == 1) {
+		//Animation * animation = Animation::create();
+		for (int i = 1; i <= 7; i++) {
+			__String * frameName = __String::createWithFormat("BowmanRun%d.png", i);
+			log("frameName = %s", frameName->getCString());
+			SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+			animation->addSpriteFrame(spriteFrame);
+		}
+
+		animation->setDelayPerUnit(0.08f);
+		animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+		Animate * action = Animate::create(animation);
+		Charac->runAction(action);
+	}
+
+	else if (animeIdentifier == 2) {
+		for (int i = 1; i <= 6; i++) {
+			__String * frameName = __String::createWithFormat("SavageRun%d.png", i);
+			log("frameName = %s", frameName->getCString());
+			SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+			animation->addSpriteFrame(spriteFrame);
+		}
+
+		animation->setDelayPerUnit(0.08f);
+		animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+		Animate * action = Animate::create(animation);
+		Charac->runAction(action);
+	}
+	else if (animeIdentifier == 3) {
+		for (int i = 1; i <= 8; i++) {
+			__String * frameName = __String::createWithFormat("WizardRun%d.png", i);
+			log("frameName = %s", frameName->getCString());
+			SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+			animation->addSpriteFrame(spriteFrame);
+		}
+
+		animation->setDelayPerUnit(0.08f);
+		animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+		Animate * action = Animate::create(animation);
+		Charac->runAction(action);
+	}
+	else if (animeIdentifier == 5) {
+		for (int i = 1; i <= 8; i++) {
+			__String * frameName = __String::createWithFormat("CloseWarriorRun%d.png", i);
+			log("frameName = %s", frameName->getCString());
+			SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+			animation->addSpriteFrame(spriteFrame);
+		}
+
+		animation->setDelayPerUnit(0.08f);
+		animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+		Animate * action = Animate::create(animation);
+		Charac->runAction(action);
+	}
+	else if (animeIdentifier == 6) {
+		for (int i = 1; i <= 4; i++) {
+			__String * frameName = __String::createWithFormat("DistantWarriorRun%d.png", i);
+			log("frameName = %s", frameName->getCString());
+			SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+			animation->addSpriteFrame(spriteFrame);
+		}
+
+		animation->setDelayPerUnit(0.08f);
+		animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+		Animate * action = Animate::create(animation);
+		Charac->runAction(action);
 	}
 
 	animation->setDelayPerUnit(0.08f);
 	animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
 
-	Animate * action = Animate::create(animation);
-	Charac->runAction(RepeatForever::create(action));
 }
 
 int ObjectBase::Money() {
