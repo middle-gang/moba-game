@@ -10,6 +10,7 @@ float animeEnded[2][999];
 float animeFinish[2][999];
 bool reverse = false;
 bool checkAlive[2][999];
+bool cryInit[2] = { false,false };
 Vec2 prelocation;
 bool isRight = true;
 //std::map<ObjectBase, bool> minionAlive;
@@ -28,6 +29,7 @@ Scene* GameScene2::createScene()
 	// return the scene
 	return scene;
 }
+
 
 void GameScene2::newCloseMinion(int i) {
 	Sprite* minionBuf = Sprite::createWithSpriteFrameName("CloseWarriorRun1.png");
@@ -100,7 +102,7 @@ bool GameScene2::init()
 	Hero.setAnimeIdentifier(1);
 	Hero.totalHealth() = 100;
 	Hero.healthPower() = 100;
-	Hero.getRadium() = 100;
+	Hero.getRadium() = 200;
 	Hero.AttackPower() = 100;
 	Hero.setVelocity(100);
 	Hero.setSpawnPoint(Vec2(x,y));
@@ -157,7 +159,8 @@ bool GameScene2::init()
     setTouchEnabled(true);
     setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 
-	//setViewpointCenter(_player->getPosition());
+	setViewpointCenter(_player->getPosition());
+
 	_enemyTower->setAnchorPoint(Vec2(0.5, 0.5));
 	Tower[0].attachToSprite(_enemyTower);
 	Tower[0].totalHealth() = 1000;
@@ -198,6 +201,36 @@ void GameScene2::update(float delta){
 	
 	Tower[0].BloodView->setCurrentProgress(Tower[0].healthPower());
 	Tower[1].BloodView->setCurrentProgress(Tower[1].healthPower());
+
+	if (Tower[0].healthPower() <= 0&&!cryInit[0]) {
+		cryInit[0] = true;
+		_enemyCrystal->setAnchorPoint(Vec2(0.5, 0.5));
+		Crystal[0].attachToSprite(_enemyCrystal);
+		Crystal[0].totalHealth() = 1000;
+		Crystal[0].healthPower() = 1000;
+		Crystal[0].AttackPower() = 50;
+		Crystal[0].getRadium() = 150;
+		Crystal[0].setAttackingSpeed(1.5);
+		Crystal[0].setMoveablity(false);
+		Crystal[0].initBloodScale();
+		this->addChild(Crystal[0].BloodView, 2);
+		Crystal[0].getPosition() = _enemyCrystal->getPosition();
+	}
+
+	if (Tower[1].healthPower() <= 0 && !cryInit[1]) {
+		cryInit[1] = true;
+		_myCrystal->setAnchorPoint(Vec2(0.5, 0.5));
+		Crystal[1].attachToSprite(_myCrystal);
+		Crystal[1].totalHealth() = 1000;
+		Crystal[1].healthPower() = 1000;
+		Crystal[1].AttackPower() = 50;
+		Crystal[1].getRadium() = 150;
+		Crystal[1].setAttackingSpeed(1.5);
+		Crystal[1].setMoveablity(false);
+		Crystal[1].initBloodScale();
+		this->addChild(Crystal[1].BloodView, 2);
+		Crystal[0].getPosition() = _myCrystal->getPosition();
+	}
 
 	log("%f", Tower[0].healthPower());
 
@@ -482,14 +515,33 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 		Hero.Move(locationInNode);
 	}
 
-	if(locationInNode.distance(Tower[0].getPosition()) < Hero.getRadium()) {
-		if (!Hero.isAttacking()) {
-			Hero.getBullet()->setPosition(Hero.getSprite()->getPosition());
-			Sequence* actionSeq = Sequence::create(MoveTo::create(0.2, Tower[0].getPosition()), MoveTo::create(0, Vec2(-1000, -1000)), NULL);
-			Hero.getBullet()->runAction(actionSeq);
+	float TargetMinimum = 100000;
+	ObjectBase* MouseTar=nullptr;
+	bool mouseTarCheck = false;
+	for (int i = 0; i < flag[1].Container().size(); i++) {
+		if (!Hero.InRange(flag[1].Container()[i].getPosition())) continue;
+		float disMouse = touch->getLocation().distance(flag[1].Container()[i].getPosition());
+		if (disMouse < TargetMinimum&&disMouse<20) {
+			TargetMinimum = disMouse;
+			MouseTar = &(flag[1].Container()[i]);
 		}
-		
-		Hero.Attack(Tower[0]);
+	}
+	if (Tower[0].healthPower() > 0) {
+		float disMouseTower = touch->getLocation().distance(Tower[0].getPosition());
+		if(Hero.InRange(Tower[0].getPosition())&&disMouseTower < TargetMinimum&&disMouseTower<10) {
+			MouseTar = &Tower[0];
+		}
+	}
+	else{
+		//log("aaaaaaaaaaaaaaa");
+		float disMouseTower = touch->getLocation().distance(Crystal[0].getPosition());
+		if (disMouseTower < TargetMinimum&&disMouseTower < 20){
+			MouseTar = &Crystal[0];
+		}
+	}
+	if (MouseTar != nullptr) {
+		log("aaaaaaaaaaa");		
+		Hero.Attack(*MouseTar);
 	}
 
     return true;

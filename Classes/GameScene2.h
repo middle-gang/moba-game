@@ -21,6 +21,7 @@ class GameScene2 : public cocos2d::Layer
 
 	ObjectBase Hero;
 	ObjectBase Tower[2];
+	ObjectBase Crystal[2];
 
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance Vec2er
@@ -39,6 +40,7 @@ public:
 
 	void newCloseMinion(int i);
 	void newDistantMinion(int i);
+	void crystalInit();
 
     virtual void update(float delta);
 	void timer1(float delta);
