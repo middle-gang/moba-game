@@ -3,8 +3,8 @@
 USING_NS_CC;
 
 float m_atktime = 0, mt_atktime = 0,et_atktime=0, deathtime = 0;
-float minionborn = 10,minioncount=0;
-float minioncount1 = 0;
+float minionborn = 30,minioncount1=1;
+float minioncount2 = 1.5,minioncount3=2, minioncount4 = 2.5, minioncount5 = 3;
 float minionMove = 1, minionCnt = 0,minionCnt1=0;
 float animeEnded[2][999];
 float animeFinish[2][999];
@@ -29,12 +29,31 @@ Scene* GameScene2::createScene()
 	return scene;
 }
 
-void GameScene2::newMinion(int i) {
+void GameScene2::newCloseMinion(int i) {
 	Sprite* minionBuf = Sprite::createWithSpriteFrameName("CloseWarriorRun1.png");
 	ObjectBase minionbuf;
-	flag[i].minionInit(minionbuf);
+	minionbuf.setAnimeIdentifier(5);
+	flag[i].minionInit(minionbuf,0);
 	minionbuf.attachToSprite(minionBuf);
 	minionBuf->setPosition(flag[i].GetSpawn());
+	minionBuf->setAnchorPoint(Vec2(0.5, 0.5));
+	if (i == 1) minionBuf->setFlippedX(true);
+	minionbuf.initBloodScale();
+	this->addChild(minionbuf.BloodView, 1);
+	flag[i].Container().push_back(minionbuf);
+	//minionAlive[*(flag[i].Container().end() - 1)] = true;
+	this->addChild(minionBuf, 2);
+}
+
+void GameScene2::newDistantMinion(int i) {
+	Sprite* minionBuf = Sprite::createWithSpriteFrameName("DistantWarriorRun1.png");
+	ObjectBase minionbuf;
+	minionbuf.setAnimeIdentifier(6);
+	flag[i].minionInit(minionbuf, 1);
+	minionbuf.attachToSprite(minionBuf);
+	minionBuf->setPosition(flag[i].GetSpawn());
+	minionBuf->setAnchorPoint(Vec2(0.5, 0.5));
+	if (i == 1) minionBuf->setFlippedX(true);
 	minionbuf.initBloodScale();
 	this->addChild(minionbuf.BloodView, 1);
 	flag[i].Container().push_back(minionbuf);
@@ -56,10 +75,12 @@ bool GameScene2::init()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("BowmanRun.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("CloseWarriorRun.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("DistantWarriorRun.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("BowmanAttack.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("CloseWarriorRun.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("CloseWarriorAttack.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("CloseWarriorDie.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("DistantWarriorRun.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("DistantWarriorAttack.plist");
 
 	_tileMap = TMXTiledMap::create("map/MiddleMap.tmx");
 	addChild(_tileMap, 0, 100);
@@ -76,6 +97,7 @@ bool GameScene2::init()
 	addChild(_player, 2, 200);
 
 	Hero.attachToSprite( _player);
+	Hero.setAnimeIdentifier(1);
 	Hero.totalHealth() = 100;
 	Hero.healthPower() = 100;
 	Hero.getRadium() = 100;
@@ -136,7 +158,7 @@ bool GameScene2::init()
     setTouchMode(Touch::DispatchMode::ONE_BY_ONE);
 
 	//setViewpointCenter(_player->getPosition());
-    
+	_enemyTower->setAnchorPoint(Vec2(0.5, 0.5));
 	Tower[0].attachToSprite(_enemyTower);
 	Tower[0].totalHealth() = 1000;
 	Tower[0].healthPower() = 1000;
@@ -233,7 +255,7 @@ void GameScene2::update(float delta){
 	}
 
 	minionCnt += delta;
-	if (minionCnt > 0.2&&reverse) {
+	if (minionCnt > 0.4&&reverse) {
 		for (int i = 0; i < flag[0].Container().size(); i++) {
 			if (flag[0].Container()[i].healthPower() <= 0) continue;
 			bool ck = false;
@@ -260,6 +282,7 @@ void GameScene2::update(float delta){
 			
 			if (tarck) {
 				flag[0].Container()[i].Attack(*target);
+				flag[0].getPlan(i) = flag[0].Container()[i].getPosition();
 				reverse = !reverse;
 			}
 		}
@@ -288,6 +311,7 @@ void GameScene2::update(float delta){
 			}
 			if (tarck) {
 				flag[1].Container()[i].Attack(*target);
+				flag[1].getPlan(i) = flag[1].Container()[i].getPosition();
 			}
 		}
 
@@ -297,7 +321,7 @@ void GameScene2::update(float delta){
 		minionCnt = 0;
 	}
 
-	if (minionCnt > 0.2&&!reverse) {
+	if (minionCnt > 0.4&&!reverse) {
 		for (int i = 0; i < flag[1].Container().size(); i++) {
 			if (flag[1].Container()[i].healthPower() <= 0) continue;
 			bool ck = false;
@@ -322,6 +346,7 @@ void GameScene2::update(float delta){
 				reverse = !reverse;
 			}
 			if (tarck) {
+				flag[1].getPlan(i) = flag[1].Container()[i].getPosition();
 				flag[1].Container()[i].Attack(*target);
 			}
 		}
@@ -349,6 +374,7 @@ void GameScene2::update(float delta){
 				flag[0].getPlan(i) = flag[0].GetDes();
 			}
 			if (tarck) {
+				flag[0].getPlan(i) = flag[0].Container()[i].getPosition();
 				flag[0].Container()[i].Attack(*target);
 			}
 		}
@@ -361,11 +387,35 @@ void GameScene2::update(float delta){
 	}
 
 
-	minioncount += delta;
-	if (minioncount > minionborn) {
-		minioncount = 0;
-		newMinion(0);
-		newMinion(1);
+	minioncount1 += delta;
+	minioncount2 += delta;
+	minioncount3 += delta;
+	minioncount4 += delta;
+	minioncount5 += delta;
+	if (minioncount5 > minionborn) {
+		minioncount5 = 0;
+		newCloseMinion(0);
+		newCloseMinion(1);
+	}
+	if (minioncount4 > minionborn) {
+		minioncount4 = 0;
+		newCloseMinion(0);
+		newCloseMinion(1);
+	}
+	if (minioncount3 > minionborn) {
+		minioncount3 = 0;
+		newCloseMinion(0);
+		newCloseMinion(1);
+	}
+	if (minioncount2 > minionborn) {
+		minioncount2 = 0;
+		newDistantMinion(0);
+		newDistantMinion(1);
+	}
+	if (minioncount1 > minionborn) {
+		minioncount1 = 0;
+		newDistantMinion(0);
+		newDistantMinion(1);
 	}
 
 	if (Hero.isAttacking()) {
@@ -408,10 +458,29 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 		Hero.getSprite()->setFlippedX(false);
 	}
 
-    auto target = static_cast<Sprite*>(event->getCurrentTarget());
-    Point locationInNode = target -> convertToNodeSpace(touch->getLocation());
-	//log("%f %f", locationInNode.x, locationInNode.y);
-	Hero.Move(locationInNode);
+	auto target = static_cast<Sprite*>(event->getCurrentTarget());
+	Point locationInNode = target->convertToNodeSpace(touch->getLocation());
+	Vec2 tileCoord = this->tileCoordFromPosition(locationInNode);
+	int tileGid = _collidable->getTileGIDAt(tileCoord);
+	if (tileGid > 0) {
+		Value prop = _tileMap->getPropertiesForGID(tileGid);
+		ValueMap propValueMap = prop.asValueMap();
+
+		std::string collision = propValueMap["Collidable"].asString();
+
+		if (collision == "true") { //碰撞检测成功
+			return false;
+		}
+	}
+	else {
+		//log("%f %f", locationInNode.x, locationInNode.y);
+		int xs = tileCoordFromPosition(Hero.getPosition()).x;
+		int ys = tileCoordFromPosition(Hero.getPosition()).y;
+		int xe = tileCoordFromPosition(locationInNode).x;
+		int ye = tileCoordFromPosition(locationInNode).y;
+		
+		Hero.Move(locationInNode);
+	}
 
 	if(locationInNode.distance(Tower[0].getPosition()) < Hero.getRadium()) {
 		if (!Hero.isAttacking()) {
@@ -465,10 +534,6 @@ Vec2 GameScene2::tileCoordFromPosition(Vec2 pos)
 	int x = pos.x / _tileMap->getTileSize().width;
 	int y = ((_tileMap->getMapSize().height * _tileMap->getTileSize().height) - pos.y) / _tileMap->getTileSize().height;
 	return Vec2(x,y);
-}
-
-void GameScene2::onMouseMove() {
-
 }
 
 void GameScene2::setViewpointCenter(Vec2 position)

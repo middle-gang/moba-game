@@ -37,10 +37,8 @@ public:
     cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);
     void setViewpointCenter(cocos2d::Vec2 position);
 
-	void addListener();
-	void onMouseMove();
-
-	void newMinion(int i);
+	void newCloseMinion(int i);
+	void newDistantMinion(int i);
 
     virtual void update(float delta);
 	void timer1(float delta);
