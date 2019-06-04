@@ -464,6 +464,7 @@ void HUDLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::E
 		{
 			AttriIsOpen = true;
 			m_pMenu->setEnabled(false);
+			m_pSkillMenu->setEnabled(false);
 			m_pMaskImage->setVisible(true);
 			m_AttriBack1->setVisible(true);
 			m_pAttriMenu->setVisible(true);
@@ -474,6 +475,7 @@ void HUDLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::E
 		{
 			AttriIsOpen = false;
 			m_pMenu->setEnabled(true);
+			m_pSkillMenu->setEnabled(true);
 			m_pMaskImage->setVisible(false);
 			m_AttriBack1->setVisible(false);
 			m_AttriBack2->setVisible(false);
@@ -487,6 +489,7 @@ void HUDLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::E
 		{
 			ShopIsOpen = true;
 			m_pMenu->setEnabled(false);
+			m_pSkillMenu->setEnabled(false);
 			m_pMaskImage->setVisible(true);
 			m_ShopBack->setVisible(true);
 			m_pShopMenu->setVisible(true);
@@ -495,6 +498,7 @@ void HUDLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::E
 		{
 			ShopIsOpen = false;
 			m_pMenu->setEnabled(true);
+			m_pSkillMenu->setEnabled(true);
 			m_pMaskImage->setVisible(false);
 			m_ShopBack->setVisible(false);
 			m_pShopMenu->setVisible(false);
@@ -531,6 +535,7 @@ void HUDLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::E
 void HUDLayer::openAttri(cocos2d::Ref * pSender)
 {
 	m_pMenu->setEnabled(false);
+	m_pSkillMenu->setEnabled(false);
 	m_pMaskImage->setVisible(true);
 	m_AttriBack1->setVisible(true);
 	m_pAttriMenu->setVisible(true);
@@ -557,6 +562,7 @@ void HUDLayer::transToHero(cocos2d::Ref * pSender)
 void HUDLayer::closeAttri(cocos2d::Ref * pSender)
 {
 	m_pMenu->setEnabled(true);
+	m_pSkillMenu->setEnabled(true);
 	m_pMaskImage->setVisible(false);
 	m_AttriBack1->setVisible(false);
 	m_AttriBack2->setVisible(false);
@@ -566,6 +572,7 @@ void HUDLayer::closeAttri(cocos2d::Ref * pSender)
 void HUDLayer::openShop(cocos2d::Ref * pSender)
 {
 	m_pMenu->setEnabled(false);
+	m_pSkillMenu->setEnabled(false);
 	m_pMaskImage->setVisible(true);
 	m_ShopBack->setVisible(true);
 	m_pShopMenu->setVisible(true);
@@ -574,6 +581,7 @@ void HUDLayer::openShop(cocos2d::Ref * pSender)
 void HUDLayer::closeShop(cocos2d::Ref * pSender)
 {
 	m_pMenu->setEnabled(true);
+	m_pSkillMenu->setEnabled(true);
 	m_pMaskImage->setVisible(false);
 	m_ShopBack->setVisible(false);
 	m_pShopMenu->setVisible(false);
