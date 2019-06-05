@@ -22,6 +22,7 @@ public:
 	bool InRange(Vec2 ene);
 	bool Death();//判断是否死亡
 	bool& isAttacking();
+	bool& CheckBacking();
 	
 	int& getRadium();
 	int getVelocity();
@@ -30,7 +31,6 @@ public:
 	int& AttackPower();
 	int& healthPower();//获得生命
 	int& totalHealth();
-	int HeroIdentifier=1;
 
 	void Die();
 	void BloodInit();
@@ -52,6 +52,9 @@ public:
 	void setAnimeIdentifierFromChoice(int i);
 	void HeroSet(int i);
 	void HeroInit(Sprite* player, Vec2 spawnP);
+	void BackToSpawn();
+	void Interrupt();
+	void JudgeBack(float& time, float del);
 
 	float attackDelay();
 	
@@ -82,8 +85,10 @@ protected:
 	bool isAlive=true;
 	bool attackingFlag=false;
 	bool Moveable = true;
+	bool isBacking = false;
 
 	float atkdelay=1;
+	float backSpawn = 5;
 	Vec2 Position;
 	Vec2 Spawn;
 	Sprite* Charac;
@@ -93,6 +98,7 @@ protected:
 
 	std::string frameSet;
 };
+
 
 #endif 
 	

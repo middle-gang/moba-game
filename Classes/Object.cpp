@@ -43,6 +43,7 @@ bool ObjectBase::Death() {
 
 void ObjectBase::BeAttack(int damage) {
 	nowHealth -= damage;
+	if (isBacking) Interrupt();
 	Blink* blink = Blink::create(0.1, 1);
 	Charac->runAction(blink);
 	if (health <= 0) {
@@ -336,9 +337,9 @@ void ObjectBase::HeroSet(int i) {
 }
 
 void ObjectBase::HeroInit(Sprite* player,Vec2 spawnP) {
-	if(HeroIdentifier==1) player = Sprite::createWithSpriteFrameName("BowmanRun1.png");
-	if(HeroIdentifier==2) player = Sprite::createWithSpriteFrameName("SavageRun1.png");
-	if(HeroIdentifier==3) player = Sprite::createWithSpriteFrameName("WizardRun1.png");
+	if(animeIdentifier==1) player = Sprite::createWithSpriteFrameName("BowmanRun1.png");
+	if(animeIdentifier==2) player = Sprite::createWithSpriteFrameName("SavageRun1.png");
+	if(animeIdentifier==3) player = Sprite::createWithSpriteFrameName("WizardRun1.png");
 	totalHealth() = 100;
 	healthPower() = 100;
 	getRadium() = 200;
@@ -346,4 +347,24 @@ void ObjectBase::HeroInit(Sprite* player,Vec2 spawnP) {
 	setVelocity(100);
 	setSpawnPoint(spawnP);
 	initBloodScale();
+}
+
+void ObjectBase::JudgeBack(float& time, float del) {
+	time += del;
+	if (time > backSpawn) {
+		BackToSpawn();
+		isBacking = false;
+	}
+}
+
+void ObjectBase::BackToSpawn() {
+	Charac->setPosition(Spawn);
+}
+
+bool& ObjectBase::CheckBacking() {
+	return isBacking;
+}
+
+void ObjectBase::Interrupt() {
+	isBacking = false;
 }

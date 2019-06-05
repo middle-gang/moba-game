@@ -1,5 +1,6 @@
 #include "ChooseCharacter.h"
 #include"GameScene0.h"
+#include"Object.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
@@ -129,6 +130,8 @@ void ChooseCharacter::enterGameCallBack(cocos2d::Ref * pSender)
 	{
 		TransitionScene * reScene = NULL;
 		Scene *pScene = GameScene0::createScene();
+		//int* pt = &ObjectBase::HeroIdt;
+		//*pt = ChooseHero;
 		reScene = TransitionCrossFade::create(0.8f, pScene);
 		Director::getInstance()->replaceScene(reScene);
 		m_IsChangeScene = true;

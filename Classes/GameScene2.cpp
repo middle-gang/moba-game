@@ -9,6 +9,7 @@ float minioncount2 = 1.5,minioncount3=2, minioncount4 = 2.5, minioncount5 = 3;
 float minionMove = 1, minionCnt = 0,minionCnt1=0;
 float animeEnded[2][999];
 float animeFinish[2][999];
+float backSpawn = 0;
 bool reverse = false;
 bool checkAlive[2][999];
 bool cryInit[2] = { false,false };
@@ -77,6 +78,15 @@ bool GameScene2::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+	auto *dispatcher = Director::getInstance()->getEventDispatcher();
+	auto* keyListener = EventListenerKeyboard::create();
+	//Listener
+	keyListener->onKeyPressed = CC_CALLBACK_2(GameScene2::onKeyPressed, this);
+	//Pressed
+	keyListener->onKeyReleased = CC_CALLBACK_2(GameScene2::onKeyReleased, this);
+	//Pressed release
+	dispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
+
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("BowmanRun.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("BowmanAttack.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("CloseWarriorRun.plist");
@@ -94,11 +104,9 @@ bool GameScene2::init()
 	float x = spawnPoint["x"].asFloat();
 	float y = spawnPoint["y"].asFloat();
 
-	_player = Sprite::createWithSpriteFrameName("BowmanRun1.png");
-	_player->setPosition(Vec2(x, y));
+	Hero.HeroInit(_player, Vec2(x,y));
 	addChild(_player, 2, 200);
-	//Hero.setAnimeIdentifier(1);
-	Hero.attachToSprite(_player);
+	/*Hero.attachToSprite(_player);
 	Hero.setAnimeIdentifier(1);
 	Hero.totalHealth() = 100;
 	Hero.healthPower() = 100;
@@ -106,7 +114,7 @@ bool GameScene2::init()
 	Hero.AttackPower() = 100;
 	Hero.setVelocity(100);
 	Hero.setSpawnPoint(Vec2(x,y));
-	Hero.initBloodScale();
+	Hero.initBloodScale();*/
 	addChild(Hero.BloodView, 2);
 	addChild(Hero.getBullet(), 2);
 
@@ -202,6 +210,7 @@ void GameScene2::update(float delta){
 	if(cryInit[0]) Crystal[0].BloodView->setCurrentProgress(Crystal[0].healthPower());
 	if(cryInit[1]) Crystal[1].BloodView->setCurrentProgress(Crystal[1].healthPower());
 	
+
 	if (Tower[0].healthPower() <= 0&&!cryInit[0]) {
 		cryInit[0] = true;
 		_enemyCrystal->setAnchorPoint(Vec2(0.5, 0.5));
@@ -237,7 +246,15 @@ void GameScene2::update(float delta){
 	if (_player->getPosition() == prelocation) {
 		_player->stopAllActions();
 	}
+	else {
+		Hero.Interrupt();
+		backSpawn = 0;
+	}
 	prelocation = _player->getPosition();
+
+	if (Hero.CheckBacking()) {
+		Hero.JudgeBack(backSpawn, delta);
+	}
 
 	Hero.BloodView->setPosition(Vec2(Hero.getPosition().x, Hero.getPosition().y + 15));
 
@@ -623,6 +640,18 @@ void GameScene2::setPlayerPosition(Vec2 position)
 	//滚动地图
 	this->setViewpointCenter(_player->getPosition());
 }
+
+
+void GameScene2::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event) {
+	if (keycode == EventKeyboard::KeyCode::KEY_K) {
+		Hero.CheckBacking() = true;
+	}
+}
+
+void GameScene2::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event) {
+
+}
+
 
 Vec2 GameScene2::tileCoordFromPosition(Vec2 pos)
 {
