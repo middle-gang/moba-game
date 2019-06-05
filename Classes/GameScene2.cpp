@@ -1,6 +1,7 @@
 #include "GameScene2.h"
 #include "HelloWorldScene.h"
 #include"GloalVal.h"
+#include "Astar.h"
 
 USING_NS_CC;
 
@@ -11,12 +12,17 @@ float minionMove = 1, minionCnt = 0,minionCnt1=0;
 float animeEnded[2][999];
 float animeFinish[2][999];
 float backSpawn = 0;
+float moving;
+bool tiledMap[32][32];
 bool reverse = false;
 bool checkAlive[2][999];
 bool cryInit[2] = { false,false };
 Vec2 prelocation;
+int moveStep = 0;
 bool isRight = true;
+std::list<PointCk *> pathFound;
 //std::map<ObjectBase, bool> minionAlive;
+Astar ast;
 
 Scene* GameScene2::createScene()
 {
@@ -106,25 +112,20 @@ bool GameScene2::init()
 	TMXObjectGroup* group = _tileMap->getObjectGroup("objects");
 	ValueMap spawnPoint = group->getObject("hero");
 
+
 	float x = spawnPoint["x"].asFloat();
 	float y = spawnPoint["y"].asFloat();
-
-	Hero.HeroInit(_player, Vec2(x,y));
-	addChild(_player, 2, 200);
-<<<<<<< HEAD
-	/*Hero.attachToSprite(_player);
-	Hero.setAnimeIdentifier(1);
-=======
-	//Hero.setAnimeIdentifier(1);
-	Hero.attachToSprite(_player);
+	
 	Hero.setAnimeIdentifier(myChoice);
->>>>>>> 65e25d4a748dfb16178f2844ef945e9c2af0ad76
-	Hero.totalHealth() = 100;
+	//_player = Sprite::createWithSpriteFrameName("BowmanRun1.png");
+	Hero.HeroInit(_player,Vec2(x, y));
+	//Hero.setSpawnPoint(Vec2(x, y));
+	addChild(_player, 2, 200);
+	/*Hero.totalHealth() = 100;
 	Hero.healthPower() = 100;
 	Hero.getRadium() = 200;
 	Hero.AttackPower() = 100;
 	Hero.setVelocity(100);
-	Hero.setSpawnPoint(Vec2(x,y));
 	Hero.initBloodScale();*/
 	addChild(Hero.BloodView, 2);
 	addChild(Hero.getBullet(), 2);
@@ -208,6 +209,23 @@ bool GameScene2::init()
 
 	_collidable = _tileMap->getLayer("collidable");
     _collidable->setVisible(false);
+
+	for (int i = 0; i < 32; i++) {
+		for (int j = 0; j < 32; j++) {
+			int tileGid = _collidable->getTileGIDAt(Vec2(float(i), float(j)));
+			Value prop = _tileMap->getPropertiesForGID(tileGid);
+			if (tileGid > 0) {
+				ValueMap propValueMap = prop.asValueMap();
+				std::string collision = propValueMap["Collidable"].asString();
+				if (collision == "true") {
+					ast.maze[i][j] = 1;
+				}
+				else {
+					ast.maze[i][j] = 0;
+				}
+			}
+		}
+	}
     
     return true;
 
@@ -256,6 +274,12 @@ void GameScene2::update(float delta){
 
 	if (_player->getPosition() == prelocation) {
 		_player->stopAllActions();
+		if (pathFound.size() > 0) {
+			if (Hero.getPosition() == Vec2(31 * pathFound.front()->x + 16,
+				1024 - (31 * pathFound.front()->y + 16))) {
+				playMove();
+			}
+		}
 	}
 	else {
 		Hero.Interrupt();
@@ -266,6 +290,7 @@ void GameScene2::update(float delta){
 	if (Hero.CheckBacking()) {
 		Hero.JudgeBack(backSpawn, delta);
 	}
+
 
 	Hero.BloodView->setPosition(Vec2(Hero.getPosition().x, Hero.getPosition().y + 15));
 
@@ -561,11 +586,25 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 		isRight = false;
 		Hero.getSprite()->setFlippedX(false);
 	}
+	Vec2 myCoord = this->tileCoordFromPosition(Hero.getPosition());
 
 	auto target = static_cast<Sprite*>(event->getCurrentTarget());
 	Point locationInNode = target->convertToNodeSpace(touch->getLocation());
 	Vec2 tileCoord = this->tileCoordFromPosition(locationInNode);
+	
+	int lx = (int)tileCoord.x;
+	int ly = (int)tileCoord.y;
+	//log("(%d %d) (%d %d)", lx, ly, int(myCoord.x), int(myCoord.y));
+	PointCk start(int(myCoord.x), int(myCoord.y));
+	PointCk end(lx, ly);
+	Hero.getSprite()->stopAllActions();
+	//pathFound.clear();
+	pathFound=ast.GetPath(start,end, false);
+	//pathFound.push_back(&start);
+	//playMove();
+
 	int tileGid = _collidable->getTileGIDAt(tileCoord);
+
 	if (tileGid > 0) {
 		Value prop = _tileMap->getPropertiesForGID(tileGid);
 		ValueMap propValueMap = prop.asValueMap();
@@ -577,8 +616,8 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 		}
 	}
 	else {
-		//log("%f %f", locationInNode.x, locationInNode.y);
-		Hero.Move(locationInNode);
+		playMove();
+		log("%f %f", locationInNode.x, locationInNode.y);
 	}
 
 	float TargetMinimum = 100000;
@@ -595,7 +634,7 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 
 	if (Tower[0].healthPower() > 0) {
 		float disMouseTower = locationInNode.distance(Tower[0].getPosition());
-		log("%f", disMouseTower);
+		//log("%f", disMouseTower);
 		if(Hero.InRange(Tower[0].getPosition())&&disMouseTower < TargetMinimum&&disMouseTower<20) {
 			MouseTar = &Tower[0];
 		}
@@ -607,15 +646,14 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 		}
 	}
 	if (MouseTar != nullptr) {
-		log("aaaaaaaaaaaaaaaaaaaaaaaaa");		
+
 		Hero.getSprite()->stopAllActions();
 		Hero.Attack(*MouseTar);
 	}
 	else {
-		log("bbbbbbbbbbbbbbbbbbbbbbbbbb");
 	}
 
-    return true;
+	return true;
 }
 
 void GameScene2::onTouchMoved(Touch *touch, Event *event)
@@ -698,4 +736,15 @@ void GameScene2::setViewpointCenter(Vec2 position)
    // log("offset (%f ,%f) ",offset.x, offset.y);
     this->setPosition(offset);
 
+}
+
+void GameScene2::playMove() {
+	//log("%f %f %d %d", dest.x, dest.y, pathFound.front()->x, pathFound.front()->y);
+	if (pathFound.size() == 1) return;
+	pathFound.pop_front();
+	Vec2 dest = Vec2(31 * pathFound.front()->x + 16,
+		1024 - (31 * pathFound.front()->y + 16));
+	Hero.Move(dest);
+	/*Hero.getSprite()->runAction(Sequence::create(MoveTo::create(0.02, dest),
+		CCCallFunc::create(this,SEL_CallFunc(&GameScene2::playMove)),NULL));*/
 }

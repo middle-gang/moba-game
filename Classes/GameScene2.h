@@ -46,6 +46,7 @@ public:
 
 	void newCloseMinion(int i);
 	void newDistantMinion(int i);
+	void playMove();
 	//void crystalInit();
 
     virtual void update(float delta);

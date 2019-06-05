@@ -51,7 +51,7 @@ public:
 	void setAnimeIdentifier(int i);
 	void setAnimeIdentifierFromChoice(int i);
 	void HeroSet(int i);
-	void HeroInit(Sprite* player, Vec2 spawnP);
+	void HeroInit(Sprite*& spr,Vec2 spawnP);
 	void BackToSpawn();
 	void Interrupt();
 	void JudgeBack(float& time, float del);

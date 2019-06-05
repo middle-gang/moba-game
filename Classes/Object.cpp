@@ -336,16 +336,18 @@ void ObjectBase::HeroSet(int i) {
 
 }
 
-void ObjectBase::HeroInit(Sprite* player,Vec2 spawnP) {
-	if(animeIdentifier==1) player = Sprite::createWithSpriteFrameName("BowmanRun1.png");
-	if(animeIdentifier==2) player = Sprite::createWithSpriteFrameName("SavageRun1.png");
-	if(animeIdentifier==3) player = Sprite::createWithSpriteFrameName("WizardRun1.png");
+void ObjectBase::HeroInit(Sprite*& spr,Vec2 spawnP) {
+	if(animeIdentifier==1) spr = Sprite::createWithSpriteFrameName("BowmanRun1.png");
+	if(animeIdentifier==2) spr = Sprite::createWithSpriteFrameName("SavageRun1.png");
+	if(animeIdentifier==3) spr = Sprite::createWithSpriteFrameName("WizardRun1.png");
+	Charac = spr;
+	spr->setPosition(spawnP);
+	setSpawnPoint(spawnP);
 	totalHealth() = 100;
 	healthPower() = 100;
 	getRadium() = 200;
 	AttackPower() = 100;
 	setVelocity(100);
-	setSpawnPoint(spawnP);
 	initBloodScale();
 }
 

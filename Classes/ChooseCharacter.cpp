@@ -137,8 +137,6 @@ void ChooseCharacter::enterGameCallBack(cocos2d::Ref * pSender)
 		myChoice = ChooseHero;
 		TransitionScene * reScene = NULL;
 		Scene *pScene = GameScene0::createScene();
-		//int* pt = &ObjectBase::HeroIdt;
-		//*pt = ChooseHero;
 		reScene = TransitionCrossFade::create(0.8f, pScene);
 		Director::getInstance()->replaceScene(reScene);
 		m_IsChangeScene = true;
