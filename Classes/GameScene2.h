@@ -23,6 +23,9 @@ class GameScene2 : public cocos2d::Layer
 	ObjectBase Tower[2];
 	ObjectBase Crystal[2];
 
+//public:
+//	int myChoice;
+
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance Vec2er
     static cocos2d::Scene* createScene();

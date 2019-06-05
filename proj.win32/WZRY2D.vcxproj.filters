@@ -1,162 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="win32">
-      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="resource">
-      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src">
-      <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Image">
-      <UniqueIdentifier>{3e82b973-6f44-414e-961a-9a15c19ba5ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Scene">
-      <UniqueIdentifier>{53eadc60-ad85-4dc9-abe7-f613fcab265e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\UI">
-      <UniqueIdentifier>{471d55ea-1c87-4f8d-9b68-723eb897812f}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="..\Classes\AnimationEdition.cpp" />
+    <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\Arthur.cpp" />
+    <ClCompile Include="..\Classes\Avene.cpp" />
+    <ClCompile Include="..\Classes\Blood.cpp" />
+    <ClCompile Include="..\Classes\ChooseCharacter.cpp" />
+    <ClCompile Include="..\Classes\Daji.cpp" />
+    <ClCompile Include="..\Classes\GameLogoLayer.cpp" />
+    <ClCompile Include="..\Classes\GameScene0.cpp" />
+    <ClCompile Include="..\Classes\GameScene2.cpp" />
+    <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
+    <ClCompile Include="..\Classes\Help.cpp" />
+    <ClCompile Include="..\Classes\Hero.cpp" />
+    <ClCompile Include="..\Classes\Houyi.cpp" />
+    <ClCompile Include="..\Classes\HUDLayer.cpp" />
+    <ClCompile Include="..\Classes\menuScene1st.cpp" />
+    <ClCompile Include="..\Classes\MinionController.cpp" />
+    <ClCompile Include="..\Classes\Object.cpp" />
+    <ClCompile Include="..\Classes\Setting.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\Classes\GloblVal.cpp" />
+    <ClCompile Include="..\Classes\源.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\AppDelegate.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Arthur.cpp">
-      <Filter>src\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Daji.cpp">
-      <Filter>src\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Houyi.cpp">
-      <Filter>src\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Avene.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Hero.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Help.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\menuScene1st.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Setting.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Object.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Blood.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\MinionController.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\GameScene2.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\AnimationEdition.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\HUDLayer.cpp">
-      <Filter>src\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\GameScene0.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="..\Classes\GameLogoLayer.cpp">
-      <Filter>src\Scene</Filter>
-=======
-    <ClCompile Include="..\Classes\ChooseCharacter.cpp">
-      <Filter>src\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\GameLogoLayer.cpp">
-      <Filter>src\UI</Filter>
->>>>>>> f9ee44670c4068f7965350b4300e112c86bb04db
-    </ClCompile>
+    <ClInclude Include="..\Classes\AnimationEdition.h" />
+    <ClInclude Include="..\Classes\AppDelegate.h" />
+    <ClInclude Include="..\Classes\Arthur.h" />
+    <ClInclude Include="..\Classes\Avene.h" />
+    <ClInclude Include="..\Classes\Blood.h" />
+    <ClInclude Include="..\Classes\ChooseCharacter.h" />
+    <ClInclude Include="..\Classes\Daji.h" />
+    <ClInclude Include="..\Classes\GameLogoLayer.h" />
+    <ClInclude Include="..\Classes\GameScene0.h" />
+    <ClInclude Include="..\Classes\GameScene2.h" />
+    <ClInclude Include="..\Classes\HelloWorldScene.h" />
+    <ClInclude Include="..\Classes\Help.h" />
+    <ClInclude Include="..\Classes\hero.h" />
+    <ClInclude Include="..\Classes\Houyi.h" />
+    <ClInclude Include="..\Classes\HUDLayer.h" />
+    <ClInclude Include="..\Classes\menuScene1st.h" />
+    <ClInclude Include="..\Classes\MinionController.h" />
+    <ClInclude Include="..\Classes\Object.h" />
+    <ClInclude Include="..\Classes\Setting.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="..\Classes\GloalVal.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main.h">
-      <Filter>win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\AppDelegate.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Arthur.h">
-      <Filter>src\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Daji.h">
-      <Filter>src\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Houyi.h">
-      <Filter>src\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Avene.h">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\hero.h">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Help.h">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\menuScene1st.h">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Setting.h">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Object.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Blood.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\MinionController.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\HelloWorldScene.h">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameScene2.h">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\AnimationEdition.h">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\HUDLayer.h">
-      <Filter>src\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameScene0.h">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="..\Classes\GameLogoLayer.h">
-      <Filter>src\Scene</Filter>
-=======
-    <ClInclude Include="..\Classes\ChooseCharacter.h">
-      <Filter>src\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameLogoLayer.h">
-      <Filter>src\UI</Filter>
->>>>>>> f9ee44670c4068f7965350b4300e112c86bb04db
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="game.rc">
-      <Filter>resource</Filter>
-    </ResourceCompile>
+    <ResourceCompile Include="game.rc" />
   </ItemGroup>
 </Project>

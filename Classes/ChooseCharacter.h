@@ -2,11 +2,13 @@
 #define __ChooseCharacter_H__
 
 #include "cocos2d.h"
+#include"GameScene2.h"
 
 class ChooseCharacter : public cocos2d::Layer
 {
-private:
+public:
 	int ChooseHero;
+private:
 	cocos2d::Sprite* m_pBowmanIntro;
 	cocos2d::Sprite* m_pSavageIntro;
 	cocos2d::Sprite* m_pWizardIntro;

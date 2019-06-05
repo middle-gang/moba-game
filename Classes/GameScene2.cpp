@@ -1,5 +1,6 @@
 #include "GameScene2.h"
 #include "HelloWorldScene.h"
+#include"GloalVal.h"
 
 USING_NS_CC;
 
@@ -79,6 +80,10 @@ bool GameScene2::init()
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("BowmanRun.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("BowmanAttack.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("SavageRun.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("SavageAttack.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("WizardRun.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("WizardAttack.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("CloseWarriorRun.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("CloseWarriorAttack.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("CloseWarriorDie.plist");
@@ -99,7 +104,7 @@ bool GameScene2::init()
 	addChild(_player, 2, 200);
 	//Hero.setAnimeIdentifier(1);
 	Hero.attachToSprite(_player);
-	Hero.setAnimeIdentifier(1);
+	Hero.setAnimeIdentifier(myChoice);
 	Hero.totalHealth() = 100;
 	Hero.healthPower() = 100;
 	Hero.getRadium() = 200;
