@@ -212,16 +212,18 @@ bool GameScene2::init()
 
 	for (int i = 0; i < 32; i++) {
 		for (int j = 0; j < 32; j++) {
-			int tileGid = _collidable->getTileGIDAt(Vec2(float(i), float(j)));
+			int tileGid = _collidable->getTileGIDAt(Vec2(i, j));
 			Value prop = _tileMap->getPropertiesForGID(tileGid);
 			if (tileGid > 0) {
 				ValueMap propValueMap = prop.asValueMap();
 				std::string collision = propValueMap["Collidable"].asString();
 				if (collision == "true") {
 					ast.maze[i][j] = 1;
+					log("%d %d C", i, j);
 				}
 				else {
 					ast.maze[i][j] = 0;
+					log("%d %d E", i, j);
 				}
 			}
 		}
@@ -592,15 +594,34 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 	Point locationInNode = target->convertToNodeSpace(touch->getLocation());
 	Vec2 tileCoord = this->tileCoordFromPosition(locationInNode);
 	
+	Vec2 vectorPoint = (locationInNode - Hero.getPosition())/1000.0;
+	Vec2 iter = Hero.getPosition();
+	bool routeColli = true;
+	/*while (iter < locationInNode) {
+		iter += vectorPoint;
+		//log("%f %f", iter.x, iter.y);
+		Vec2 tileIter = this->tileCoordFromPosition(iter);
+		
+		int IterTileGid = _collidable->getTileGIDAt(tileIter);
+		
+		if (ast.maze[int(tileIter.x)][int(tileIter.y)] == 1) {
+			routeColli = true;
+		}
+	}*/
+
 	int lx = (int)tileCoord.x;
 	int ly = (int)tileCoord.y;
 	//log("(%d %d) (%d %d)", lx, ly, int(myCoord.x), int(myCoord.y));
 	PointCk start(int(myCoord.x), int(myCoord.y));
 	PointCk end(lx, ly);
 	Hero.getSprite()->stopAllActions();
-	//pathFound.clear();
-	pathFound=ast.GetPath(start,end, false);
-	//pathFound.push_back(&start);
+	while (!pathFound.empty())
+	{
+		pathFound.pop_back();
+	}
+	if (routeColli) {
+		pathFound = ast.GetPath(start, end, true);
+	}
 	//playMove();
 
 	int tileGid = _collidable->getTileGIDAt(tileCoord);
@@ -612,12 +633,16 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 		std::string collision = propValueMap["Collidable"].asString();
 
 		if (collision == "true") { //碰撞检测成功
+			log("wall %d %d",lx,ly);
 			return false;
 		}
 	}
 	else {
-		playMove();
-		log("%f %f", locationInNode.x, locationInNode.y);
+		if(pathFound.size()!=0) playMove();
+		if(!routeColli) {
+			Hero.Move(locationInNode);
+		}
+		//log("%f %f", locationInNode.x, locationInNode.y);
 	}
 
 	float TargetMinimum = 100000;
@@ -739,11 +764,18 @@ void GameScene2::setViewpointCenter(Vec2 position)
 }
 
 void GameScene2::playMove() {
-	//log("%f %f %d %d", dest.x, dest.y, pathFound.front()->x, pathFound.front()->y);
-	if (pathFound.size() == 1) return;
+	if (pathFound.size() == 1) {
+		Vec2 final = Vec2(31 * pathFound.back()->x + 16,
+			1024 - (31 * pathFound.back()->y + 16));
+		log("%f %f f", final.x, final.y);
+		Hero.Move(final);
+		return;
+	}
+	log("%d %d", pathFound.front()->x, pathFound.front()->y);
 	pathFound.pop_front();
 	Vec2 dest = Vec2(31 * pathFound.front()->x + 16,
 		1024 - (31 * pathFound.front()->y + 16));
+	Hero.getBullet()->setPosition(dest);
 	Hero.Move(dest);
 	/*Hero.getSprite()->runAction(Sequence::create(MoveTo::create(0.02, dest),
 		CCCallFunc::create(this,SEL_CallFunc(&GameScene2::playMove)),NULL));*/

@@ -13,7 +13,7 @@ void ObjectBase::Die() {
 	Animation * animation = Animation::create();
 	for (int i = 1; i <= 5; i++) {
 		__String * frameName = __String::createWithFormat("CloseWarriorDie%d.png", i);
-		log("frameName = %s", frameName->getCString());
+		//log("frameName = %s", frameName->getCString());
 		SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 		animation->addSpriteFrame(spriteFrame);
 	}
@@ -60,7 +60,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 			//Animation * animation = Animation::create();
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("BowmanAttack%d.png", i);
-				log("frameName = %s", frameName->getCString());
+				//log("frameName = %s", frameName->getCString());
 				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 				animation->addSpriteFrame(spriteFrame);
 			}
@@ -74,7 +74,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		else if (animeIdentifier == 2) {
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("SavageAttack%d.png", i);
-				log("frameName = %s", frameName->getCString());
+				//log("frameName = %s", frameName->getCString());
 				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 				animation->addSpriteFrame(spriteFrame);
 			}
@@ -88,7 +88,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		else if (animeIdentifier == 3) {
 			for (int i = 1; i <= 4; i++) {
 				__String * frameName = __String::createWithFormat("WizardAttack%d.png", i);
-				log("frameName = %s", frameName->getCString());
+				//log("frameName = %s", frameName->getCString());
 				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 				animation->addSpriteFrame(spriteFrame);
 			}
@@ -102,7 +102,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		else if (animeIdentifier == 5) {
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("CloseWarriorAttack%d.png", i);
-				log("frameName = %s", frameName->getCString());
+				//log("frameName = %s", frameName->getCString());
 				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 				animation->addSpriteFrame(spriteFrame);
 			}
@@ -116,7 +116,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		else if (animeIdentifier == 6) {
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("DistantWarriorAttack%d.png", i);
-				log("frameName = %s", frameName->getCString());
+				//log("frameName = %s", frameName->getCString());
 				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 				animation->addSpriteFrame(spriteFrame);
 			}

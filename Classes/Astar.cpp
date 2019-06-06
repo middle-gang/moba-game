@@ -3,7 +3,10 @@
 
 #include "Astar.h"
 
-
+int dir[8][2] = {
+	{1,0},{-1,0},{0,1},{0,-1},
+	{1,1}, {-1,1},{1,-1}, {-1,-1}
+};
 
 void Astar::InitAstar()
 {
@@ -22,6 +25,7 @@ int Astar::calcG(PointCk *temp_start, PointCk *point)
 
 int Astar::calcH(PointCk *point, PointCk *end)
 {
+	//return abs(end->x - point->x) + abs(end->y - point->y);
 	return sqrt((double)(end->x - point->x)*(double)(end->x - point->x) + (double)(end->y - point->y)*(double)(end->y - point->y))*kCost1;
 }
 
@@ -134,11 +138,11 @@ bool Astar::isCanreach(const PointCk *point, const PointCk *target, bool isIgnor
 std::vector<PointCk *> Astar::getSurroundPoints(const PointCk *point, bool isIgnoreCorner) const
 {
 	std::vector<PointCk *> surroundPoints;
-	for (int x = point->x - 1; x <= point->x + 1; x++) {
-		for (int y = point->y - 1; y <= point->y + 1; y++) {
-			if (isCanreach(point, new PointCk(x, y), isIgnoreCorner)) {
-				surroundPoints.push_back(new PointCk(x, y));
-			}
+	for (int i = 0; i < 8; i++) {
+		int x = point->x + dir[i][0];
+		int y = point->y + dir[i][1];
+		if (isCanreach(point, new PointCk(x, y), isIgnoreCorner)) {
+			surroundPoints.push_back(new PointCk(x, y));
 		}
 	}
 	return surroundPoints;
