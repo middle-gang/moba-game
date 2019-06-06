@@ -72,7 +72,7 @@ private:
 	cocos2d::MenuItemImage *m_pCloseAttri;
 	cocos2d::Menu *m_pAttriMenu;
 
-	//商店面板及按钮
+	////////////商店面板及按钮
 	bool ShopIsOpen;
 	cocos2d::Sprite *m_ShopBack;
 	cocos2d::MenuItemImage *m_pRecomMii;
@@ -82,9 +82,126 @@ private:
 	cocos2d::MenuItemImage *m_pMoveMii;
 	cocos2d::MenuItemImage *m_pBattleMii;
 	cocos2d::MenuItemImage *m_pAssistMii;
-	cocos2d::MenuItemImage *m_pDownMii;
+	cocos2d::MenuItemImage *m_pDownMii;///记录按下去的
 	cocos2d::MenuItemImage *m_pCloseShop;
 	cocos2d::Menu *m_pShopMenu;
+
+	//商店菜单
+	cocos2d::Menu *m_pDownMenu;//记录按下去的；
+
+	cocos2d::Menu *m_pRecommandMenu;
+	cocos2d::MenuItemImage *m_pRecom1;
+	cocos2d::MenuItemImage *m_pRecom2;
+	cocos2d::MenuItemImage *m_pRecom3;
+	cocos2d::MenuItemImage *m_pRecom4;
+	cocos2d::MenuItemImage *m_pRecom5;
+
+	cocos2d::Menu *m_pAttackMenu;
+	cocos2d::MenuItemImage *m_pAttack1;
+	cocos2d::MenuItemImage *m_pAttack2;
+	cocos2d::MenuItemImage *m_pAttack3;
+	cocos2d::MenuItemImage *m_pAttack4;
+	cocos2d::MenuItemImage *m_pAttack5;
+	cocos2d::MenuItemImage *m_pAttack6;
+	cocos2d::MenuItemImage *m_pAttack7;
+	cocos2d::MenuItemImage *m_pAttack8;
+	cocos2d::MenuItemImage *m_pAttack9;
+	cocos2d::MenuItemImage *m_pAttack10;
+	cocos2d::MenuItemImage *m_pAttack11;
+	cocos2d::MenuItemImage *m_pAttack12;
+	cocos2d::MenuItemImage *m_pAttack13;
+	cocos2d::MenuItemImage *m_pAttack14;
+	cocos2d::MenuItemImage *m_pAttack15;
+	cocos2d::MenuItemImage *m_pAttack16;
+	cocos2d::MenuItemImage *m_pAttack17;
+	cocos2d::MenuItemImage *m_pAttack18;
+	cocos2d::MenuItemImage *m_pAttack19;
+	cocos2d::MenuItemImage *m_pAttack20;
+	cocos2d::MenuItemImage *m_pAttack21;
+	cocos2d::MenuItemImage *m_pAttack22;
+	cocos2d::MenuItemImage *m_pAttack23;
+	cocos2d::MenuItemImage *m_pAttack24;
+	cocos2d::MenuItemImage *m_pAttack25;
+	cocos2d::MenuItemImage *m_pAttack26;
+	cocos2d::MenuItemImage *m_pAttack27;
+	cocos2d::MenuItemImage *m_pAttack28;
+	
+	cocos2d::Menu *m_pMagicMenu;
+	cocos2d::MenuItemImage *m_pMagic1;
+	cocos2d::MenuItemImage *m_pMagic2;
+	cocos2d::MenuItemImage *m_pMagic3;
+	cocos2d::MenuItemImage *m_pMagic4;
+	cocos2d::MenuItemImage *m_pMagic5;
+	cocos2d::MenuItemImage *m_pMagic6;
+	cocos2d::MenuItemImage *m_pMagic7;
+	cocos2d::MenuItemImage *m_pMagic8;
+	cocos2d::MenuItemImage *m_pMagic9;
+	cocos2d::MenuItemImage *m_pMagic10;
+	cocos2d::MenuItemImage *m_pMagic11;
+	cocos2d::MenuItemImage *m_pMagic12;
+	cocos2d::MenuItemImage *m_pMagic13;
+	cocos2d::MenuItemImage *m_pMagic14;
+	cocos2d::MenuItemImage *m_pMagic15;
+	cocos2d::MenuItemImage *m_pMagic16;
+	cocos2d::MenuItemImage *m_pMagic17;
+	cocos2d::MenuItemImage *m_pMagic18;
+	cocos2d::MenuItemImage *m_pMagic19;
+	cocos2d::MenuItemImage *m_pMagic20;
+	cocos2d::MenuItemImage *m_pMagic21;
+	cocos2d::MenuItemImage *m_pMagic22;
+	cocos2d::MenuItemImage *m_pMagic23;
+	cocos2d::MenuItemImage *m_pMagic24;
+
+	cocos2d::Menu *m_pDefenseMenu;
+	cocos2d::MenuItemImage *m_pDefense1;
+	cocos2d::MenuItemImage *m_pDefense2;
+	cocos2d::MenuItemImage *m_pDefense3;
+	cocos2d::MenuItemImage *m_pDefense4;
+	cocos2d::MenuItemImage *m_pDefense5;
+	cocos2d::MenuItemImage *m_pDefense6;
+	cocos2d::MenuItemImage *m_pDefense7;
+	cocos2d::MenuItemImage *m_pDefense8;
+	cocos2d::MenuItemImage *m_pDefense9;
+	cocos2d::MenuItemImage *m_pDefense10;
+	cocos2d::MenuItemImage *m_pDefense11;
+	cocos2d::MenuItemImage *m_pDefense12;
+	cocos2d::MenuItemImage *m_pDefense13;
+	cocos2d::MenuItemImage *m_pDefense14;
+	cocos2d::MenuItemImage *m_pDefense15;
+	cocos2d::MenuItemImage *m_pDefense16;
+	cocos2d::MenuItemImage *m_pDefense17;
+	cocos2d::MenuItemImage *m_pDefense18;
+	cocos2d::MenuItemImage *m_pDefense19;
+	cocos2d::MenuItemImage *m_pDefense20;
+
+	cocos2d::Menu *m_pMoveMenu;
+	cocos2d::MenuItemImage *m_pMove1;
+	cocos2d::MenuItemImage *m_pMove2;
+	cocos2d::MenuItemImage *m_pMove3;
+	cocos2d::MenuItemImage *m_pMove4;
+	cocos2d::MenuItemImage *m_pMove5;
+	cocos2d::MenuItemImage *m_pMove6;
+	cocos2d::MenuItemImage *m_pMove7;
+
+	cocos2d::Menu *m_pBattleMenu;
+	cocos2d::MenuItemImage *m_pBattle1;
+	cocos2d::MenuItemImage *m_pBattle2;
+	cocos2d::MenuItemImage *m_pBattle3;
+	cocos2d::MenuItemImage *m_pBattle4;
+	cocos2d::MenuItemImage *m_pBattle5;
+	cocos2d::MenuItemImage *m_pBattle6;
+	cocos2d::MenuItemImage *m_pBattle7;
+
+	cocos2d::Menu *m_pAssistMenu;
+	cocos2d::MenuItemImage *m_pAssist1;
+	cocos2d::MenuItemImage *m_pAssist2;
+	cocos2d::MenuItemImage *m_pAssist3;
+	cocos2d::MenuItemImage *m_pAssist4;
+	cocos2d::MenuItemImage *m_pAssist5;
+	cocos2d::MenuItemImage *m_pAssist6;
+	cocos2d::MenuItemImage *m_pAssist7;
+	cocos2d::MenuItemImage *m_pAssist8;
+	cocos2d::MenuItemImage *m_pAssist9;
 
 	//询问退出界面及按钮
 	bool ExitIsOpen;

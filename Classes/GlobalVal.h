@@ -1,5 +1,5 @@
-#ifndef AFX_GLOBLVAL
-#define AFX_GLOBLVAL
+#ifndef AFX_GLOBALVAL
+#define AFX_GLOBALVAL
 
 #include <cocos2d.h>
 

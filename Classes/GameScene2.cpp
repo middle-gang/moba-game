@@ -1,6 +1,6 @@
 #include "GameScene2.h"
 #include "HelloWorldScene.h"
-#include"GloalVal.h"
+#include"GlobalVal.h"
 
 USING_NS_CC;
 
