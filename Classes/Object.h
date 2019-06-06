@@ -75,6 +75,7 @@ protected:
 	int health;//生命值
 	int nowHealth;
 	int attack;//攻击力
+	int armor;
 	int power;//法术强度
 	int radium;//攻击半径
 	float velocity;//速度

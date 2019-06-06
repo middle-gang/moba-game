@@ -39,6 +39,26 @@ Scene* GameScene2::createScene()
 	return scene;
 }
 
+void GameScene2::TowerInit(int i,Sprite*& spr) {
+	Tower[i].attachToSprite(spr);
+	if (!spr) {
+		log("xxxxx");
+		return;
+	}
+	Tower[i].totalHealth() = 1000;
+	Tower[i].healthPower() = 1000;
+	Tower[i].AttackPower() = 50;
+	Tower[i].getRadium() = 150;
+	Tower[i].setAttackingSpeed(1.5);
+	Tower[i].setMoveablity(false);
+	Tower[i].initBloodScale();
+	if (!Tower[i].BloodView) {
+		log("yyyyy");
+		return;
+	}
+	this->addChild(Tower[i].BloodView, 2);
+	Tower[i].getPosition() = spr->getPosition();
+}
 
 void GameScene2::newCloseMinion(int i) {
 	Sprite* minionBuf = Sprite::createWithSpriteFrameName("CloseWarriorRun1.png");
@@ -180,28 +200,8 @@ bool GameScene2::init()
 	setViewpointCenter(_player->getPosition());
 
 	_enemyTower->setAnchorPoint(Vec2(0.5, 0.5));
-	Tower[0].attachToSprite(_enemyTower);
-	Tower[0].totalHealth() = 1000;
-	Tower[0].healthPower() = 1000;
-	Tower[0].AttackPower() = 50;
-	Tower[0].getRadium() = 150;
-	Tower[0].setAttackingSpeed(1.5);
-	Tower[0].setMoveablity(false);
-	Tower[0].initBloodScale();
-	this->addChild(Tower[0].BloodView,2);
-	Tower[0].getPosition() = _enemyTower->getPosition();
-
-	Tower[1].attachToSprite(_myTower);
-	Tower[1].totalHealth() = 1000;
-	Tower[1].healthPower() = 1000;
-	Tower[1].AttackPower() = 50;
-	Tower[1].getRadium() = 150;
-	Tower[1].setAttackingSpeed(1.5);
-	Tower[1].setMoveablity(false);
-	Tower[1].initBloodScale();
-	this->addChild(Tower[1].BloodView, 2);
-	Tower[1].getPosition() = _myTower->getPosition();
-
+	TowerInit(0, _enemyTower);
+	TowerInit(1, _myTower);
 
 	scheduleUpdate();
 	/*this->schedule(schedule_selector(GameScene2::timer1));
@@ -269,7 +269,7 @@ void GameScene2::update(float delta){
 		Crystal[1].setMoveablity(false);
 		Crystal[1].initBloodScale();
 		this->addChild(Crystal[1].BloodView, 2);
-		Crystal[0].getPosition() = _myCrystal->getPosition();
+		Crystal[1].getPosition() = _myCrystal->getPosition();
 	}
 
 	if (Tower[0].healthPower() <= 0 && Crystal[0].healthPower() <= 0) Director::getInstance()->replaceScene(HelloWorld::createScene());
@@ -374,6 +374,17 @@ void GameScene2::update(float delta){
 					ck = true;
 				}
 			}
+			else {
+				float dis = flag[0].Container()[i].getPosition().distance(Crystal[0].getPosition());
+				if (dis < Crystal[0].getRadium()) {
+					flag[0].getPlan(i) = Crystal[0].getPosition();
+					if (dis < flag[0].Container()[i].getRadium()) {
+						target = &Crystal[0];
+						tarck = true;
+					}
+					ck = true;
+				}
+			}
 			if (!ck) {
 				flag[0].getPlan(i) = flag[0].GetDes();
 			}
@@ -410,6 +421,17 @@ void GameScene2::update(float delta){
 					flag[1].getPlan(i) = Tower[1].getPosition();
 					if (dis < flag[1].Container()[i].getRadium()) {
 						target = &Tower[1];
+						tarck = true;
+					}
+					ck = true;
+				}
+			}
+			else {
+				float dis = flag[1].Container()[i].getPosition().distance(Crystal[1].getPosition());
+				if (dis < Crystal[1].getRadium()) {
+					flag[1].getPlan(i) = Crystal[1].getPosition();
+					if (dis < flag[1].Container()[i].getRadium()) {
+						target = &Crystal[1];
 						tarck = true;
 					}
 					ck = true;
@@ -461,6 +483,17 @@ void GameScene2::update(float delta){
 					ck = true;
 				}
 			}
+			else {
+				float dis = flag[1].Container()[i].getPosition().distance(Crystal[1].getPosition());
+				if (dis < Crystal[1].getRadium()) {
+					flag[1].getPlan(i) = Crystal[1].getPosition();
+					if (dis < flag[1].Container()[i].getRadium()) {
+						target = &Crystal[1];
+						tarck = true;
+					}
+					ck = true;
+				}
+			}
 			if (!ck) {
 				flag[1].getPlan(i) = flag[1].GetDes();
 				reverse = !reverse;
@@ -496,6 +529,17 @@ void GameScene2::update(float delta){
 					flag[0].getPlan(i) = Tower[0].getPosition();
 					if (dis < flag[0].Container()[i].getRadium()) {
 						target = &Tower[0];
+						tarck = true;
+					}
+					ck = true;
+				}
+			}
+			else {
+				float dis = flag[0].Container()[i].getPosition().distance(Crystal[0].getPosition());
+				if (dis < Crystal[0].getRadium()) {
+					flag[0].getPlan(i) = Crystal[0].getPosition();
+					if (dis < flag[0].Container()[i].getRadium()) {
+						target = &Crystal[0];
 						tarck = true;
 					}
 					ck = true;
