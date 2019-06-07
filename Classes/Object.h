@@ -89,6 +89,7 @@ protected:
 	bool isBacking = false;
 
 	float atkdelay=1;
+	float attackingSpeed;
 	float backSpawn = 5;
 	Vec2 Position;
 	Vec2 Spawn;

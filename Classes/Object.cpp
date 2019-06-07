@@ -131,6 +131,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		ene.BeAttack(attack);
 		if (ene.healthPower() <= 0) {
 			ene.Die();
+			m_kill++;
 		}
 
 	}
@@ -299,7 +300,8 @@ void ObjectBase::attachToSprite(Sprite* spr) {
 }
 
 void ObjectBase::setAttackingSpeed(float tms) {
-	atkdelay = tms;
+	attackingSpeed = tms;
+	atkdelay = 1 / attackingSpeed;
 }
 
 void ObjectBase::initBloodScale() {

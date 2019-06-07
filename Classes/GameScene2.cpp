@@ -278,7 +278,7 @@ void GameScene2::update(float delta){
 		_player->stopAllActions();
 		if (pathFound.size() > 0) {
 			if (Hero.getPosition() == Vec2(31 * pathFound.front()->x + 16,
-				1024 - (31 * pathFound.front()->y + 16))) {
+				1024 - (31 * pathFound.front()->y + 16)-32)) {
 				playMove();
 			}
 		}
@@ -638,20 +638,19 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 	Point locationInNode = target->convertToNodeSpace(touch->getLocation());
 	Vec2 tileCoord = this->tileCoordFromPosition(locationInNode);
 	
-	Vec2 vectorPoint = (locationInNode - Hero.getPosition())/1000.0;
+	Vec2 vectorPoint = (locationInNode - Hero.getPosition())/64;
 	Vec2 iter = Hero.getPosition();
-	bool routeColli = true;
-	/*while (iter < locationInNode) {
+	bool routeColli = false;
+	while (abs(iter.x -locationInNode.x)>0.1) {
 		iter += vectorPoint;
 		//log("%f %f", iter.x, iter.y);
 		Vec2 tileIter = this->tileCoordFromPosition(iter);
-		
-		int IterTileGid = _collidable->getTileGIDAt(tileIter);
-		
+		//log("%d %d", int(tileIter.x), int(tileIter.y));
+		log("%d", ast.maze[int(tileIter.x)][int(tileIter.y)]);
 		if (ast.maze[int(tileIter.x)][int(tileIter.y)] == 1) {
 			routeColli = true;
 		}
-	}*/
+	}
 
 	int lx = (int)tileCoord.x;
 	int ly = (int)tileCoord.y;
@@ -809,18 +808,16 @@ void GameScene2::setViewpointCenter(Vec2 position)
 
 void GameScene2::playMove() {
 	if (pathFound.size() == 1) {
-		Vec2 final = Vec2(31 * pathFound.back()->x + 16,
-			1024 - (31 * pathFound.back()->y + 16));
-		log("%f %f f", final.x, final.y);
-		Hero.Move(final);
 		return;
 	}
-	log("%d %d", pathFound.front()->x, pathFound.front()->y);
-	pathFound.pop_front();
-	Vec2 dest = Vec2(31 * pathFound.front()->x + 16,
-		1024 - (31 * pathFound.front()->y + 16));
-	Hero.getBullet()->setPosition(dest);
-	Hero.Move(dest);
+	if (pathFound.size() != 0) {
+		log("%d %d", pathFound.front()->x, pathFound.front()->y);
+		pathFound.pop_front();
+		Vec2 dest = Vec2(31 * pathFound.front()->x + 16,
+			1024 - (31 * (pathFound.front()->y) + 16) - 32);
+		Hero.getBullet()->setPosition(dest);
+		Hero.Move(dest);
+	}
 	/*Hero.getSprite()->runAction(Sequence::create(MoveTo::create(0.02, dest),
 		CCCallFunc::create(this,SEL_CallFunc(&GameScene2::playMove)),NULL));*/
 }
