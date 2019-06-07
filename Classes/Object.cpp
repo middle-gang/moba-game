@@ -142,7 +142,7 @@ void ObjectBase::setMoveablity(bool mab) {
 	Moveable = mab;
 }
 
-void ObjectBase::Judge(float& jt) {
+void ObjectBase::JudgeAttack(float& jt) {
 	if (jt > atkdelay) {
 		attackingFlag = false;
 		jt = 0;
@@ -186,10 +186,6 @@ int& ObjectBase::totalHealth() {
 
 int& ObjectBase::getRadium() {
 	return radium;
-}
-
-void ObjectBase::setImage(std::string str) {
-	Charac = Sprite::create(str);
 }
 
 void ObjectBase::Move(Vec2 dest) {
@@ -284,9 +280,6 @@ void ObjectBase::setSpawnPoint(Vec2 spawn) {
 	Spawn = spawn;
 }
 
-void ObjectBase::BloodInit() {
-}
-
 bool& ObjectBase::isAttacking() {
 	return attackingFlag;
 }
@@ -315,27 +308,12 @@ void ObjectBase::initBloodScale() {
 	BloodView->setPosition(Charac->getPosition());
 }
 
-void ObjectBase::setFrame(std::string str) {
-	frameSet = str;
-}
-
 Sprite* ObjectBase::getBullet() {
 	return Bullet;
 }
 
-void ObjectBase::bulletRemove() {
-	Bullet->setPosition(Vec2(-1000, -1000));
-}
-
 void ObjectBase::setAnimeIdentifier(int i) {
 	animeIdentifier = i;
-}
-
-void ObjectBase::setAnimeIdentifierFromChoice(int i) {
-}
-
-void ObjectBase::HeroSet(int i) {
-
 }
 
 void ObjectBase::HeroInit(Sprite*& spr,Vec2 spawnP) {

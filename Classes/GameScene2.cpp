@@ -595,17 +595,17 @@ void GameScene2::update(float delta){
 
 	if (Hero.isAttacking()) {
 		m_atktime += delta;
-		Hero.Judge(m_atktime);
+		Hero.JudgeAttack(m_atktime);
 	}
 
 	if (Tower[0].isAttacking()) {
 		mt_atktime += delta;
-		Tower[0].Judge(mt_atktime);
+		Tower[0].JudgeAttack(mt_atktime);
 	}
 
 	if (Tower[1].isAttacking()) {
 		et_atktime += delta;
-		Tower[1].Judge(et_atktime);
+		Tower[1].JudgeAttack(et_atktime);
 	}
 
 	if (Hero.Death()) {
