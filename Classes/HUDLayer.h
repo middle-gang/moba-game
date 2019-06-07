@@ -3,10 +3,25 @@
 #define __HUDLayer_H__
 
 #include "cocos2d.h"
+#include"Object.h"
 using namespace cocos2d;
 
 class HUDLayer : public cocos2d::Layer
 {
+public:
+	ObjectBase obj;
+	////属性
+	int m_kill;   //击杀对手数
+	int m_death;   //死亡数
+	//int m_assist;  //助攻数
+	//int m_monster;  
+	int m_tower;
+	int e_money;
+	int e_money2;//目前金钱
+	int t_money;//获得金钱
+	int m_Score;
+	int m_Level;
+
 private:
 	///时间
 	char m_textContain[100];
@@ -43,22 +58,13 @@ private:
 	cocos2d::Label *m_pSkill4Text;
 	cocos2d::Label *m_pSkill5Text;
 
-	////属性
-	int m_kill;   //击杀对手数
-	int m_death;   //死亡数
-	//int m_assist;  //助攻数
-	//int m_monster;  
-	int m_tower;
-	int m_money;
-	int m_Score;
-	int m_Level;
-
 private:
 	///数值显示
 	char m_Textbuffer[999];
 	cocos2d::Label *m_pKillText;
 	cocos2d::Label *m_pDeathText;
-
+	cocos2d::Label *e_pMoney;
+	cocos2d::Label *e_pMoney2;
 	cocos2d::Label *m_pLevelText;
 	cocos2d::Label *m_pSpeedText;
 	cocos2d::Label *m_pScoreText;
@@ -237,7 +243,7 @@ public:
 	void transToOp(cocos2d::Ref* pSender);
 	void transToHero(cocos2d::Ref* pSender);
 	void closeAttri(cocos2d::Ref* pSender);
-	//商店面板函数
+	///////////////////商店面板函数
 	void openShop(cocos2d::Ref* pSender);
 	void closeShop(cocos2d::Ref* pSender);
 	void RecommendMenu(cocos2d::Ref* pSender);
@@ -247,6 +253,85 @@ public:
 	void MoveMenu(cocos2d::Ref* pSender);
 	void BattleMenu(cocos2d::Ref* pSender);
 	void AssistMenu(cocos2d::Ref* pSender);
+
+	//物品操作函数
+	void attack1(cocos2d::Ref* pSender);
+	void attack2(cocos2d::Ref* pSender);
+	void attack3(cocos2d::Ref* pSender);
+	void attack4(cocos2d::Ref* pSender);
+	void attack5(cocos2d::Ref* pSender);
+	void attack6(cocos2d::Ref* pSender);
+	void attack7(cocos2d::Ref* pSender);
+	void attack8(cocos2d::Ref* pSender);
+	void attack9(cocos2d::Ref* pSender);
+	void attack10(cocos2d::Ref* pSender);
+	void attack11(cocos2d::Ref* pSender);
+	void attack12(cocos2d::Ref* pSender);
+	void attack13(cocos2d::Ref* pSender);
+	void attack14(cocos2d::Ref* pSender);
+	void attack15(cocos2d::Ref* pSender);
+	void attack16(cocos2d::Ref* pSender);
+
+	void magic1(cocos2d::Ref* pSender);
+	void magic2(cocos2d::Ref* pSender);
+	void magic3(cocos2d::Ref* pSender);
+	void magic4(cocos2d::Ref* pSender);
+	void magic5(cocos2d::Ref* pSender);
+	void magic6(cocos2d::Ref* pSender);
+	void magic7(cocos2d::Ref* pSender);
+	void magic8(cocos2d::Ref* pSender);
+	void magic9(cocos2d::Ref* pSender);
+	void magic10(cocos2d::Ref* pSender);
+	void magic11(cocos2d::Ref* pSender);
+	void magic12(cocos2d::Ref* pSender);
+	void magic13(cocos2d::Ref* pSender);
+	void magic14(cocos2d::Ref* pSender);
+	void magic15(cocos2d::Ref* pSender);
+	void magic16(cocos2d::Ref* pSender);
+
+	void defense1(cocos2d::Ref* pSender);
+	void defense2(cocos2d::Ref* pSender);
+	void defense3(cocos2d::Ref* pSender);
+	void defense4(cocos2d::Ref* pSender);
+	void defense5(cocos2d::Ref* pSender);
+	void defense6(cocos2d::Ref* pSender);
+	void defense7(cocos2d::Ref* pSender);
+	void defense8(cocos2d::Ref* pSender);
+	void defense9(cocos2d::Ref* pSender);
+	void defense10(cocos2d::Ref* pSender);
+	void defense11(cocos2d::Ref* pSender);
+	void defense12(cocos2d::Ref* pSender);
+	void defense13(cocos2d::Ref* pSender);
+	void defense14(cocos2d::Ref* pSender);
+	void defense15(cocos2d::Ref* pSender);
+	void defense16(cocos2d::Ref* pSender);
+
+	void move1(cocos2d::Ref* pSender);
+	void move2(cocos2d::Ref* pSender);
+	void move3(cocos2d::Ref* pSender);
+	void move4(cocos2d::Ref* pSender);
+	void move5(cocos2d::Ref* pSender);
+	void move6(cocos2d::Ref* pSender);
+	void move7(cocos2d::Ref* pSender);
+
+	void battle1(cocos2d::Ref* pSender);
+	void battle2(cocos2d::Ref* pSender);
+	void battle3(cocos2d::Ref* pSender);
+	void battle4(cocos2d::Ref* pSender);
+	void battle5(cocos2d::Ref* pSender);
+	void battle6(cocos2d::Ref* pSender);
+	void battle7(cocos2d::Ref* pSender);
+
+	void assist1(cocos2d::Ref* pSender);
+	void assist2(cocos2d::Ref* pSender);
+	void assist3(cocos2d::Ref* pSender);
+	void assist4(cocos2d::Ref* pSender);
+	void assist5(cocos2d::Ref* pSender);
+	void assist6(cocos2d::Ref* pSender);
+	void assist7(cocos2d::Ref* pSender);
+	void assist8(cocos2d::Ref* pSender);
+	void assist9(cocos2d::Ref* pSender);
+
 	//退出界面函数
 	void openExit(cocos2d::Ref* pSender);
 	void menuYesCallback(cocos2d::Ref* pSender);
@@ -261,7 +346,7 @@ public:
 	void cure(cocos2d::Ref* pSender);
 
 
-	public:
+public:
 	static cocos2d::Scene* createScene();
 
 	virtual void HUDLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);

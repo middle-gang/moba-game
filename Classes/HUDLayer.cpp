@@ -139,11 +139,38 @@ bool HUDLayer::init()
 	m_pAttriMenu->setVisible(false);
 
 
+	//属性数值显示
+	Label* m_pAssist = Label::createWithTTF("0", "fonts/msyh.ttc", 23);
+	m_pAssist->setPosition(200, 435);
+	addChild(m_pAssist, 3);
+	 
+	m_kill = obj.m_kill;
+	sprintf(m_Textbuffer, "%d", m_kill);
+	m_pKillText = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 23);
+	m_pKillText->setPosition(160, 435);
+	addChild(m_pKillText, 3);
+
 	/////////////////////////////创建商店界面
 	ShopIsOpen = false;
 	MenuItemImage * pShopWin = MenuItemImage::create("photo/shop.png", "photo/shop1.png",
 		CC_CALLBACK_1(HUDLayer::openShop, this));
 	pShopWin->setPosition(930, 200);
+
+	//////金钱显示
+	e_money = obj.e_money;
+	sprintf(m_Textbuffer, "%d", e_money);
+	e_pMoney = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 15);
+	e_pMoney->setColor(Color3B::BLACK);
+	e_pMoney->setPosition(928,189);
+	addChild(e_pMoney, 3);
+
+	//sprintf(m_Textbuffer, "%d", e_money2);
+	e_pMoney2 = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 23);
+	e_pMoney2->setColor(Color3B::BLUE);
+	e_pMoney2->setPosition(180,375);
+	e_pMoney2->setVisible(false);
+	addChild(e_pMoney2, 13);
+
 
 	m_ShopBack = Sprite::create("photo/shop/background.png");
 	m_ShopBack->setPosition(500, 236.5);
@@ -729,17 +756,6 @@ bool HUDLayer::init()
 	m_pSkillMenu->setPosition(Vec2::ZERO);
 	addChild(m_pSkillMenu, 1);
 
-
-	//属性数值显示
-	Label* m_pAssist = Label::createWithTTF("0", "fonts/msyh.ttc", 23);
-	m_pAssist->setPosition(200, 435);
-	addChild(m_pAssist, 3);
-
-	sprintf(m_Textbuffer, "%d", m_kill);
-	m_pKillText = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 23);
-	m_pKillText->setPosition(160, 435);
-	addChild(m_pKillText, 3);
-
 	scheduleUpdate();
 	setKeyboardEnabled(true);	
 	return true;
@@ -860,7 +876,13 @@ void HUDLayer::update(float delta)
 		m_pSkill5Text->setVisible(false);
 	}
 
-
+	//金钱更新
+	if (obj.e_money != e_money)
+	{
+		e_money = obj.e_money;
+		sprintf(m_textContain, "%d", e_money);
+		e_pMoney->setString(m_textContain);
+	}
 
 	//窗口弹出效果
 	if (m_IsPopDialog)
@@ -1015,6 +1037,10 @@ void HUDLayer::closeAttri(cocos2d::Ref * pSender)
 
 void HUDLayer::openShop(cocos2d::Ref * pSender)
 {
+	e_money2 = e_money;
+	sprintf(m_textContain, "%d", e_money2);
+	e_pMoney2->setString(m_textContain);
+	e_pMoney2->setVisible(true);
 	m_pRecommandMenu->setVisible(true);
 	m_pDownMenu = m_pRecommandMenu;
 	m_pMenu->setEnabled(false);
@@ -1026,6 +1052,7 @@ void HUDLayer::openShop(cocos2d::Ref * pSender)
 
 void HUDLayer::closeShop(cocos2d::Ref * pSender)
 {
+	e_pMoney2->setVisible(false);
 	m_pDownMenu->setVisible(false);
 	m_pMenu->setEnabled(true);
 	m_pSkillMenu->setEnabled(true);
@@ -1138,6 +1165,290 @@ void HUDLayer::AssistMenu(cocos2d::Ref * pSender)
 	m_pDownMii->setEnabled(true);
 	m_pDownMii = m_pAssistMii;
 	m_pDownMii->setEnabled(false);
+}
+///////////////物品函数
+void HUDLayer::attack1(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack2(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack3(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack4(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack5(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack6(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack7(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack8(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack9(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack10(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack11(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack12(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack13(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack14(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack15(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::attack16(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic1(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic2(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic3(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic4(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic5(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic6(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic7(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic8(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic9(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic10(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic11(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic12(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic13(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic14(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic15(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::magic16(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense1(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense2(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense3(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense4(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense5(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense6(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense7(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense8(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense9(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense10(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense11(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense12(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense13(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense14(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense15(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::defense16(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::move1(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::move2(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::move3(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::move4(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::move5(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::move6(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::move7(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::battle1(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::battle2(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::battle3(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::battle4(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::battle5(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::battle6(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::battle7(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::assist1(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::assist2(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::assist3(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::assist4(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::assist5(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::assist6(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::assist7(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::assist8(cocos2d::Ref * pSender)
+{
+}
+
+void HUDLayer::assist9(cocos2d::Ref * pSender)
+{
 }
 
 void HUDLayer::attack(cocos2d::Ref* pSender)

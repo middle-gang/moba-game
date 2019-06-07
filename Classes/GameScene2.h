@@ -33,6 +33,9 @@ public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init(); 
 
+	virtual void onKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
+	virtual void onKeyReleased(EventKeyboard::KeyCode keycode, Event *event);
+
 	virtual bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
     virtual void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
     virtual void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
@@ -43,7 +46,8 @@ public:
 
 	void newCloseMinion(int i);
 	void newDistantMinion(int i);
-	void crystalInit();
+	void playMove();
+	//void crystalInit();
 
     virtual void update(float delta);
 	// implement the "static create()" method manually

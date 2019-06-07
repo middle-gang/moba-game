@@ -1,8 +1,10 @@
 #include "ChooseCharacter.h"
 #include"GameScene0.h"
+#include"Object.h"
 #include "SimpleAudioEngine.h"
 #include"GlobalVal.h"
 #include"HelloWorldScene.h"
+#include"Avene.h"
 USING_NS_CC;
 
 Scene* ChooseCharacter::createScene()
@@ -85,8 +87,8 @@ bool ChooseCharacter::init()
 	m_pBowmanMII->setPosition(330, 390);
 	m_pSavageMII->setPosition(550, 390);
 	m_pWizardMII->setPosition(770, 390);
-	ChooseMII->setPosition(330, 50);
-	ReturnMII->setPosition(700, 50);
+	ChooseMII->setPosition(700, 50);
+	ReturnMII->setPosition(330, 50);
 
 	Menu *pMenu = Menu::create(m_pBowmanMII, m_pSavageMII,m_pWizardMII,ChooseMII,ReturnMII,NULL);
 	pMenu->setPosition(Vec2::ZERO);
@@ -153,7 +155,7 @@ void ChooseCharacter::enterGameCallBack(cocos2d::Ref * pSender)
 void ChooseCharacter::returnMainMenu(cocos2d::Ref * pSender)
 {
 	TransitionScene * reScene = NULL;
-	Scene *pScene = HelloWorld::createScene();
+	Scene *pScene = Avene::createScene();
 	reScene = TransitionCrossFade::create(0.8f, pScene);
 	Director::getInstance()->replaceScene(reScene);
 	m_IsChangeScene = true;

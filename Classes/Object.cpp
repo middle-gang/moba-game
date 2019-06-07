@@ -13,7 +13,7 @@ void ObjectBase::Die() {
 	Animation * animation = Animation::create();
 	for (int i = 1; i <= 5; i++) {
 		__String * frameName = __String::createWithFormat("CloseWarriorDie%d.png", i);
-		log("frameName = %s", frameName->getCString());
+		//log("frameName = %s", frameName->getCString());
 		SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 		animation->addSpriteFrame(spriteFrame);
 	}
@@ -43,6 +43,7 @@ bool ObjectBase::Death() {
 
 void ObjectBase::BeAttack(int damage) {
 	nowHealth -= damage;
+	if (isBacking) Interrupt();
 	Blink* blink = Blink::create(0.1, 1);
 	Charac->runAction(blink);
 	if (health <= 0) {
@@ -59,7 +60,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 			//Animation * animation = Animation::create();
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("BowmanAttack%d.png", i);
-				log("frameName = %s", frameName->getCString());
+				//log("frameName = %s", frameName->getCString());
 				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 				animation->addSpriteFrame(spriteFrame);
 			}
@@ -73,7 +74,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		else if (animeIdentifier == 2) {
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("SavageAttack%d.png", i);
-				log("frameName = %s", frameName->getCString());
+				//log("frameName = %s", frameName->getCString());
 				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 				animation->addSpriteFrame(spriteFrame);
 			}
@@ -87,7 +88,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		else if (animeIdentifier == 3) {
 			for (int i = 1; i <= 4; i++) {
 				__String * frameName = __String::createWithFormat("WizardAttack%d.png", i);
-				log("frameName = %s", frameName->getCString());
+				//log("frameName = %s", frameName->getCString());
 				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 				animation->addSpriteFrame(spriteFrame);
 			}
@@ -101,7 +102,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		else if (animeIdentifier == 5) {
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("CloseWarriorAttack%d.png", i);
-				log("frameName = %s", frameName->getCString());
+				//log("frameName = %s", frameName->getCString());
 				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 				animation->addSpriteFrame(spriteFrame);
 			}
@@ -115,7 +116,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		else if (animeIdentifier == 6) {
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("DistantWarriorAttack%d.png", i);
-				log("frameName = %s", frameName->getCString());
+				//log("frameName = %s", frameName->getCString());
 				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
 				animation->addSpriteFrame(spriteFrame);
 			}
@@ -335,15 +336,37 @@ void ObjectBase::HeroSet(int i) {
 
 }
 
-void ObjectBase::HeroInit(Sprite* player,Vec2 spawnP) {
-	if(HeroIdentifier==1) player = Sprite::createWithSpriteFrameName("BowmanRun1.png");
-	if(HeroIdentifier==2) player = Sprite::createWithSpriteFrameName("SavageRun1.png");
-	if(HeroIdentifier==3) player = Sprite::createWithSpriteFrameName("WizardRun1.png");
+void ObjectBase::HeroInit(Sprite*& spr,Vec2 spawnP) {
+	if(animeIdentifier==1) spr = Sprite::createWithSpriteFrameName("BowmanRun1.png");
+	if(animeIdentifier==2) spr = Sprite::createWithSpriteFrameName("SavageRun1.png");
+	if(animeIdentifier==3) spr = Sprite::createWithSpriteFrameName("WizardRun1.png");
+	Charac = spr;
+	spr->setPosition(spawnP);
+	setSpawnPoint(spawnP);
 	totalHealth() = 100;
 	healthPower() = 100;
 	getRadium() = 200;
 	AttackPower() = 100;
 	setVelocity(100);
-	setSpawnPoint(spawnP);
 	initBloodScale();
+}
+
+void ObjectBase::JudgeBack(float& time, float del) {
+	time += del;
+	if (time > backSpawn) {
+		BackToSpawn();
+		isBacking = false;
+	}
+}
+
+void ObjectBase::BackToSpawn() {
+	Charac->setPosition(Spawn);
+}
+
+bool& ObjectBase::CheckBacking() {
+	return isBacking;
+}
+
+void ObjectBase::Interrupt() {
+	isBacking = false;
 }
