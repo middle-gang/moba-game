@@ -41,6 +41,26 @@ Scene* GameScene2::createScene()
 	return scene;
 }
 
+void GameScene2::TowerInit(int i,Sprite*& spr) {
+	Tower[i].attachToSprite(spr);
+	if (!spr) {
+		log("xxxxx");
+		return;
+	}
+	Tower[i].totalHealth() = 1000;
+	Tower[i].healthPower() = 1000;
+	Tower[i].AttackPower() = 50;
+	Tower[i].getRadium() = 150;
+	Tower[i].setAttackingSpeed(1.5);
+	Tower[i].setMoveablity(false);
+	Tower[i].initBloodScale();
+	if (!Tower[i].BloodView) {
+		log("yyyyy");
+		return;
+	}
+	this->addChild(Tower[i].BloodView, 2);
+	Tower[i].getPosition() = spr->getPosition();
+}
 
 void GameScene2::newCloseMinion(int i) {
 	Sprite* minionBuf = Sprite::createWithSpriteFrameName("CloseWarriorRun1.png");
@@ -182,28 +202,8 @@ bool GameScene2::init()
 	setViewpointCenter(_player->getPosition());
 
 	_enemyTower->setAnchorPoint(Vec2(0.5, 0.5));
-	Tower[0].attachToSprite(_enemyTower);
-	Tower[0].totalHealth() = 1000;
-	Tower[0].healthPower() = 1000;
-	Tower[0].AttackPower() = 50;
-	Tower[0].getRadium() = 150;
-	Tower[0].setAttackingSpeed(1.5);
-	Tower[0].setMoveablity(false);
-	Tower[0].initBloodScale();
-	this->addChild(Tower[0].BloodView,2);
-	Tower[0].getPosition() = _enemyTower->getPosition();
-
-	Tower[1].attachToSprite(_myTower);
-	Tower[1].totalHealth() = 1000;
-	Tower[1].healthPower() = 1000;
-	Tower[1].AttackPower() = 50;
-	Tower[1].getRadium() = 150;
-	Tower[1].setAttackingSpeed(1.5);
-	Tower[1].setMoveablity(false);
-	Tower[1].initBloodScale();
-	this->addChild(Tower[1].BloodView, 2);
-	Tower[1].getPosition() = _myTower->getPosition();
-
+	TowerInit(0, _enemyTower);
+	TowerInit(1, _myTower);
 
 	scheduleUpdate();
 	/*this->schedule(schedule_selector(GameScene2::timer1));
@@ -271,7 +271,7 @@ void GameScene2::update(float delta){
 		Crystal[1].setMoveablity(false);
 		Crystal[1].initBloodScale();
 		this->addChild(Crystal[1].BloodView, 2);
-		Crystal[0].getPosition() = _myCrystal->getPosition();
+		Crystal[1].getPosition() = _myCrystal->getPosition();
 	}
 
 	if (Tower[0].healthPower() <= 0 && Crystal[0].healthPower() <= 0) Director::getInstance()->replaceScene(HelloWorld::createScene());
@@ -280,7 +280,7 @@ void GameScene2::update(float delta){
 		_player->stopAllActions();
 		if (pathFound.size() > 0) {
 			if (Hero.getPosition() == Vec2(31 * pathFound.front()->x + 16,
-				1024 - (31 * pathFound.front()->y + 16))) {
+				1024 - (31 * pathFound.front()->y + 16)-32)) {
 				playMove();
 			}
 		}
@@ -376,6 +376,17 @@ void GameScene2::update(float delta){
 					ck = true;
 				}
 			}
+			else {
+				float dis = flag[0].Container()[i].getPosition().distance(Crystal[0].getPosition());
+				if (dis < Crystal[0].getRadium()) {
+					flag[0].getPlan(i) = Crystal[0].getPosition();
+					if (dis < flag[0].Container()[i].getRadium()) {
+						target = &Crystal[0];
+						tarck = true;
+					}
+					ck = true;
+				}
+			}
 			if (!ck) {
 				flag[0].getPlan(i) = flag[0].GetDes();
 			}
@@ -412,6 +423,17 @@ void GameScene2::update(float delta){
 					flag[1].getPlan(i) = Tower[1].getPosition();
 					if (dis < flag[1].Container()[i].getRadium()) {
 						target = &Tower[1];
+						tarck = true;
+					}
+					ck = true;
+				}
+			}
+			else {
+				float dis = flag[1].Container()[i].getPosition().distance(Crystal[1].getPosition());
+				if (dis < Crystal[1].getRadium()) {
+					flag[1].getPlan(i) = Crystal[1].getPosition();
+					if (dis < flag[1].Container()[i].getRadium()) {
+						target = &Crystal[1];
 						tarck = true;
 					}
 					ck = true;
@@ -463,6 +485,17 @@ void GameScene2::update(float delta){
 					ck = true;
 				}
 			}
+			else {
+				float dis = flag[1].Container()[i].getPosition().distance(Crystal[1].getPosition());
+				if (dis < Crystal[1].getRadium()) {
+					flag[1].getPlan(i) = Crystal[1].getPosition();
+					if (dis < flag[1].Container()[i].getRadium()) {
+						target = &Crystal[1];
+						tarck = true;
+					}
+					ck = true;
+				}
+			}
 			if (!ck) {
 				flag[1].getPlan(i) = flag[1].GetDes();
 				reverse = !reverse;
@@ -498,6 +531,17 @@ void GameScene2::update(float delta){
 					flag[0].getPlan(i) = Tower[0].getPosition();
 					if (dis < flag[0].Container()[i].getRadium()) {
 						target = &Tower[0];
+						tarck = true;
+					}
+					ck = true;
+				}
+			}
+			else {
+				float dis = flag[0].Container()[i].getPosition().distance(Crystal[0].getPosition());
+				if (dis < Crystal[0].getRadium()) {
+					flag[0].getPlan(i) = Crystal[0].getPosition();
+					if (dis < flag[0].Container()[i].getRadium()) {
+						target = &Crystal[0];
 						tarck = true;
 					}
 					ck = true;
@@ -553,17 +597,17 @@ void GameScene2::update(float delta){
 
 	if (Hero.isAttacking()) {
 		m_atktime += delta;
-		Hero.Judge(m_atktime);
+		Hero.JudgeAttack(m_atktime);
 	}
 
 	if (Tower[0].isAttacking()) {
 		mt_atktime += delta;
-		Tower[0].Judge(mt_atktime);
+		Tower[0].JudgeAttack(mt_atktime);
 	}
 
 	if (Tower[1].isAttacking()) {
 		et_atktime += delta;
-		Tower[1].Judge(et_atktime);
+		Tower[1].JudgeAttack(et_atktime);
 	}
 
 	if (Hero.Death()) {
@@ -596,20 +640,19 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 	Point locationInNode = target->convertToNodeSpace(touch->getLocation());
 	Vec2 tileCoord = this->tileCoordFromPosition(locationInNode);
 	
-	Vec2 vectorPoint = (locationInNode - Hero.getPosition())/1000.0;
+	Vec2 vectorPoint = (locationInNode - Hero.getPosition())/64;
 	Vec2 iter = Hero.getPosition();
-	bool routeColli = true;
-	/*while (iter < locationInNode) {
+	bool routeColli = false;
+	while (abs(iter.x -locationInNode.x)>0.1) {
 		iter += vectorPoint;
 		//log("%f %f", iter.x, iter.y);
 		Vec2 tileIter = this->tileCoordFromPosition(iter);
-		
-		int IterTileGid = _collidable->getTileGIDAt(tileIter);
-		
+		//log("%d %d", int(tileIter.x), int(tileIter.y));
+		log("%d", ast.maze[int(tileIter.x)][int(tileIter.y)]);
 		if (ast.maze[int(tileIter.x)][int(tileIter.y)] == 1) {
 			routeColli = true;
 		}
-	}*/
+	}
 
 	int lx = (int)tileCoord.x;
 	int ly = (int)tileCoord.y;
@@ -767,18 +810,16 @@ void GameScene2::setViewpointCenter(Vec2 position)
 
 void GameScene2::playMove() {
 	if (pathFound.size() == 1) {
-		Vec2 final = Vec2(31 * pathFound.back()->x + 16,
-			1024 - (31 * pathFound.back()->y + 16));
-		log("%f %f f", final.x, final.y);
-		Hero.Move(final);
 		return;
 	}
-	log("%d %d", pathFound.front()->x, pathFound.front()->y);
-	pathFound.pop_front();
-	Vec2 dest = Vec2(31 * pathFound.front()->x + 16,
-		1024 - (31 * pathFound.front()->y + 16));
-	Hero.getBullet()->setPosition(dest);
-	Hero.Move(dest);
+	if (pathFound.size() != 0) {
+		log("%d %d", pathFound.front()->x, pathFound.front()->y);
+		pathFound.pop_front();
+		Vec2 dest = Vec2(31 * pathFound.front()->x + 16,
+			1024 - (31 * (pathFound.front()->y) + 16) - 32);
+		Hero.getBullet()->setPosition(dest);
+		Hero.Move(dest);
+	}
 	/*Hero.getSprite()->runAction(Sequence::create(MoveTo::create(0.02, dest),
 		CCCallFunc::create(this,SEL_CallFunc(&GameScene2::playMove)),NULL));*/
 }

@@ -32,24 +32,28 @@ public:
 
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init(); 
-
+	
+	//kono 键盘监听 da
 	virtual void onKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
 	virtual void onKeyReleased(EventKeyboard::KeyCode keycode, Event *event);
 
+	//kono 触摸监听 da
 	virtual bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
     virtual void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
     virtual void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
 	
-	void setPlayerPosition(cocos2d::Vec2 position);
-    cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);
-    void setViewpointCenter(cocos2d::Vec2 position);
+	void setPlayerPosition(cocos2d::Vec2 position); //设置玩家的位置
+    cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);//转化成瓦片坐标
+    void setViewpointCenter(cocos2d::Vec2 position);//设置屏幕中央
 
-	void newCloseMinion(int i);
-	void newDistantMinion(int i);
-	void playMove();
-	//void crystalInit();
+	void newCloseMinion(int i);		//产生新的近战小兵
+	void newDistantMinion(int i);	//产生新的远程兵
+	void playMove();				//根据A*寻路产生的链表进行移动
+	void TowerInit(int i,Sprite*& spr);//初始化塔
 
+	//万恶之源
     virtual void update(float delta);
+
 	// implement the "static create()" method manually
     CREATE_FUNC(GameScene2);
 };
