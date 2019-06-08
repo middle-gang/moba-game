@@ -45,11 +45,15 @@ void GameScene2::TowerInit(int i,Sprite*& spr) {
 		log("xxxxx");
 		return;
 	}
+	Tower[i].setAnimeIdentifier(2);
+	Tower[i].SetAtkSpeedLevel(0);
+	Tower[i].JudgeAttackSpeedLevel();
+	log("%f", Tower[i].attackDelay());
 	Tower[i].totalHealth() = 1000;
 	Tower[i].healthPower() = 1000;
-	Tower[i].AttackPower() = 50;
+	Tower[i].AttackPower() = 470;
 	Tower[i].getRadium() = 150;
-	Tower[i].setAttackingSpeed(1.5);
+	//Tower[i].setAttackingSpeed(1.5);
 	Tower[i].setMoveablity(false);
 	Tower[i].initBloodScale();
 	if (!Tower[i].BloodView) {
@@ -65,6 +69,9 @@ void GameScene2::newCloseMinion(int i) {
 	ObjectBase minionbuf;
 	minionbuf.setAnimeIdentifier(5);
 	flag[i].minionInit(minionbuf,0);
+	minionbuf.setArmor(10);
+	minionbuf.SetAtkSpeedLevel(0);
+	minionbuf.JudgeAttackSpeedLevel();
 	minionbuf.attachToSprite(minionBuf);
 	minionBuf->setPosition(flag[i].GetSpawn());
 	minionBuf->setAnchorPoint(Vec2(0.5, 0.5));
@@ -80,6 +87,9 @@ void GameScene2::newDistantMinion(int i) {
 	Sprite* minionBuf = Sprite::createWithSpriteFrameName("DistantWarriorRun1.png");
 	ObjectBase minionbuf;
 	minionbuf.setAnimeIdentifier(6);
+	minionbuf.setArmor(10);
+	minionbuf.SetAtkSpeedLevel(0);
+	minionbuf.JudgeAttackSpeedLevel();
 	flag[i].minionInit(minionbuf, 1);
 	minionbuf.attachToSprite(minionBuf);
 	minionBuf->setPosition(flag[i].GetSpawn());
@@ -137,16 +147,8 @@ bool GameScene2::init()
 	float y = spawnPoint["y"].asFloat();
 	
 	Hero.setAnimeIdentifier(myChoice);
-	//_player = Sprite::createWithSpriteFrameName("BowmanRun1.png");
 	Hero.HeroInit(_player,Vec2(x, y));
-	//Hero.setSpawnPoint(Vec2(x, y));
 	addChild(_player, 2, 200);
-	/*Hero.totalHealth() = 100;
-	Hero.healthPower() = 100;
-	Hero.getRadium() = 200;
-	Hero.AttackPower() = 100;
-	Hero.setVelocity(100);
-	Hero.initBloodScale();*/
 	addChild(Hero.BloodView, 2);
 	addChild(Hero.getBullet(), 2);
 
@@ -235,7 +237,19 @@ bool GameScene2::init()
 
 void GameScene2::update(float delta){
 	Hero.getPosition() = Hero.getSprite()->getPosition();
-	
+	if (Hero.getPosition().x<=Hero.SpawnPoint().x + 30 &&
+		Hero.getPosition().x >= Hero.SpawnPoint().x - 30 &&
+		Hero.getPosition().y <= Hero.SpawnPoint().y + 30 &&
+		Hero.getPosition().y >= Hero.SpawnPoint().y - 30) {
+		Hero.setHomerecover();
+	}
+	else {
+		Hero.removeHomerecover();
+	}
+
+	Hero.HealthRebound(delta);
+	Hero.MagicRebound(delta);
+	Hero.BloodView->setCurrentProgress(Hero.healthPower());
 	Tower[0].BloodView->setCurrentProgress(Tower[0].healthPower());
 	Tower[1].BloodView->setCurrentProgress(Tower[1].healthPower());
 	if(cryInit[0]) Crystal[0].BloodView->setCurrentProgress(Crystal[0].healthPower());
@@ -560,8 +574,9 @@ void GameScene2::update(float delta){
 		minionCnt = 0;
 		reverse = !reverse;
 	}
-
-
+	
+	//生成一波小兵
+	//因为每个小兵之间生成有一定的时间差，所以简单地采用了五次函数调用
 	minioncount1 += delta;
 	minioncount2 += delta;
 	minioncount3 += delta;
@@ -591,6 +606,10 @@ void GameScene2::update(float delta){
 		minioncount1 = 0;
 		newDistantMinion(0);
 		newDistantMinion(1);
+	}
+
+	if (Hero.getPosition().distance(Tower[0].getPosition()) < Tower[0].getRadium()) {
+		Tower[0].Attack(Hero);
 	}
 
 	if (Hero.isAttacking()) {
@@ -808,6 +827,10 @@ void GameScene2::setViewpointCenter(Vec2 position)
 
 void GameScene2::playMove() {
 	if (pathFound.size() == 1) {
+		Vec2 dest = Vec2(31 * pathFound.front()->x + 16,
+			1024 - (31 * (pathFound.front()->y) + 16) - 32);
+		Hero.getBullet()->setPosition(dest);
+		Hero.Move(dest);
 		return;
 	}
 	if (pathFound.size() != 0) {

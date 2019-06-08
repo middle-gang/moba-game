@@ -11,7 +11,7 @@ class MinionController
 	int minion_hp[2] = { 100,80 };
 	float minion_v=50;
 	int minion_r[2] = { 20,100 };
-	int minion_attack[2] = { 50,30 };
+	float minion_attack[2] = { 50,30 };
 	bool moving=false;
 	ObjectBase ene[999];
 	Vec2 MinionSpawn;

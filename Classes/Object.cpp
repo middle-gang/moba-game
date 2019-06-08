@@ -10,21 +10,7 @@ bool ObjectBase::InRange(Vec2 ene) {
 void ObjectBase::Die() {
 	isAlive = false;
 	m_death++;
-	Animation * animation = Animation::create();
-	for (int i = 1; i <= 5; i++) {
-		__String * frameName = __String::createWithFormat("CloseWarriorDie%d.png", i);
-		//log("frameName = %s", frameName->getCString());
-		SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
-		animation->addSpriteFrame(spriteFrame);
-	}
-
-	animation->setDelayPerUnit(0.5f);
-	animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
-
-	Animate * action = Animate::create(animation);
-
-	Sequence* seqAct = Sequence::create(action, DelayTime::create(0.5),MoveTo::create(0, Vec2(-1000, -1000)), NULL);
-
+	Sequence* seqAct = Sequence::create(MoveTo::create(0, Vec2(-1000, -1000)), NULL);
 	Charac->runAction(seqAct);
 
 	if(BloodView!=nullptr) BloodView->setPosition(Vec2(-1000,-1000));
@@ -32,8 +18,19 @@ void ObjectBase::Die() {
 }
 
 void ObjectBase::Kill_reward(ObjectBase& ene) {
-	m_money += ene.e_money;
-	m_exp += ene.e_exp;
+	if (ene.HeroIdentifier <= 3) {
+
+	}
+	else if (ene.HeroIdentifier == 5) {
+		m_exp += 9;
+		m_money += 35;
+		LvUp();
+	}
+	else if (ene.HeroIdentifier == 6) {
+		m_exp += 7;
+		m_money += 25;
+		LvUp();
+	}
 }
 
 bool ObjectBase::Death() {
@@ -41,12 +38,10 @@ bool ObjectBase::Death() {
 	return false;
 }
 
-void ObjectBase::BeAttack(int damage) {
-	nowHealth -= damage;
+void ObjectBase::BeAttack(float damage) {
+	nowHealth -= damage*602/(602+armor);
 	if (isBacking) Interrupt();
-	Blink* blink = Blink::create(0.1, 1);
-	Charac->runAction(blink);
-	if (health <= 0) {
+	if (nowHealth <= 0) {
 		Die();
 	}
 }
@@ -56,7 +51,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		attackingFlag = true;
 		Charac->stopAllActions();
 		Animation * animation = Animation::create();
-		if (animeIdentifier == 1) {
+		if (HeroIdentifier == 1) {
 			//Animation * animation = Animation::create();
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("BowmanAttack%d.png", i);
@@ -71,7 +66,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
 		}
-		else if (animeIdentifier == 2) {
+		else if (HeroIdentifier == 2) {
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("SavageAttack%d.png", i);
 				//log("frameName = %s", frameName->getCString());
@@ -85,7 +80,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
 		}
-		else if (animeIdentifier == 3) {
+		else if (HeroIdentifier == 3) {
 			for (int i = 1; i <= 4; i++) {
 				__String * frameName = __String::createWithFormat("WizardAttack%d.png", i);
 				//log("frameName = %s", frameName->getCString());
@@ -99,7 +94,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
 		}
-		else if (animeIdentifier == 5) {
+		else if (HeroIdentifier == 5) {
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("CloseWarriorAttack%d.png", i);
 				//log("frameName = %s", frameName->getCString());
@@ -113,7 +108,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
 		}
-		else if (animeIdentifier == 6) {
+		else if (HeroIdentifier == 6) {
 			for (int i = 1; i <= 3; i++) {
 				__String * frameName = __String::createWithFormat("DistantWarriorAttack%d.png", i);
 				//log("frameName = %s", frameName->getCString());
@@ -131,7 +126,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		ene.BeAttack(attack);
 		if (ene.healthPower() <= 0) {
 			ene.Die();
-			m_kill++;
+			if(HeroIdentifier <= 3) Kill_reward(ene);
 		}
 
 	}
@@ -149,7 +144,7 @@ void ObjectBase::JudgeAttack(float& jt) {
 	}
 }
 
-int& ObjectBase::AttackPower() {
+float& ObjectBase::AttackPower() {
 	return attack;
 }
 
@@ -157,7 +152,8 @@ void ObjectBase::revive() {
 	isAlive = true;
 	Charac->setPosition(Spawn);
 	Position = Charac->getPosition();
-	health = 100;
+	nowHealth =health ;
+	nowMagicpoint = magicpoint;
 }
 
 Sprite* ObjectBase::getSprite() {
@@ -194,7 +190,7 @@ void ObjectBase::Move(Vec2 dest) {
 	Charac->runAction(MoveTo::create(cost, dest));
 
 	Animation * animation = Animation::create();
-	if (animeIdentifier == 1) {
+	if (HeroIdentifier == 1) {
 		//Animation * animation = Animation::create();
 		for (int i = 1; i <= 7; i++) {
 			__String * frameName = __String::createWithFormat("BowmanRun%d.png", i);
@@ -210,7 +206,7 @@ void ObjectBase::Move(Vec2 dest) {
 		Charac->runAction(action);
 	}
 
-	else if (animeIdentifier == 2) {
+	else if (HeroIdentifier == 2) {
 		for (int i = 1; i <= 6; i++) {
 			__String * frameName = __String::createWithFormat("SavageRun%d.png", i);
 			//log("frameName = %s", frameName->getCString());
@@ -224,7 +220,7 @@ void ObjectBase::Move(Vec2 dest) {
 		Animate * action = Animate::create(animation);
 		Charac->runAction(action);
 	}
-	else if (animeIdentifier == 3) {
+	else if (HeroIdentifier == 3) {
 		for (int i = 1; i <= 8; i++) {
 			__String * frameName = __String::createWithFormat("WizardRun%d.png", i);
 			//log("frameName = %s", frameName->getCString());
@@ -238,7 +234,7 @@ void ObjectBase::Move(Vec2 dest) {
 		Animate * action = Animate::create(animation);
 		Charac->runAction(action);
 	}
-	else if (animeIdentifier == 5) {
+	else if (HeroIdentifier == 5) {
 		for (int i = 1; i <= 8; i++) {
 			__String * frameName = __String::createWithFormat("CloseWarriorRun%d.png", i);
 			//log("frameName = %s", frameName->getCString());
@@ -252,7 +248,7 @@ void ObjectBase::Move(Vec2 dest) {
 		Animate * action = Animate::create(animation);
 		Charac->runAction(action);
 	}
-	else if (animeIdentifier == 6) {
+	else if (HeroIdentifier == 6) {
 		for (int i = 1; i <= 4; i++) {
 			__String * frameName = __String::createWithFormat("DistantWarriorRun%d.png", i);
 			//log("frameName = %s", frameName->getCString());
@@ -313,21 +309,28 @@ Sprite* ObjectBase::getBullet() {
 }
 
 void ObjectBase::setAnimeIdentifier(int i) {
-	animeIdentifier = i;
+	HeroIdentifier = i;
 }
 
 void ObjectBase::HeroInit(Sprite*& spr,Vec2 spawnP) {
-	if(animeIdentifier==1) spr = Sprite::createWithSpriteFrameName("BowmanRun1.png");
-	if(animeIdentifier==2) spr = Sprite::createWithSpriteFrameName("SavageRun1.png");
-	if(animeIdentifier==3) spr = Sprite::createWithSpriteFrameName("WizardRun1.png");
+	if(HeroIdentifier ==1) spr = Sprite::createWithSpriteFrameName("BowmanRun1.png");
+	if(HeroIdentifier ==2) spr = Sprite::createWithSpriteFrameName("SavageRun1.png");
+	if(HeroIdentifier ==3) spr = Sprite::createWithSpriteFrameName("WizardRun1.png");
 	Charac = spr;
 	spr->setPosition(spawnP);
 	setSpawnPoint(spawnP);
-	totalHealth() = 100;
-	healthPower() = 100;
+	int h = HeroIdentifier - 1;
+	attack = HeroData[h][0];
+	atkSpeedLevel = HeroData[h][2];
+	health = HeroData[h][4];
+	nowHealth = health;
+	healthRecover = HeroData[h][6];
+	armor = HeroData[h][8];
+	magicDenfence = HeroData[h][10];
+	magicpoint = HeroData[h][12];
+	magicpointRecover = HeroData[h][14];
+	velocity = HeroData[h][16];
 	getRadium() = 200;
-	AttackPower() = 100;
-	setVelocity(100);
 	initBloodScale();
 }
 
@@ -349,4 +352,97 @@ bool& ObjectBase::CheckBacking() {
 
 void ObjectBase::Interrupt() {
 	isBacking = false;
+}
+
+void ObjectBase::JudgeAttackSpeedLevel() {
+	bool limMax = false;
+	//顺序判断
+	for (int i = 0; i < 11; i++) {
+		if (atkSpeedLevel < AtkSpeed[HeroIdentifier-1][i]) {
+			atkdelay = 60 / (HeroAtkSpeedLim[HeroIdentifier-1][i-1]);
+			limMax = true;
+			return;
+		}
+	}
+	if (!limMax) {
+		//攻速达到最大
+		atkdelay = 60 / (HeroAtkSpeedLim[HeroIdentifier - 1][10]);
+	}
+}
+
+void ObjectBase::HealthRebound(float delta) {
+	if (!Death()&&nowHealth<health) {
+		HPrecoverTimer += delta;
+		if (HPrecoverTimer >= 1) {
+			nowHealth += healthRecover / 5;
+			if (HomeHPRecover) nowHealth += health / 10;
+			if (nowHealth > health) nowHealth = health;
+			HPrecoverTimer=0;
+		}
+	}
+}
+
+void ObjectBase::MagicRebound(float delta) {
+	if (!Death() && nowMagicpoint < magicpoint) {
+		MPrecoverTimer += delta;
+		if (MPrecoverTimer >= 1) {
+			nowMagicpoint += magicpointRecover / 5;
+			if (HomeMPRecover) nowMagicpoint += magicpoint / 10;
+			if (nowMagicpoint > magicpoint) nowMagicpoint = magicpoint;
+			MPrecoverTimer = 0;
+		}
+	}
+}
+
+void ObjectBase::setArmor(float ar) {
+	armor = ar;
+}
+
+void ObjectBase::SetAtkSpeedLevel(int n) {
+	atkSpeedLevel = n;
+}
+
+void ObjectBase::LvUp() {
+	if (m_exp >= Exp[MyLevel - 1]) {
+		int h = HeroIdentifier - 1;
+		attack += HeroData[h][1];
+		atkSpeedLevel += HeroData[h][3];
+		health += HeroData[h][5];
+		healthRecover += HeroData[h][7];
+		armor += HeroData[h][9];
+		magicDenfence += HeroData[h][11];
+		magicpoint += HeroData[h][13];
+		magicpointRecover += HeroData[h][15];
+		m_exp = 0;
+		if (nowHealth + HeroData[h][5] < health) {
+			nowHealth += HeroData[h][5];
+		}
+		else {
+			nowHealth = health;
+		}
+		if (nowMagicpoint + HeroData[h][13] < magicpoint) {
+			nowMagicpoint += HeroData[h][13];
+		}
+		else {
+			nowMagicpoint = magicpoint;
+		}
+	}
+}
+
+int ObjectBase::ObjectType() {
+	return HeroIdentifier;
+}
+
+Vec2 ObjectBase::SpawnPoint() {
+	return Spawn;
+}
+
+void ObjectBase::setHomerecover() {
+	HomeHPRecover = true;
+	HomeMPRecover = true;
+}
+
+void ObjectBase::removeHomerecover() {
+	HomeHPRecover = false;
+	HomeMPRecover = false;
 }
