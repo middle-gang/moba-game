@@ -31,10 +31,12 @@ public:
 	int& AttackPower();				//引用形式返回攻击力
 	int& healthPower();				//引用形式返回目前生命
 	int& totalHealth();				//引用形式返回总生命值
+	void changeTotalHealth(int h);       //改变总生命值
 
 	void Die();					//死亡的时候调用
 	void BeAttack(int n);		//被造成伤害（Attack中调用）
 	void setVelocity(int v);	//设置速度
+	void changeVeclocity(int v);   //改变速度
 	void Move(Vec2 dest);		//移动函数，参数为坐标
 	void revive();				//复活到复活点
 	void setAttackingSpeed(float tms);//设置攻击速度（每秒攻击的次数）
@@ -58,23 +60,26 @@ public:
 	
 	ProgressView* BloodView;	//血条
 
+    int e_tower = 0;            //推倒对方塔数
 	int e_money = 300;			//对外击杀获取金钱
 	int e_exp;					//对外击杀获取经验
 	int m_kill = 0;				//我的击杀
 	int m_death = 0;			//我的死亡
-
+	
 	double DeadTime = 10;		//死亡时间
 	double waitTime = 0;		//等待时间
 protected:
 	int health;//总生命值
 	int nowHealth;//当前生命值
 	int attack;//攻击力
-	int armor;//护甲值
+	int attackarmor; //物抗
+	int powerarmor;//法抗
 	int power;//法术强度
 	int radium;//攻击半径
 	float velocity;//移动速度
-	int m_money=0;//我的金钱
+	int m_money=300;//我的金钱
 	int m_exp;//我的经验值
+	int m_level;//我的等级
 	int animeIdentifier;//动画标签：1.Bowman，2.Savage，3.Wizard
 
 	bool isAlive=true;			//是否存活

@@ -19,6 +19,7 @@ class GameScene2 : public cocos2d::Layer
 
 	MinionController flag[2];
 
+public:
 	ObjectBase Hero;
 	ObjectBase Tower[2];
 	ObjectBase Crystal[2];
