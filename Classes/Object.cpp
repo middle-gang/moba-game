@@ -168,6 +168,10 @@ void ObjectBase::setVelocity(int v) {
 	velocity = v;
 }
 
+void ObjectBase::changeVeclocity(int v)
+{
+}
+
 Vec2& ObjectBase::getPosition() {
 	return Position;
 }
@@ -178,6 +182,10 @@ int& ObjectBase::healthPower() {
 
 int& ObjectBase::totalHealth() {
 	return health;
+}
+
+void ObjectBase::changeTotalHealth(int h)
+{
 }
 
 int& ObjectBase::getRadium() {

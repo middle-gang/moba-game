@@ -1,7 +1,9 @@
 #include "GameScene2.h"
 #include "HelloWorldScene.h"
-#include"GloalVal.h"
+
+#include"GlobalVal.h"
 #include "Astar.h"
+
 
 USING_NS_CC;
 
@@ -114,6 +116,9 @@ bool GameScene2::init()
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	/////
+	
 
 	auto *dispatcher = Director::getInstance()->getEventDispatcher();
 	auto* keyListener = EventListenerKeyboard::create();

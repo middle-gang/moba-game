@@ -26,6 +26,7 @@ public:
 	void SavageIntro(cocos2d::Ref* pSender);
 	void WizardIntro(cocos2d::Ref* pSender);
 	void enterGameCallBack(cocos2d::Ref* pSender);
+	void returnMainMenu(cocos2d::Ref* pSender);
 
 private:
 	bool m_IsChangeScene;

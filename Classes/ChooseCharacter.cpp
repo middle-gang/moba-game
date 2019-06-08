@@ -2,7 +2,9 @@
 #include"GameScene0.h"
 #include"Object.h"
 #include "SimpleAudioEngine.h"
-#include"GloalVal.h"
+#include"GlobalVal.h"
+#include"HelloWorldScene.h"
+#include"Avene.h"
 USING_NS_CC;
 
 Scene* ChooseCharacter::createScene()
@@ -75,13 +77,20 @@ bool ChooseCharacter::init()
 		"photo/character/choose0.png",
 		"photo/character/choose.png",
 		CC_CALLBACK_1(ChooseCharacter::enterGameCallBack, this));
+
+	MenuItemImage* ReturnMII = MenuItemImage::create(
+		"photo/character/return0.png",
+		"photo/character/return.png",
+		CC_CALLBACK_1(ChooseCharacter::returnMainMenu, this)
+	);
 	
 	m_pBowmanMII->setPosition(330, 390);
 	m_pSavageMII->setPosition(550, 390);
 	m_pWizardMII->setPosition(770, 390);
-	ChooseMII->setPosition(480, 55);
+	ChooseMII->setPosition(700, 50);
+	ReturnMII->setPosition(330, 50);
 
-	Menu *pMenu = Menu::create(m_pBowmanMII, m_pSavageMII,m_pWizardMII,ChooseMII,NULL);
+	Menu *pMenu = Menu::create(m_pBowmanMII, m_pSavageMII,m_pWizardMII,ChooseMII,ReturnMII,NULL);
 	pMenu->setPosition(Vec2::ZERO);
 	addChild(pMenu, 1);
 
@@ -141,6 +150,15 @@ void ChooseCharacter::enterGameCallBack(cocos2d::Ref * pSender)
 		Director::getInstance()->replaceScene(reScene);
 		m_IsChangeScene = true;
 	}
+}
+
+void ChooseCharacter::returnMainMenu(cocos2d::Ref * pSender)
+{
+	TransitionScene * reScene = NULL;
+	Scene *pScene = Avene::createScene();
+	reScene = TransitionCrossFade::create(0.8f, pScene);
+	Director::getInstance()->replaceScene(reScene);
+	m_IsChangeScene = true;
 }
 
 void ChooseCharacter::update(float delta)

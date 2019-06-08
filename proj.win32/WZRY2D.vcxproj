@@ -161,7 +161,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\GameLogoLayer.cpp" />
     <ClCompile Include="..\Classes\GameScene0.cpp" />
     <ClCompile Include="..\Classes\GameScene2.cpp" />
-    <ClCompile Include="..\Classes\GloblVal.cpp" />
+    <ClCompile Include="..\Classes\GlobalVal.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\Help.cpp" />
     <ClCompile Include="..\Classes\Hero.cpp" />
@@ -186,7 +186,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\GameLogoLayer.h" />
     <ClInclude Include="..\Classes\GameScene0.h" />
     <ClInclude Include="..\Classes\GameScene2.h" />
-    <ClInclude Include="..\Classes\GloalVal.h" />
+    <ClInclude Include="..\Classes\GlobalVal.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\Help.h" />
     <ClInclude Include="..\Classes\hero.h" />
