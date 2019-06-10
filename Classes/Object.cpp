@@ -24,11 +24,13 @@ void ObjectBase::Kill_reward(ObjectBase& ene) {
 	else if (ene.HeroIdentifier == 5) {
 		m_exp += 9;
 		m_money += 35;
+		t_money += 35;
 		LvUp();
 	}
 	else if (ene.HeroIdentifier == 6) {
 		m_exp += 7;
 		m_money += 25;
+		t_money += 25;
 		LvUp();
 	}
 }
@@ -133,6 +135,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 	return attack;
 }
 
+
 void ObjectBase::setMoveablity(bool mab) {
 	Moveable = mab;
 }
@@ -184,9 +187,9 @@ int& ObjectBase::totalHealth() {
 	return health;
 }
 
-void ObjectBase::changeTotalHealth(int h)
-{
-}
+//void ObjectBase::changeTotalHealth(int h)
+//{
+//}
 
 int& ObjectBase::getRadium() {
 	return radium;
@@ -278,6 +281,16 @@ void ObjectBase::Move(Vec2 dest) {
 
 int ObjectBase::Money() {
 	return m_money;
+}
+
+int ObjectBase::tMoney()
+{
+	return t_money;
+}
+
+int ObjectBase::Level()
+{
+	return MyLevel;
 }
 
 void ObjectBase::setSpawnPoint(Vec2 spawn) {
@@ -437,8 +450,97 @@ void ObjectBase::LvUp() {
 	}
 }
 
+void ObjectBase::ExpAndMoneyIncrease(float delta) {
+	ExpAndMoneytimer += delta;
+	if (ExpAndMoneytimer >= 1) {
+		ExpAndMoneytimer = 0;
+		m_money += 3;
+		m_exp += 1;
+	}
+}
+
 int ObjectBase::ObjectType() {
 	return HeroIdentifier;
+}
+
+float ObjectBase::AttackSpeed()
+{
+	return attackingSpeed;
+}
+
+float ObjectBase::Power()
+{
+	return power;
+}
+
+int ObjectBase::MagicPoint()
+{
+	return magicpoint;
+}
+
+float ObjectBase::Armor()
+{
+	return armor;
+}
+
+float ObjectBase::MagicDefence()
+{
+	return magicDenfence;
+}
+
+int ObjectBase::HealthRecover()
+{
+	return healthRecover;
+}
+
+int ObjectBase::MagicPointRecover()
+{
+	return magicpointRecover;
+}
+
+float ObjectBase::ArmorIgnore()
+{
+	return armorIgnore;
+}
+
+float ObjectBase::MagicDefenseIgnore()
+{
+	return magicdenfenceIgnore;
+}
+
+float ObjectBase::PhysicBloodSuck()
+{
+	return physicBloodSuck;
+}
+
+float ObjectBase::MagicBloodSuck()
+{
+	return magicBloodSuck;
+}
+
+float ObjectBase::WaitLessen()
+{
+	return waitLessen;
+}
+
+float ObjectBase::E_Armor()
+{
+	return 0.0f;
+}
+
+float ObjectBase::E_MagicDenfense()
+{
+	return 0.0f;
+}
+
+int ObjectBase::E_Kill()
+{
+	return 0;
+}
+
+int ObjectBase::E_Level()
+{
+	return 0;
 }
 
 Vec2 ObjectBase::SpawnPoint() {
@@ -453,4 +555,59 @@ void ObjectBase::setHomerecover() {
 void ObjectBase::removeHomerecover() {
 	HomeHPRecover = false;
 	HomeMPRecover = false;
+}
+
+void ObjectBase::Buy(int EquipNumber) {
+	//log("EquipN=%d", EquipNumber);
+	EquipmentData buf = EquipList.findEquip(EquipNumber);
+	if (buf.ingriEquip.size() != 0) {
+		int nonSubst = 0;
+		std::vector<int> appList;
+		int virtualMoney = m_money;
+		for (int i = 0; i < 6; i++) {
+			if (equip[i] == -1) {
+				nonSubst++;
+				continue;
+			}
+			for (int j = 0; j < buf.ingriEquip.size(); j++) {
+				if (equip[i] == buf.ingriEquip[j]) {
+					appList.push_back(i);
+					virtualMoney += EquipList.findEquip(equip[i]).buymoney;
+				}
+			}
+		}
+		if (nonSubst == 6) return;
+
+		if(virtualMoney - buf.buymoney >= 0) {
+			m_money = virtualMoney;
+			for (int i = 0; i < appList.size(); i++) {
+				this->operator -(EquipList.findEquip(equip[appList[i]]));
+				equip[appList[i]] = -1;
+			}
+		}
+		else {
+			return;
+		}
+	}
+
+	for (int i = 0; i < 6; i++) {
+		if (equip[i] == -1) {
+			if (m_money >= buf.buymoney) {
+				equip[i] = EquipNumber;
+				m_money -= buf.buymoney;
+				this->operator+(buf);
+				break;
+			}
+		}
+	}
+}
+
+void ObjectBase::Sale(int locNumber) {
+	if (equip[locNumber] != -1) {
+		equip[locNumber] = -1;
+	}
+}
+
+void ObjectBase::setMoney(int n) {
+	m_money = n;
 }

@@ -30,19 +30,35 @@ bool GameScene0::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	/*m_pGameScene0 = GameScene0::create();
-	addChild(m_pGameScene0, 2);
-	m_pGameScene0->setVisible(true);*/
-
+	
 	m_pGameScene2 = GameScene2::create();
 	addChild(m_pGameScene2, 0);
 	m_pGameScene2->setVisible(true);
 
 
 	////////////////////////////////英雄属性
-	m_kill = m_pGameScene2->Hero.m_kill;
+	m_kill = m_pGameScene2->Hero.AttackPower();
 	m_death = m_pGameScene2->Hero.m_death;
-	
+	m_level = m_pGameScene2->Hero.Level();
+	m_money = m_pGameScene2->Hero.Money();
+	t_money = m_pGameScene2->Hero.tMoney();
+
+	 m_attack = m_pGameScene2->Hero.AttackPower();//攻击力
+	 m_power=m_pGameScene2->Hero.Power();//法术强度
+	 m_health=m_pGameScene2->Hero.totalHealth();//总生命值
+	 magicpoint = m_pGameScene2->Hero.MagicPoint();//法力值
+	 armor = m_pGameScene2->Hero.Armor();//护甲值
+	 magicDenfence = m_pGameScene2->Hero.MagicDefence();//魔抗
+	 attackingSpeed = m_pGameScene2->Hero.AttackSpeed();  //攻击速度
+	 waitLessen = m_pGameScene2->Hero.WaitLessen();//冷却缩减
+	 velocity = m_pGameScene2->Hero.getVelocity();//移动速度
+	 healthRecover = m_pGameScene2->Hero.HealthRecover();//生命回复
+	 magicpointRecover= m_pGameScene2->Hero.MagicPointRecover();//法力回复 
+	 armorIgnore= m_pGameScene2->Hero.ArmorIgnore();//护甲穿透
+	 magicdenfenceIgnore= m_pGameScene2->Hero.MagicDefenseIgnore();//法术穿透
+	 physicBloodSuck= m_pGameScene2->Hero.PhysicBloodSuck();//物理吸血
+	 magicBloodSuck = m_pGameScene2->Hero.MagicBloodSuck();//法术吸血
+
 
 	/////游戏时间
 	////游戏时间
@@ -110,11 +126,11 @@ bool GameScene0::init()
 	addChild(m_pSkill5Text, 3);
 	m_pSkill5Text->setVisible(false);
 
-	//创建属性界面
+	//创建属性1111111界面
 	AttriIsOpen = false;
-	MenuItemImage* pAttriWin = MenuItemImage::create("photo/main/box1.png", "photo/main/box1.png",
-		CC_CALLBACK_1(GameScene0::openAttri, this));
-	pAttriWin->setPosition(160, 420);
+	Sprite *m_pAttriWin = Sprite::create("photo/main/box1.png");
+	m_pAttriWin->setPosition(160, 420);
+	addChild(m_pAttriWin, 1);
 
 	m_AttriBack1 = Sprite::create("photo/Attribute/dialog1.png");
 	m_AttriBack1->setPosition(500, 236.5);
@@ -150,21 +166,72 @@ bool GameScene0::init()
 	m_pAttriMenu->setVisible(false);
 
 
-	//属性数值显示
-	
+	///////////////////属性11111数值显示
+	//窗口
 	sprintf(m_Textbuffer, "%d", m_kill);
 	m_pKillText = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 23);
 	m_pKillText->setPosition(100, 435);
 	addChild(m_pKillText, 3);
 
+	m_pKill2Text=Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 23);
+	m_pKill2Text->setColor(Color3B::BLUE);
+	m_pKill2Text->setPosition(165,405);
+	addChild(m_pKill2Text, 3);
+
+	m_pKill3Text=Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 22);
+	m_pKill3Text->setPosition(342, 287);
+	addChild(m_pKill3Text, 13);
+		
 	sprintf(m_Textbuffer, "%d", m_death);
 	m_pDeathText = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 23);
 	m_pDeathText->setPosition(150, 435);
 	addChild(m_pDeathText, 3);
 
+	m_pDeath2Text = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 22);
+	m_pDeath2Text->setPosition(390, 287);
+	addChild(m_pDeath2Text, 13);
+
 	Label* m_pAssist = Label::createWithTTF("0", "fonts/msyh.ttc", 23);
 	m_pAssist->setPosition(200, 435);
 	addChild(m_pAssist, 3);
+
+	////////////////创建属性2222222222222界面
+	MenuItemImage *pAttriWin = MenuItemImage::create("photo/Attribute/button.png", "photo/Attribute/button-1.png",
+		CC_CALLBACK_1(GameScene0::openAttri2, this));
+	pAttriWin->setPosition(930, 150);
+
+	m_AttriB1 = Sprite::create("photo/Attribute/attriB1.png");
+	m_AttriB1->setPosition(500, 236.5);
+	addChild(m_AttriB1, 11);
+	m_AttriB1->setVisible(false);
+
+	m_AttriB2 = Sprite::create("photo/Attribute/attriB2.png");
+	m_AttriB2->setPosition(500, 236.5);
+	addChild(m_AttriB2, 11);
+	m_AttriB2->setVisible(false);
+
+	m_button1 = MenuItemImage::create("photo/Attribute/button1.png",
+		"photo/Attribute/button1-1.png",
+		"photo/Attribute/button1-1.png",
+		CC_CALLBACK_1(GameScene0::transTo1, this));
+	m_button1->setPosition(166,328);
+	m_button1->setEnabled(false);
+
+	m_button2 = MenuItemImage::create("photo/Attribute/button2.png",
+		"photo/Attribute/button2-1.png",
+		"photo/Attribute/button2-1.png",
+		CC_CALLBACK_1(GameScene0::transTo2, this));
+	m_button2->setPosition(166,286);
+
+	m_closebutton = MenuItemImage::create("photo/exit_up.png",
+		"photo/exit_down.png",
+		CC_CALLBACK_1(GameScene0::closeAttri2, this));
+	m_closebutton->setPosition(870, 400);
+
+	m_AttriMenu = Menu::create(m_button1, m_button2, m_closebutton, NULL);
+	m_AttriMenu->setPosition(Vec2::ZERO);
+	addChild(m_AttriMenu, 12);
+	m_AttriMenu->setVisible(false);
 
 	/////////////////////////////创建商店界面
 	ShopIsOpen = false;
@@ -173,62 +240,77 @@ bool GameScene0::init()
 	pShopWin->setPosition(930, 200);
 
 	//////金钱显示
-	m_money = m_pGameScene2->Hero.Money();
 	sprintf(m_Textbuffer, "%d", m_money);
 	m_pMoneyText= Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 15);
 	m_pMoneyText->setColor(Color3B::BLACK);
 	m_pMoneyText->setPosition(928, 189);
 	addChild(m_pMoneyText, 3);
 
-	//sprintf(m_Textbuffer, "%d", e_money2);
 	m_pMoney2Text = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 23);
 	m_pMoney2Text->setColor(Color3B::BLUE);
 	m_pMoney2Text->setPosition(180, 375);
 	m_pMoney2Text->setVisible(false);
 	addChild(m_pMoney2Text, 13);
 
+	t_pMoneyText = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
+	t_pMoneyText->setColor(Color3B::BLACK);
+	t_pMoneyText->setPosition(430, 325);
+	t_pMoneyText->setVisible(false);
+	addChild(t_pMoneyText, 13);
 
+	t_pMoney2Text = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
+	t_pMoney2Text->setColor(Color3B::BLACK);
+	t_pMoney2Text->setPosition(487, 288);
+	t_pMoney2Text->setVisible(false);
+	addChild(t_pMoney2Text, 13);
+
+	//商店背景
 	m_ShopBack = Sprite::create("photo/shop/background.png");
 	m_ShopBack->setPosition(500, 236.5);
 	addChild(m_ShopBack, 11);
 	m_ShopBack->setVisible(false);
 
-	///////////////商店物品
+	/////////////////////////////////////////////////////////////////////////////////商店物品
+
+	memset(&s_Equip, 0, sizeof(s_Equip));
+	//////////////////////////////////////////////////////按钮
 	////推荐
 	m_pRecomBac = Sprite::create("photo/shop/recomB.png");
 	m_pRecomBac->setPosition(503, 225);
 	addChild(m_pRecomBac, 14);
 	m_pRecomBac->setVisible(false);
 
-	m_pRecom1 = MenuItemImage::create("photo/shop/move/1.jpg",
+	s_Equip[0][0].pMenuItemImage = MenuItemImage::create("photo/shop/move/1.jpg",
 		"photo/shop/move/1_1.jpg",
 		"photo/shop/move/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pRecom2 = MenuItemImage::create("photo/shop/defense/1.jpg",
+	s_Equip[0][1].pMenuItemImage = MenuItemImage::create("photo/shop/defense/1.jpg",
 		"photo/shop/defense/1_1.jpg",
 		"photo/shop/defense/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pRecom3 = MenuItemImage::create("photo/shop/defense/2.jpg",
+	s_Equip[0][2].pMenuItemImage = MenuItemImage::create("photo/shop/defense/2.jpg",
 		"photo/shop/defense/2_1.jpg",
 		"photo/shop/defense/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pRecom4 = MenuItemImage::create("photo/shop/defense/3.jpg",
+	s_Equip[0][3].pMenuItemImage = MenuItemImage::create("photo/shop/defense/3.jpg",
 		"photo/shop/defense/3_1.jpg",
 		"photo/shop/defense/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pRecom5 = MenuItemImage::create("photo/shop/magic/2.jpg",
+	s_Equip[0][4].pMenuItemImage = MenuItemImage::create("photo/shop/magic/2.jpg",
 		"photo/shop/magic/2_1.jpg",
 		"photo/shop/magic/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
 
-	m_pRecom1->setPosition(270, 370);   m_pRecom2->setPosition(390, 370);   m_pRecom3->setPosition(510, 370);   m_pRecom4->setPosition(630, 370);
-	m_pRecom5->setPosition(270, 285);
+	for (int i = 0; i <= 3;i++)
+	{
+		s_Equip[0][i].pMenuItemImage->setPosition(270 + i * 120, 370);
+		s_Equip[0][i].pMenuItemImage->setEnabled(false); 
+	}
+	s_Equip[0][4].pMenuItemImage->setPosition(270, 285);
+	s_Equip[0][4].pMenuItemImage->setEnabled(false);
 
-	m_pRecom1->setEnabled(false);   m_pRecom2->setEnabled(false);   m_pRecom3->setEnabled(false);   m_pRecom4->setEnabled(false);
-	m_pRecom5->setEnabled(false);
-
-	m_pRecommandMenu = Menu::create(m_pRecom1, m_pRecom2, m_pRecom3, m_pRecom4,
-		m_pRecom5, NULL);
+	m_pRecommandMenu = Menu::create(s_Equip[0][0].pMenuItemImage, s_Equip[0][1].pMenuItemImage, s_Equip[0][2].pMenuItemImage, s_Equip[0][3].pMenuItemImage,
+		s_Equip[0][4].pMenuItemImage, NULL);
 	m_pRecommandMenu->setPosition(Vec2::ZERO);
 	addChild(m_pRecommandMenu, 13);
 	m_pRecommandMenu->setVisible(false);
@@ -239,85 +321,88 @@ bool GameScene0::init()
 	addChild(m_pAttackBac, 14);
 	m_pAttackBac->setVisible(false);
 
-	m_pAttack1 = MenuItemImage::create("photo/shop/attack/1.jpg",
+	s_Equip[1][0].pMenuItemImage = MenuItemImage::create("photo/shop/attack/1.jpg",
 		"photo/shop/attack/1_1.jpg",
 		"photo/shop/attack/1_1.jpg",
-		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack2 = MenuItemImage::create("photo/shop/attack/2.jpg",
+		CC_CALLBACK_1(GameScene0::attack0, this));
+	s_Equip[1][1].pMenuItemImage = MenuItemImage::create("photo/shop/attack/2.jpg",
 		"photo/shop/attack/2_1.jpg",
 		"photo/shop/attack/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack3 = MenuItemImage::create("photo/shop/attack/3.jpg",
+	s_Equip[1][2].pMenuItemImage = MenuItemImage::create("photo/shop/attack/3.jpg",
 		"photo/shop/attack/3_1.jpg",
 		"photo/shop/attack/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack4 = MenuItemImage::create("photo/shop/attack/4.jpg",
+	s_Equip[1][3].pMenuItemImage = MenuItemImage::create("photo/shop/attack/4.jpg",
 		"photo/shop/attack/4_1.jpg",
 		"photo/shop/attack/4_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack5 = MenuItemImage::create("photo/shop/attack/5.jpg",
+	s_Equip[1][4].pMenuItemImage = MenuItemImage::create("photo/shop/attack/5.jpg",
 		"photo/shop/attack/5_1.jpg",
 		"photo/shop/attack/5_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack6 = MenuItemImage::create("photo/shop/attack/6.jpg",
+	s_Equip[1][5].pMenuItemImage = MenuItemImage::create("photo/shop/attack/6.jpg",
 		"photo/shop/attack/6_1.jpg",
 		"photo/shop/attack/6_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack7 = MenuItemImage::create("photo/shop/attack/7.jpg",
+	s_Equip[1][6].pMenuItemImage = MenuItemImage::create("photo/shop/attack/7.jpg",
 		"photo/shop/attack/7_1.jpg",
 		"photo/shop/attack/7_1.jpg",
-		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack8 = MenuItemImage::create("photo/shop/attack/8.jpg",
+		CC_CALLBACK_1(GameScene0::attack6, this));
+	s_Equip[1][7].pMenuItemImage = MenuItemImage::create("photo/shop/attack/8.jpg",
 		"photo/shop/attack/8_1.jpg",
 		"photo/shop/attack/8_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack9 = MenuItemImage::create("photo/shop/attack/9.jpg",
+	s_Equip[1][8].pMenuItemImage = MenuItemImage::create("photo/shop/attack/9.jpg",
 		"photo/shop/attack/9_1.jpg",
 		"photo/shop/attack/9_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack10 = MenuItemImage::create("photo/shop/attack/10.jpg",
+	s_Equip[1][9].pMenuItemImage = MenuItemImage::create("photo/shop/attack/10.jpg",
 		"photo/shop/attack/10_1.jpg",
 		"photo/shop/attack/10_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack11 = MenuItemImage::create("photo/shop/attack/11.jpg",
+	s_Equip[1][10].pMenuItemImage = MenuItemImage::create("photo/shop/attack/11.jpg",
 		"photo/shop/attack/11_1.jpg",
 		"photo/shop/attack/11_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack12 = MenuItemImage::create("photo/shop/attack/12.jpg",
+	s_Equip[1][11].pMenuItemImage = MenuItemImage::create("photo/shop/attack/12.jpg",
 		"photo/shop/attack/12_1.jpg",
 		"photo/shop/attack/12_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack13 = MenuItemImage::create("photo/shop/attack/13.jpg",
+	s_Equip[1][12].pMenuItemImage = MenuItemImage::create("photo/shop/attack/13.jpg",
 		"photo/shop/attack/13_1.jpg",
 		"photo/shop/attack/13_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack14 = MenuItemImage::create("photo/shop/attack/14.jpg",
+	s_Equip[1][13].pMenuItemImage = MenuItemImage::create("photo/shop/attack/14.jpg",
 		"photo/shop/attack/14_1.jpg",
 		"photo/shop/attack/14_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack15 = MenuItemImage::create("photo/shop/attack/15.jpg",
+	s_Equip[1][14].pMenuItemImage = MenuItemImage::create("photo/shop/attack/15.jpg",
 		"photo/shop/attack/15_1.jpg",
 		"photo/shop/attack/15_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAttack16 = MenuItemImage::create("photo/shop/attack/16.jpg",
+	s_Equip[1][15].pMenuItemImage = MenuItemImage::create("photo/shop/attack/16.jpg",
 		"photo/shop/attack/16_1.jpg",
 		"photo/shop/attack/16_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
 
-	m_pAttack1->setPosition(270, 370);   m_pAttack2->setPosition(390, 370);   m_pAttack3->setPosition(510, 370);   m_pAttack4->setPosition(630, 370);
-	m_pAttack5->setPosition(270, 285);  m_pAttack6->setPosition(390, 285);   m_pAttack7->setPosition(510, 285);   m_pAttack8->setPosition(630, 285);
-	m_pAttack9->setPosition(270, 200);  m_pAttack10->setPosition(390, 200);  m_pAttack11->setPosition(510, 200);  m_pAttack12->setPosition(630, 200);
-	m_pAttack13->setPosition(270, 115); m_pAttack14->setPosition(390, 115);  m_pAttack15->setPosition(510, 115);  m_pAttack16->setPosition(630, 115);
+	for (int i = 0; i <= 15; i++)
+	{
+		//s_Equip[1][i].pMenuItemImage->setEnabled(false);
+		if (i <= 3)
+		{
+			s_Equip[1][i].pMenuItemImage->setPosition(270 + i * 120, 370);
+		}
+		else //if(i<=7)
+		{
+			s_Equip[1][i].pMenuItemImage->setPosition(270 + (i%4) * 120, 370 - (i / 4) * 85);
+		}
+	}
 
-	m_pAttack1->setEnabled(false);   m_pAttack2->setEnabled(false);   m_pAttack3->setEnabled(false);   m_pAttack4->setEnabled(false);
-	m_pAttack5->setEnabled(false);   m_pAttack6->setEnabled(false);   m_pAttack7->setEnabled(false);   m_pAttack8->setEnabled(false);
-	m_pAttack9->setEnabled(false);   m_pAttack10->setEnabled(false);  m_pAttack11->setEnabled(false);  m_pAttack12->setEnabled(false);
-	m_pAttack13->setEnabled(false);  m_pAttack14->setEnabled(false);  m_pAttack15->setEnabled(false);  m_pAttack16->setEnabled(false);
-
-	m_pAttackMenu = Menu::create(m_pAttack1, m_pAttack2, m_pAttack3, m_pAttack4,
-		m_pAttack5, m_pAttack6, m_pAttack7, m_pAttack8,
-		m_pAttack9, m_pAttack10, m_pAttack11, m_pAttack12,
-		m_pAttack13, m_pAttack14, m_pAttack15, m_pAttack16, NULL);
+	m_pAttackMenu = Menu::create(s_Equip[1][0].pMenuItemImage, s_Equip[1][1].pMenuItemImage, s_Equip[1][2].pMenuItemImage, s_Equip[1][3].pMenuItemImage,
+		s_Equip[1][4].pMenuItemImage, s_Equip[1][5].pMenuItemImage, s_Equip[1][6].pMenuItemImage, s_Equip[1][7].pMenuItemImage,
+		s_Equip[1][8].pMenuItemImage, s_Equip[1][9].pMenuItemImage, s_Equip[1][10].pMenuItemImage, s_Equip[1][11].pMenuItemImage,
+		s_Equip[1][12].pMenuItemImage, s_Equip[1][13].pMenuItemImage, s_Equip[1][14].pMenuItemImage, s_Equip[1][15].pMenuItemImage, NULL);
 	m_pAttackMenu->setPosition(Vec2::ZERO);
 	addChild(m_pAttackMenu, 13);
 	m_pAttackMenu->setVisible(false);
@@ -328,85 +413,88 @@ bool GameScene0::init()
 	addChild(m_pMagicBac, 14);
 	m_pMagicBac->setVisible(false);
 
-	m_pMagic1 = MenuItemImage::create("photo/shop/magic/1.jpg",
+	s_Equip[2][0].pMenuItemImage = MenuItemImage::create("photo/shop/magic/1.jpg",
 		"photo/shop/magic/1_1.jpg",
 		"photo/shop/magic/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic2 = MenuItemImage::create("photo/shop/magic/2.jpg",
+	s_Equip[2][1].pMenuItemImage = MenuItemImage::create("photo/shop/magic/2.jpg",
 		"photo/shop/magic/2_1.jpg",
 		"photo/shop/magic/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic3 = MenuItemImage::create("photo/shop/magic/3.jpg",
+	s_Equip[2][2].pMenuItemImage = MenuItemImage::create("photo/shop/magic/3.jpg",
 		"photo/shop/magic/3_1.jpg",
 		"photo/shop/magic/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic4 = MenuItemImage::create("photo/shop/magic/4.jpg",
+	s_Equip[2][3].pMenuItemImage = MenuItemImage::create("photo/shop/magic/4.jpg",
 		"photo/shop/magic/4_1.jpg",
 		"photo/shop/magic/4_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic5 = MenuItemImage::create("photo/shop/magic/5.jpg",
+	s_Equip[2][4].pMenuItemImage = MenuItemImage::create("photo/shop/magic/5.jpg",
 		"photo/shop/magic/5_1.jpg",
 		"photo/shop/magic/5_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic6 = MenuItemImage::create("photo/shop/magic/6.jpg",
+	s_Equip[2][5].pMenuItemImage = MenuItemImage::create("photo/shop/magic/6.jpg",
 		"photo/shop/magic/6_1.jpg",
 		"photo/shop/magic/6_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic7 = MenuItemImage::create("photo/shop/magic/7.jpg",
+	s_Equip[2][6].pMenuItemImage = MenuItemImage::create("photo/shop/magic/7.jpg",
 		"photo/shop/magic/7_1.jpg",
 		"photo/shop/magic/7_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic8 = MenuItemImage::create("photo/shop/magic/8.jpg",
+	s_Equip[2][7].pMenuItemImage = MenuItemImage::create("photo/shop/magic/8.jpg",
 		"photo/shop/magic/8_1.jpg",
 		"photo/shop/magic/8_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic9 = MenuItemImage::create("photo/shop/magic/9.jpg",
+	s_Equip[2][8].pMenuItemImage = MenuItemImage::create("photo/shop/magic/9.jpg",
 		"photo/shop/magic/9_1.jpg",
 		"photo/shop/magic/9_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic10 = MenuItemImage::create("photo/shop/magic/10.jpg",
+	s_Equip[2][9].pMenuItemImage = MenuItemImage::create("photo/shop/magic/10.jpg",
 		"photo/shop/magic/10_1.jpg",
 		"photo/shop/magic/10_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic11 = MenuItemImage::create("photo/shop/magic/11.jpg",
+	s_Equip[2][10].pMenuItemImage = MenuItemImage::create("photo/shop/magic/11.jpg",
 		"photo/shop/magic/11_1.jpg",
 		"photo/shop/magic/11_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic12 = MenuItemImage::create("photo/shop/magic/12.jpg",
+	s_Equip[2][11].pMenuItemImage = MenuItemImage::create("photo/shop/magic/12.jpg",
 		"photo/shop/magic/12_1.jpg",
 		"photo/shop/magic/12_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic13 = MenuItemImage::create("photo/shop/magic/13.jpg",
+	s_Equip[2][12].pMenuItemImage = MenuItemImage::create("photo/shop/magic/13.jpg",
 		"photo/shop/magic/13_1.jpg",
 		"photo/shop/magic/13_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic14 = MenuItemImage::create("photo/shop/magic/14.jpg",
+	s_Equip[2][13].pMenuItemImage = MenuItemImage::create("photo/shop/magic/14.jpg",
 		"photo/shop/magic/14_1.jpg",
 		"photo/shop/magic/14_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic15 = MenuItemImage::create("photo/shop/magic/15.jpg",
+	s_Equip[2][14].pMenuItemImage = MenuItemImage::create("photo/shop/magic/15.jpg",
 		"photo/shop/magic/15_1.jpg",
 		"photo/shop/magic/15_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMagic16 = MenuItemImage::create("photo/shop/magic/16.jpg",
+	s_Equip[2][15].pMenuItemImage = MenuItemImage::create("photo/shop/magic/16.jpg",
 		"photo/shop/magic/16_1.jpg",
 		"photo/shop/magic/16_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
 
-	m_pMagic1->setPosition(270, 370);  m_pMagic2->setPosition(390, 370);   m_pMagic3->setPosition(510, 370);    m_pMagic4->setPosition(630, 370);
-	m_pMagic5->setPosition(270, 285);  m_pMagic6->setPosition(390, 285);   m_pMagic7->setPosition(510, 285);   m_pMagic8->setPosition(630, 285);
-	m_pMagic9->setPosition(270, 200);  m_pMagic10->setPosition(390, 200);  m_pMagic11->setPosition(510, 200);  m_pMagic12->setPosition(630, 200);
-	m_pMagic13->setPosition(270, 115); m_pMagic14->setPosition(390, 115);  m_pMagic15->setPosition(510, 115);  m_pMagic16->setPosition(630, 115);
+	for (int i = 0; i <= 15; i++)
+	{
+		s_Equip[2][i].pMenuItemImage->setEnabled(false);
+		if (i <= 3)
+		{
+			s_Equip[2][i].pMenuItemImage->setPosition(270 + i * 120, 370);
+		}
+		else //if(i<=7)
+		{
+			s_Equip[2][i].pMenuItemImage->setPosition(270 + (i%4) * 120, 370 - (i / 4) * 85);
+		}
+	}
 
-	m_pMagic1->setEnabled(false);   m_pMagic2->setEnabled(false);   m_pMagic3->setEnabled(false);   m_pMagic4->setEnabled(false);
-	m_pMagic5->setEnabled(false);   m_pMagic6->setEnabled(false);   m_pMagic7->setEnabled(false);   m_pMagic8->setEnabled(false);
-	m_pMagic9->setEnabled(false);   m_pMagic10->setEnabled(false);  m_pMagic11->setEnabled(false);  m_pMagic12->setEnabled(false);
-	m_pMagic13->setEnabled(false);  m_pMagic14->setEnabled(false);  m_pMagic15->setEnabled(false);  m_pMagic16->setEnabled(false);
-
-	m_pMagicMenu = Menu::create(m_pMagic1, m_pMagic2, m_pMagic3, m_pMagic4,
-		m_pMagic5, m_pMagic6, m_pMagic7, m_pMagic8,
-		m_pMagic9, m_pMagic10, m_pMagic11, m_pMagic12,
-		m_pMagic13, m_pMagic14, m_pMagic15, m_pMagic16, NULL);
+	m_pMagicMenu = Menu::create(s_Equip[2][0].pMenuItemImage, s_Equip[2][1].pMenuItemImage, s_Equip[2][2].pMenuItemImage, s_Equip[2][3].pMenuItemImage,
+		s_Equip[2][4].pMenuItemImage, s_Equip[2][5].pMenuItemImage, s_Equip[2][6].pMenuItemImage, s_Equip[2][7].pMenuItemImage,
+		s_Equip[2][8].pMenuItemImage, s_Equip[2][9].pMenuItemImage, s_Equip[2][10].pMenuItemImage, s_Equip[2][11].pMenuItemImage,
+		s_Equip[2][12].pMenuItemImage, s_Equip[2][13].pMenuItemImage, s_Equip[2][14].pMenuItemImage, s_Equip[2][15].pMenuItemImage, NULL);
 	m_pMagicMenu->setPosition(Vec2::ZERO);
 	addChild(m_pMagicMenu, 13);
 	m_pMagicMenu->setVisible(false);
@@ -417,85 +505,88 @@ bool GameScene0::init()
 	addChild(m_pDefenseBac, 14);
 	m_pDefenseBac->setVisible(false);
 
-	m_pDefense1 = MenuItemImage::create("photo/shop/defense/1.jpg",
+	s_Equip[3][0].pMenuItemImage = MenuItemImage::create("photo/shop/defense/1.jpg",
 		"photo/shop/defense/1_1.jpg",
 		"photo/shop/defense/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense2 = MenuItemImage::create("photo/shop/defense/2.jpg",
+	s_Equip[3][1].pMenuItemImage = MenuItemImage::create("photo/shop/defense/2.jpg",
 		"photo/shop/defense/2_1.jpg",
 		"photo/shop/defense/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense3 = MenuItemImage::create("photo/shop/defense/3.jpg",
+	s_Equip[3][2].pMenuItemImage = MenuItemImage::create("photo/shop/defense/3.jpg",
 		"photo/shop/defense/3_1.jpg",
 		"photo/shop/defense/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense4 = MenuItemImage::create("photo/shop/defense/4.jpg",
+	s_Equip[3][3].pMenuItemImage = MenuItemImage::create("photo/shop/defense/4.jpg",
 		"photo/shop/defense/4_1.jpg",
 		"photo/shop/defense/4_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense5 = MenuItemImage::create("photo/shop/defense/5.jpg",
+	s_Equip[3][4].pMenuItemImage = MenuItemImage::create("photo/shop/defense/5.jpg",
 		"photo/shop/defense/5_1.jpg",
 		"photo/shop/defense/5_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense6 = MenuItemImage::create("photo/shop/defense/6.jpg",
+	s_Equip[3][5].pMenuItemImage = MenuItemImage::create("photo/shop/defense/6.jpg",
 		"photo/shop/defense/6_1.jpg",
 		"photo/shop/defense/6_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense7 = MenuItemImage::create("photo/shop/defense/7.jpg",
+	s_Equip[3][6].pMenuItemImage = MenuItemImage::create("photo/shop/defense/7.jpg",
 		"photo/shop/defense/7_1.jpg",
 		"photo/shop/defense/7_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense8 = MenuItemImage::create("photo/shop/defense/8.jpg",
+	s_Equip[3][7].pMenuItemImage = MenuItemImage::create("photo/shop/defense/8.jpg",
 		"photo/shop/defense/8_1.jpg",
 		"photo/shop/defense/8_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense9 = MenuItemImage::create("photo/shop/defense/9.jpg",
+	s_Equip[3][8].pMenuItemImage = MenuItemImage::create("photo/shop/defense/9.jpg",
 		"photo/shop/defense/9_1.jpg",
 		"photo/shop/defense/9_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense10 = MenuItemImage::create("photo/shop/defense/10.jpg",
+	s_Equip[3][9].pMenuItemImage = MenuItemImage::create("photo/shop/defense/10.jpg",
 		"photo/shop/defense/10_1.jpg",
 		"photo/shop/defense/10_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense11 = MenuItemImage::create("photo/shop/defense/11.jpg",
+	s_Equip[3][10].pMenuItemImage = MenuItemImage::create("photo/shop/defense/11.jpg",
 		"photo/shop/defense/11_1.jpg",
 		"photo/shop/defense/11_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense12 = MenuItemImage::create("photo/shop/defense/12.jpg",
+	s_Equip[3][11].pMenuItemImage = MenuItemImage::create("photo/shop/defense/12.jpg",
 		"photo/shop/defense/12_1.jpg",
 		"photo/shop/defense/12_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense13 = MenuItemImage::create("photo/shop/defense/13.jpg",
+	s_Equip[3][12].pMenuItemImage = MenuItemImage::create("photo/shop/defense/13.jpg",
 		"photo/shop/defense/13_1.jpg",
 		"photo/shop/defense/13_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense14 = MenuItemImage::create("photo/shop/defense/14.jpg",
+	s_Equip[3][13].pMenuItemImage = MenuItemImage::create("photo/shop/defense/14.jpg",
 		"photo/shop/defense/14_1.jpg",
 		"photo/shop/defense/14_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense15 = MenuItemImage::create("photo/shop/defense/15.jpg",
+	s_Equip[3][14].pMenuItemImage = MenuItemImage::create("photo/shop/defense/15.jpg",
 		"photo/shop/defense/15_1.jpg",
 		"photo/shop/defense/15_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pDefense16 = MenuItemImage::create("photo/shop/defense/16.jpg",
+	s_Equip[3][15].pMenuItemImage = MenuItemImage::create("photo/shop/defense/16.jpg",
 		"photo/shop/defense/16_1.jpg",
 		"photo/shop/defense/16_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
 
-	m_pDefense1->setPosition(270, 370);  m_pDefense2->setPosition(390, 370);   m_pDefense3->setPosition(510, 370);    m_pDefense4->setPosition(630, 370);
-	m_pDefense5->setPosition(270, 285);  m_pDefense6->setPosition(390, 285);   m_pDefense7->setPosition(510, 285);   m_pDefense8->setPosition(630, 285);
-	m_pDefense9->setPosition(270, 200);  m_pDefense10->setPosition(390, 200);  m_pDefense11->setPosition(510, 200);  m_pDefense12->setPosition(630, 200);
-	m_pDefense13->setPosition(270, 115); m_pDefense14->setPosition(390, 115);  m_pDefense15->setPosition(510, 115);  m_pDefense16->setPosition(630, 115);
+	for (int i = 0; i <= 15; i++)
+	{
+		s_Equip[3][i].pMenuItemImage->setEnabled(false);
+		if (i <= 3)
+		{
+			s_Equip[3][i].pMenuItemImage->setPosition(270 + i * 120, 370);
+		}
+		else //if(i<=7)
+		{
+			s_Equip[3][i].pMenuItemImage->setPosition(270 + (i%4) * 120, 370 - (i / 4) * 85);
+		}
+	}
 
-	m_pDefense1->setEnabled(false);   m_pDefense2->setEnabled(false);   m_pDefense3->setEnabled(false);   m_pDefense4->setEnabled(false);
-	m_pDefense5->setEnabled(false);   m_pDefense6->setEnabled(false);   m_pDefense7->setEnabled(false);   m_pDefense8->setEnabled(false);
-	m_pDefense9->setEnabled(false);   m_pDefense10->setEnabled(false);  m_pDefense11->setEnabled(false);  m_pDefense12->setEnabled(false);
-	m_pDefense13->setEnabled(false);  m_pDefense14->setEnabled(false);  m_pDefense15->setEnabled(false);  m_pDefense16->setEnabled(false);
-
-	m_pDefenseMenu = Menu::create(m_pDefense1, m_pDefense2, m_pDefense3, m_pDefense4,
-		m_pDefense5, m_pDefense6, m_pDefense7, m_pDefense8,
-		m_pDefense9, m_pDefense10, m_pDefense11, m_pDefense12,
-		m_pDefense13, m_pDefense14, m_pDefense15, m_pDefense16, NULL);
+	m_pDefenseMenu = Menu::create(s_Equip[3][0].pMenuItemImage, s_Equip[3][1].pMenuItemImage, s_Equip[3][2].pMenuItemImage, s_Equip[3][3].pMenuItemImage,
+		s_Equip[3][4].pMenuItemImage, s_Equip[3][5].pMenuItemImage, s_Equip[3][6].pMenuItemImage, s_Equip[3][7].pMenuItemImage,
+		s_Equip[3][8].pMenuItemImage, s_Equip[3][9].pMenuItemImage, s_Equip[3][10].pMenuItemImage, s_Equip[3][11].pMenuItemImage,
+		s_Equip[3][12].pMenuItemImage, s_Equip[3][13].pMenuItemImage, s_Equip[3][14].pMenuItemImage, s_Equip[3][15].pMenuItemImage, NULL);
 	m_pDefenseMenu->setPosition(Vec2::ZERO);
 	addChild(m_pDefenseMenu, 13);
 	m_pDefenseMenu->setVisible(false);
@@ -506,43 +597,49 @@ bool GameScene0::init()
 	addChild(m_pMoveBac, 14);
 	m_pMoveBac->setVisible(false);
 
-	m_pMove1 = MenuItemImage::create("photo/shop/move/1.jpg",
+	s_Equip[4][0].pMenuItemImage = MenuItemImage::create("photo/shop/move/1.jpg",
 		"photo/shop/move/1_1.jpg",
 		"photo/shop/move/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMove2 = MenuItemImage::create("photo/shop/move/2.jpg",
+	s_Equip[4][1].pMenuItemImage = MenuItemImage::create("photo/shop/move/2.jpg",
 		"photo/shop/move/2_1.jpg",
 		"photo/shop/move/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMove3 = MenuItemImage::create("photo/shop/move/3.jpg",
+	s_Equip[4][2].pMenuItemImage = MenuItemImage::create("photo/shop/move/3.jpg",
 		"photo/shop/move/3_1.jpg",
 		"photo/shop/move/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMove4 = MenuItemImage::create("photo/shop/move/4.jpg",
+	s_Equip[4][3].pMenuItemImage = MenuItemImage::create("photo/shop/move/4.jpg",
 		"photo/shop/move/4_1.jpg",
 		"photo/shop/move/4_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMove5 = MenuItemImage::create("photo/shop/move/5.jpg",
+	s_Equip[4][4].pMenuItemImage = MenuItemImage::create("photo/shop/move/5.jpg",
 		"photo/shop/move/5_1.jpg",
 		"photo/shop/move/5_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMove6 = MenuItemImage::create("photo/shop/move/6.jpg",
+	s_Equip[4][5].pMenuItemImage = MenuItemImage::create("photo/shop/move/6.jpg",
 		"photo/shop/move/6_1.jpg",
 		"photo/shop/move/6_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pMove7 = MenuItemImage::create("photo/shop/move/7.jpg",
+	s_Equip[4][6].pMenuItemImage = MenuItemImage::create("photo/shop/move/7.jpg",
 		"photo/shop/move/7_1.jpg",
 		"photo/shop/move/7_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
 
-	m_pMove1->setPosition(270, 370);   m_pMove2->setPosition(390, 370);    m_pMove3->setPosition(510, 370);    m_pMove4->setPosition(630, 370);
-	m_pMove5->setPosition(270, 285);  m_pMove6->setPosition(390, 285);   m_pMove7->setPosition(510, 285);
-
-	m_pMove1->setEnabled(false);   m_pMove2->setEnabled(false);   m_pMove3->setEnabled(false);   m_pMove4->setEnabled(false);
-	m_pMove5->setEnabled(false);   m_pMove6->setEnabled(false);   m_pMove7->setEnabled(false);
-
-	m_pMoveMenu = Menu::create(m_pMove1, m_pMove2, m_pMove3, m_pMove4,
-		m_pMove5, m_pMove6, m_pMove7, NULL);
+	for (int i = 0; i <= 6; i++)
+	{
+		s_Equip[4][i].pMenuItemImage->setEnabled(false);
+		if (i <= 3)
+		{
+			s_Equip[4][i].pMenuItemImage->setPosition(270 + i * 120, 370);
+		}
+		else //if(i<=7)
+		{
+			s_Equip[4][i].pMenuItemImage->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
+		}
+	}
+	m_pMoveMenu = Menu::create(s_Equip[4][0].pMenuItemImage, s_Equip[4][1].pMenuItemImage, s_Equip[4][2].pMenuItemImage, s_Equip[4][3].pMenuItemImage,
+		s_Equip[4][4].pMenuItemImage, s_Equip[4][5].pMenuItemImage, s_Equip[4][6].pMenuItemImage, NULL);
 	m_pMoveMenu->setPosition(Vec2::ZERO);
 	addChild(m_pMoveMenu, 13);
 	m_pMoveMenu->setVisible(false);
@@ -553,43 +650,50 @@ bool GameScene0::init()
 	addChild(m_pBattleBac, 14);
 	m_pBattleBac->setVisible(false);
 
-	m_pBattle1 = MenuItemImage::create("photo/shop/battle/1.jpg",
+	s_Equip[5][0].pMenuItemImage = MenuItemImage::create("photo/shop/battle/1.jpg",
 		"photo/shop/battle/1_1.jpg",
 		"photo/shop/battle/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pBattle2 = MenuItemImage::create("photo/shop/battle/2.jpg",
+	s_Equip[5][1].pMenuItemImage = MenuItemImage::create("photo/shop/battle/2.jpg",
 		"photo/shop/battle/2_1.jpg",
 		"photo/shop/battle/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pBattle3 = MenuItemImage::create("photo/shop/battle/3.jpg",
+	s_Equip[5][2].pMenuItemImage = MenuItemImage::create("photo/shop/battle/3.jpg",
 		"photo/shop/battle/3_1.jpg",
 		"photo/shop/battle/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pBattle4 = MenuItemImage::create("photo/shop/battle/4.jpg",
+	s_Equip[5][3].pMenuItemImage = MenuItemImage::create("photo/shop/battle/4.jpg",
 		"photo/shop/battle/4_1.jpg",
 		"photo/shop/battle/4_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pBattle5 = MenuItemImage::create("photo/shop/battle/5.jpg",
+	s_Equip[5][4].pMenuItemImage = MenuItemImage::create("photo/shop/battle/5.jpg",
 		"photo/shop/battle/5_1.jpg",
 		"photo/shop/battle/5_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pBattle6 = MenuItemImage::create("photo/shop/battle/6.jpg",
+	s_Equip[5][5].pMenuItemImage = MenuItemImage::create("photo/shop/battle/6.jpg",
 		"photo/shop/battle/6_1.jpg",
 		"photo/shop/battle/6_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pBattle7 = MenuItemImage::create("photo/shop/battle/7.jpg",
+	s_Equip[5][6].pMenuItemImage = MenuItemImage::create("photo/shop/battle/7.jpg",
 		"photo/shop/battle/7_1.jpg",
 		"photo/shop/battle/7_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
 
-	m_pBattle1->setPosition(270, 370);   m_pBattle2->setPosition(390, 370);    m_pBattle3->setPosition(510, 370);    m_pBattle4->setPosition(630, 370);
-	m_pBattle5->setPosition(270, 285);  m_pBattle6->setPosition(390, 285);   m_pBattle7->setPosition(510, 285);
+	for (int i = 0; i <= 6; i++)
+	{
+		s_Equip[5][i].pMenuItemImage->setEnabled(false);
+		if (i <= 3)
+		{
+			s_Equip[5][i].pMenuItemImage->setPosition(270 + i * 120, 370);
+		}
+		else //if(i<=7)
+		{
+			s_Equip[5][i].pMenuItemImage->setPosition(270 + (i%4) * 120, 370 - (i / 4) * 85);
+		}
+	}
 
-	m_pBattle1->setEnabled(false);   m_pBattle2->setEnabled(false);   m_pBattle3->setEnabled(false);   m_pBattle4->setEnabled(false);
-	m_pBattle5->setEnabled(false);   m_pBattle6->setEnabled(false);   m_pBattle7->setEnabled(false);
-
-	m_pBattleMenu = Menu::create(m_pBattle1, m_pBattle2, m_pBattle3, m_pBattle4,
-		m_pBattle5, m_pBattle6, m_pBattle7, NULL);
+	m_pBattleMenu = Menu::create(s_Equip[5][0].pMenuItemImage, s_Equip[5][1].pMenuItemImage, s_Equip[5][2].pMenuItemImage, s_Equip[5][3].pMenuItemImage,
+		s_Equip[5][4].pMenuItemImage, s_Equip[5][5].pMenuItemImage, s_Equip[5][6].pMenuItemImage, NULL);
 	m_pBattleMenu->setPosition(Vec2::ZERO);
 	addChild(m_pBattleMenu, 13);
 	m_pBattleMenu->setVisible(false);
@@ -600,57 +704,249 @@ bool GameScene0::init()
 	addChild(m_pAssistBac, 14);
 	m_pAssistBac->setVisible(false);
 
-	m_pAssist1 = MenuItemImage::create("photo/shop/assist/1.jpg",
+	s_Equip[6][0].pMenuItemImage = MenuItemImage::create("photo/shop/assist/1.jpg",
 		"photo/shop/assist/1_1.jpg",
 		"photo/shop/assist/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAssist2 = MenuItemImage::create("photo/shop/assist/2.jpg",
+	s_Equip[6][1].pMenuItemImage = MenuItemImage::create("photo/shop/assist/2.jpg",
 		"photo/shop/assist/2_1.jpg",
 		"photo/shop/assist/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAssist3 = MenuItemImage::create("photo/shop/assist/3.jpg",
+	s_Equip[6][2].pMenuItemImage = MenuItemImage::create("photo/shop/assist/3.jpg",
 		"photo/shop/assist/3_1.jpg",
 		"photo/shop/assist/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAssist4 = MenuItemImage::create("photo/shop/assist/4.jpg",
+	s_Equip[6][3].pMenuItemImage = MenuItemImage::create("photo/shop/assist/4.jpg",
 		"photo/shop/assist/4_1.jpg",
 		"photo/shop/assist/4_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAssist5 = MenuItemImage::create("photo/shop/assist/5.jpg",
+	s_Equip[6][4].pMenuItemImage = MenuItemImage::create("photo/shop/assist/5.jpg",
 		"photo/shop/assist/5_1.jpg",
 		"photo/shop/assist/5_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAssist6 = MenuItemImage::create("photo/shop/assist/6.jpg",
+	s_Equip[6][5].pMenuItemImage = MenuItemImage::create("photo/shop/assist/6.jpg",
 		"photo/shop/assist/6_1.jpg",
 		"photo/shop/assist/6_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAssist7 = MenuItemImage::create("photo/shop/assist/7.jpg",
+	s_Equip[6][6].pMenuItemImage = MenuItemImage::create("photo/shop/assist/7.jpg",
 		"photo/shop/assist/7_1.jpg",
 		"photo/shop/assist/7_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAssist8 = MenuItemImage::create("photo/shop/assist/8.jpg",
+	s_Equip[6][7].pMenuItemImage = MenuItemImage::create("photo/shop/assist/8.jpg",
 		"photo/shop/assist/8_1.jpg",
 		"photo/shop/assist/8_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
-	m_pAssist9 = MenuItemImage::create("photo/shop/assist/9.jpg",
+	s_Equip[6][8].pMenuItemImage = MenuItemImage::create("photo/shop/assist/9.jpg",
 		"photo/shop/assist/9_1.jpg",
 		"photo/shop/assist/9_1.jpg",
 		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
+	for (int i = 0; i <= 8; i++)
+	{
+		s_Equip[6][i].pMenuItemImage->setEnabled(false);
+		if (i <= 3)
+		{
+			s_Equip[6][i].pMenuItemImage->setPosition(270 + i * 120, 370);
+		}
+		else //if(i<=7)
+		{
+			s_Equip[6][i].pMenuItemImage->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
+		}
+	}
 
-	m_pAssist1->setPosition(270, 370);  m_pAssist2->setPosition(390, 370);   m_pAssist3->setPosition(510, 370);    m_pAssist4->setPosition(630, 370);
-	m_pAssist5->setPosition(270, 285);  m_pAssist6->setPosition(390, 285);   m_pAssist7->setPosition(510, 285);   m_pAssist8->setPosition(630, 285);
-	m_pAssist9->setPosition(270, 200);
-
-	m_pAssist1->setEnabled(false);   m_pAssist2->setEnabled(false);   m_pAssist3->setEnabled(false);   m_pAssist4->setEnabled(false);
-	m_pAssist5->setEnabled(false);   m_pAssist6->setEnabled(false);   m_pAssist7->setEnabled(false);   m_pAssist8->setEnabled(false);
-	m_pAssist9->setEnabled(false);
-
-	m_pAssistMenu = Menu::create(m_pAssist1, m_pAssist2, m_pAssist3, m_pAssist4,
-		m_pAssist5, m_pAssist6, m_pAssist7, m_pAssist8,
-		m_pAssist9, NULL);
+	m_pAssistMenu = Menu::create(s_Equip[6][0].pMenuItemImage, s_Equip[6][1].pMenuItemImage, s_Equip[6][2].pMenuItemImage, s_Equip[6][3].pMenuItemImage,
+		s_Equip[6][4].pMenuItemImage, s_Equip[6][5].pMenuItemImage, s_Equip[6][6].pMenuItemImage, s_Equip[6][7].pMenuItemImage,
+		s_Equip[6][8].pMenuItemImage, NULL);
 	m_pAssistMenu->setPosition(Vec2::ZERO);
 	addChild(m_pAssistMenu, 13);
 	m_pAssistMenu->setVisible(false);
+
+	////////////////////////////////////////属性
+	////////////////攻击
+	//属性
+	s_Equip[1][0].attack = 20;
+	s_Equip[1][1].attackingSpeed = m_pGameScene2->Hero.AttackSpeed()*0.1;
+	s_Equip[1][2].damageChance = 0.08;
+	s_Equip[1][3].attack = m_pGameScene2->Hero.AttackPower()*0.1;
+	s_Equip[1][3].physicBloodSuck = m_pGameScene2->Hero.PhysicBloodSuck()*0.8;
+	s_Equip[1][4].attack = 40;
+	s_Equip[1][5].damageChance = 0.15;
+	s_Equip[1][6].attack = 80;
+	s_Equip[1][7].attack = 40;
+	s_Equip[1][7].health = 300;
+	s_Equip[1][8].attackingSpeed = m_pGameScene2->Hero.AttackSpeed()*0.15;
+	s_Equip[1][8].damageChance = 0.1;
+	s_Equip[1][8].velocity = m_pGameScene2->Hero.getVelocity()*0.05;
+	s_Equip[1][9].attack = m_pGameScene2->Hero.AttackPower()*0.45;
+	s_Equip[1][9].waitLessen = 0.1;
+	s_Equip[1][9].armorIgnore = 60;
+	s_Equip[1][9].magicdenfenceIgnore = 60;
+	s_Equip[1][10].attack = 80;
+	s_Equip[1][10].waitLessen = 0.1;
+	s_Equip[1][10].armorIgnore = 0.4;
+	s_Equip[1][11].attack = 60;
+	s_Equip[1][11].attackingSpeed = m_pGameScene2->Hero.AttackSpeed()*0.3;
+	s_Equip[1][11].physicBloodSuck = 0.1;
+	s_Equip[1][12].attack = 60;
+	s_Equip[1][12].waitLessen = 0.05;
+	s_Equip[1][13].attack = 80;
+	s_Equip[1][13].health = 600;
+	s_Equip[1][14].attackingSpeed = m_pGameScene2->Hero.AttackSpeed()*0.25;
+	if (myChoice == 2)
+	{
+		s_Equip[1][14].attack = 30;
+		s_Equip[1][14].power = 30;
+	}
+	else
+	{
+		s_Equip[1][14].attack = 60;
+		s_Equip[1][14].power = 60;
+	}
+	s_Equip[1][15].attack = 100;
+	s_Equip[1][15].magicBloodSuck = 0.1;
+
+	//金钱
+	s_Equip[1][0].buymoney = 250;     s_Equip[1][0].sellmoney = 150;
+	s_Equip[1][1].buymoney = 290;     s_Equip[1][1].sellmoney = 174;
+	s_Equip[1][2].buymoney = 320;     s_Equip[1][2].sellmoney = 192;
+	s_Equip[1][3].buymoney = 410;     s_Equip[1][3].sellmoney = 246;
+	s_Equip[1][4].buymoney = 450;     s_Equip[1][4].sellmoney = 270;
+	s_Equip[1][5].buymoney = 550;     s_Equip[1][5].sellmoney = 330;
+	s_Equip[1][6].buymoney = 910;     s_Equip[1][6].sellmoney = 546;
+	s_Equip[1][7].buymoney = 790;     s_Equip[1][7].sellmoney = 474;
+	s_Equip[1][8].buymoney = 890;     s_Equip[1][8].sellmoney = 534;
+	s_Equip[1][9].buymoney = 1048;     s_Equip[1][9].sellmoney = 648;
+	s_Equip[1][10].buymoney = 2100;     s_Equip[1][10].sellmoney = 1260;
+	s_Equip[1][11].buymoney = 2160;     s_Equip[1][11].sellmoney = 1296;
+	s_Equip[1][12].buymoney = 1760;     s_Equip[1][12].sellmoney = 1056;
+	s_Equip[1][13].buymoney = 1980;     s_Equip[1][13].sellmoney = 1188;
+	s_Equip[1][14].buymoney = 890;     s_Equip[1][14].sellmoney = 534;
+	s_Equip[1][15].buymoney = 1800;     s_Equip[1][15].sellmoney = 1080;
+	
+	///////////////////法术
+	//属性
+	s_Equip[2][0].power = 40;
+	s_Equip[2][1].magicpoint = 300;
+	s_Equip[2][2].magicpointRecover = 10;
+	s_Equip[2][3].power = 20;
+	s_Equip[2][3].waitLessen = 0.08;
+	s_Equip[2][4].power = 80;
+	s_Equip[2][5].power = 120;
+	s_Equip[2][6].power = 80;
+	s_Equip[2][6].magicBloodSuck = 20;
+	s_Equip[2][6].waitLessen = 0.05;
+	s_Equip[2][7].health = 400;
+	s_Equip[2][7].magicpoint = 400;
+	s_Equip[2][8].power = 70;
+	s_Equip[2][8].health = 300;
+	s_Equip[2][8].magicdenfenceIgnore = 75;
+	s_Equip[2][9].health = 400;
+	s_Equip[2][9].magicpoint = 400;
+	s_Equip[2][10].power = 75;
+	s_Equip[2][10].waitLessen = 0.1;
+	s_Equip[2][10].magicBloodSuck = 0.2;
+	s_Equip[2][11].power = 180;
+	s_Equip[2][11].magicpoint = 600;
+	s_Equip[2][11].magicpointRecover = 15;
+	s_Equip[2][12].power = 240;
+	s_Equip[2][12].velocity = m_pGameScene2->Hero.getVelocity()*0.05;
+	s_Equip[2][13].power = 240;
+	s_Equip[2][13].health = 300;
+	s_Equip[2][13].magicdenfenceIgnore = m_pGameScene2->Hero.E_MagicDenfense()*0.45;
+	s_Equip[2][14].power = 240 + (m_pGameScene2->Hero.Power() + 240)*0.35;
+	s_Equip[2][15].power = 160;
+	s_Equip[2][15].waitLessen = 0.1;
+	//金钱
+	s_Equip[2][0].buymoney = 300;     s_Equip[2][0].sellmoney = 180;
+	s_Equip[2][1].buymoney = 220;     s_Equip[2][1].sellmoney = 132;
+	s_Equip[2][2].buymoney = 120;     s_Equip[2][2].sellmoney = 72;
+	s_Equip[2][3].buymoney = 500;     s_Equip[2][3].sellmoney = 300;
+	s_Equip[2][4].buymoney = 540;     s_Equip[2][4].sellmoney = 324;
+	s_Equip[2][5].buymoney = 820;     s_Equip[2][5].sellmoney = 492;
+	s_Equip[2][6].buymoney = 800;     s_Equip[2][6].sellmoney = 480;
+	s_Equip[2][7].buymoney = 730;     s_Equip[2][7].sellmoney = 438;
+	s_Equip[2][8].buymoney = 1020;     s_Equip[2][8].sellmoney = 612;
+	s_Equip[2][9].buymoney = 720;     s_Equip[2][9].sellmoney = 432;
+	s_Equip[2][10].buymoney = 1240;     s_Equip[2][10].sellmoney = 744;
+	s_Equip[2][11].buymoney = 1950;     s_Equip[2][11].sellmoney = 1170;
+	s_Equip[2][12].buymoney = 2050;     s_Equip[2][12].sellmoney = 1230;
+	s_Equip[2][13].buymoney = 2110;     s_Equip[2][13].sellmoney = 1266;
+	s_Equip[2][14].buymoney = 2300;     s_Equip[2][14].sellmoney = 1380;
+	s_Equip[2][15].buymoney = 1990;     s_Equip[2][15].sellmoney = 1194;
+
+	//////////////////防御
+	s_Equip[3][0].health = 300;
+	s_Equip[3][1].armor = 90;
+	s_Equip[3][2].magicDenfence = 90;
+	s_Equip[3][3].magicpointRecover = 30;
+	s_Equip[3][4].health = 1000;
+	s_Equip[3][5].health = 700;
+	s_Equip[3][6].magicDenfence = 120;
+	s_Equip[3][6].health = 700;
+	s_Equip[3][6].healthRecover = 50;
+	s_Equip[3][7].waitLessen = 0.1;
+	s_Equip[3][7].magicpoint = 400;
+	s_Equip[3][7].armor = 110;
+	s_Equip[3][8].armor = 210;
+	s_Equip[3][9].attack = 40;
+	s_Equip[3][9].armor = 420;
+	s_Equip[3][10].attack = 20;
+	s_Equip[3][10].health = 1000;
+	s_Equip[3][11].armor = 240;
+	s_Equip[3][11].health = 1000;
+	s_Equip[3][12].health = 2000;
+	s_Equip[3][13].armor = 270;
+	s_Equip[3][13].health = 1200;
+	s_Equip[3][14].healthRecover = 100;
+	s_Equip[3][14].magicDenfence = 240;
+	s_Equip[3][14].health = 1200;
+	s_Equip[3][15].magicDenfence = 360;
+	s_Equip[3][15].health = 1000;
+
+	//金钱
+	s_Equip[3][0].buymoney = 300;     s_Equip[3][0].sellmoney = 180;
+	s_Equip[3][1].buymoney = 220;     s_Equip[3][1].sellmoney = 132;
+	s_Equip[3][2].buymoney = 220;     s_Equip[3][2].sellmoney = 132;
+	s_Equip[3][3].buymoney = 140;     s_Equip[3][3].sellmoney = 84;
+	s_Equip[3][4].buymoney = 900;     s_Equip[3][4].sellmoney = 540;
+	s_Equip[3][5].buymoney = 900;     s_Equip[3][5].sellmoney = 540;
+	s_Equip[3][6].buymoney = 1020;     s_Equip[3][6].sellmoney = 612;
+	s_Equip[3][7].buymoney = 900;     s_Equip[3][7].sellmoney = 540;
+	s_Equip[3][8].buymoney = 730;     s_Equip[3][8].sellmoney = 438;
+	s_Equip[3][9].buymoney = 1840;     s_Equip[3][9].sellmoney = 1104;
+	s_Equip[3][10].buymoney = 2120;     s_Equip[3][10].sellmoney = 1272;
+	s_Equip[3][11].buymoney = 1830;     s_Equip[3][11].sellmoney = 1098;
+	s_Equip[3][12].buymoney = 2070;     s_Equip[3][12].sellmoney = 1242;
+	s_Equip[3][13].buymoney = 2180;     s_Equip[3][13].sellmoney = 1308;
+	s_Equip[3][14].buymoney = 2100;     s_Equip[3][14].sellmoney = 1260;
+	s_Equip[3][15].buymoney = 2120;     s_Equip[3][15].sellmoney = 1272;
+
+	//////////////////移动
+	s_Equip[4][0].velocity = 30;
+	s_Equip[4][1].armor = 110;
+	s_Equip[4][1].velocity = 60;
+	s_Equip[4][2].magicDenfence = 110;
+	s_Equip[4][3].waitLessen = 0.15;
+	s_Equip[4][4].magicpointRecover = 25;
+	s_Equip[4][4].velocity = 60;
+	s_Equip[4][4].magicdenfenceIgnore = 75;
+	s_Equip[4][5].velocity = 60;
+	s_Equip[4][5].attackingSpeed = m_pGameScene2->Hero.AttackSpeed()*0.3;
+	s_Equip[4][6].velocity = 60;
+
+	//金钱
+	s_Equip[4][0].buymoney = 250;     s_Equip[4][0].sellmoney = 150;
+	s_Equip[4][1].buymoney = 710;     s_Equip[4][1].sellmoney = 426;
+	s_Equip[4][2].buymoney = 710;     s_Equip[4][2].sellmoney = 426;
+	s_Equip[4][3].buymoney = 710;     s_Equip[4][3].sellmoney = 426;
+	s_Equip[4][4].buymoney = 710;     s_Equip[4][4].sellmoney = 426;
+	s_Equip[4][5].buymoney = 710;     s_Equip[4][5].sellmoney = 426;
+	s_Equip[4][6].buymoney = 530;     s_Equip[4][6].sellmoney = 318;
+
+	//////////////////打野
+	//////////////////辅助
+
+
+
 
 	////切换按键
 	m_pRecomMii = MenuItemImage::create("photo/shop/recom.png",
@@ -746,7 +1042,7 @@ bool GameScene0::init()
 	m_pMaskImage->setVisible(false);
 
 	//菜单整合，关闭按钮  技能   商店   属性
-	m_pMenu = Menu::create(pAttriWin, pShopWin, pExitWin, NULL);
+	m_pMenu = Menu::create(pShopWin, pExitWin, pAttriWin,NULL);
 	m_pMenu->setPosition(Vec2::ZERO);
 	addChild(m_pMenu, 0);
 
@@ -812,9 +1108,6 @@ bool GameScene0::init()
 	return true;
 }
 
-
-
-
 void GameScene0::update(float delta)
 {
 	///游戏时间更新
@@ -835,6 +1128,15 @@ void GameScene0::update(float delta)
 
 	sprintf(m_Textbuffer, "%d", time_min);
 	m_pTime_minText->setString(m_Textbuffer);
+
+	//金钱更新
+	if (m_pGameScene2->Hero.Money() != m_money)
+	{
+		m_money = m_pGameScene2->Hero.Money();
+		sprintf(m_Textbuffer, "%d", m_money);
+		m_pMoneyText->setString(m_Textbuffer);
+	}
+
 
 	/////技能冷却更新      8   12   18   10   15
 	if (!m_Skill1Up)
@@ -927,26 +1229,22 @@ void GameScene0::update(float delta)
 		m_pSkill5Text->setVisible(false);
 	}
 
-	//金钱更新
-	//if (m_pGameScene2->Hero.Money != m_money)
-	//{
-	//	e_money = obj.e_money;
-	//	sprintf(m_Textbuffer, "%d", e_money);
-	//	e_pMoney->setString(m_Textbuffer);
-	//}
-
+	
 	///////////////////////属性更新
-	if (m_kill != m_pGameScene2->Hero.m_kill)
+
+	if (m_kill != m_pGameScene2->Hero.AttackPower())
 	{
-		m_kill = m_pGameScene2->Hero.m_kill;
-		sprintf(m_Textbuffer, "d%", m_kill);
+		m_kill = m_pGameScene2->Hero.AttackPower();
+		sprintf(m_Textbuffer, "%d", m_kill);
 		m_pKillText->setString(m_Textbuffer);
+
+		m_pKill2Text->setString(m_Textbuffer);
 	}
 
 	if (m_death != m_pGameScene2->Hero.m_death)
 	{
 		m_death = m_pGameScene2->Hero.m_death;
-		sprintf(m_Textbuffer, "d%", m_death);
+		sprintf(m_Textbuffer, "%d", m_death);
 		m_pDeathText->setString(m_Textbuffer);
 	}
 
@@ -1067,6 +1365,11 @@ void GameScene0::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d:
 
 void GameScene0::openAttri(cocos2d::Ref * pSender)
 {
+	/*m_money2 = m_money;
+	sprintf(m_Textbuffer, "%d", m_money2);
+	m_pMoney2Text->setString(m_Textbuffer);
+	m_pMoney2Text->setVisible(true);*/
+
 	m_pMenu->setEnabled(false);
 	m_pSkillMenu->setEnabled(false);
 	m_pMaskImage->setVisible(true);
@@ -1102,14 +1405,52 @@ void GameScene0::closeAttri(cocos2d::Ref * pSender)
 	m_pAttriMenu->setVisible(false);
 }
 
+void GameScene0::openAttri2(cocos2d::Ref * pSender)
+{
+	m_pMenu->setEnabled(false);
+	m_pSkillMenu->setEnabled(false);
+	m_pMaskImage->setVisible(true);
+	m_AttriB1->setVisible(true);
+	m_AttriMenu->setVisible(true);
+	m_button1->setEnabled(false);
+	m_button2->setEnabled(true);
+}
+
+void GameScene0::transTo1(cocos2d::Ref * pSender)
+{
+	m_button1->setEnabled(false);
+	m_button2->setEnabled(true);
+	m_AttriB1->setVisible(true);
+	m_AttriB2->setVisible(false);
+}
+
+void GameScene0::transTo2(cocos2d::Ref * pSender)
+{
+	m_button1->setEnabled(true);
+	m_button2->setEnabled(false);
+	m_AttriB1->setVisible(false);
+	m_AttriB2->setVisible(true);
+}
+
+void GameScene0::closeAttri2(cocos2d::Ref * pSender)
+{
+	m_pMenu->setEnabled(true);
+	m_pSkillMenu->setEnabled(true);
+	m_pMaskImage->setVisible(false);
+	m_AttriB1->setVisible(false);
+	m_AttriB2->setVisible(false);
+	m_AttriMenu->setVisible(false);
+}
+
 void GameScene0::openShop(cocos2d::Ref * pSender)
 {
-
 	m_money2 = m_money;
 	sprintf(m_Textbuffer, "%d", m_money2);
 	m_pMoney2Text->setString(m_Textbuffer);
 	m_pMoney2Text->setVisible(true);
 
+	m_pDownMii->setEnabled(true);
+	m_pRecomMii->setEnabled(false);
 	m_pRecomBac->setVisible(true);
 	m_pDownBac = m_pRecomBac;
 	m_pRecommandMenu->setVisible(true);
@@ -1267,290 +1608,370 @@ void GameScene0::AssistMenu(cocos2d::Ref * pSender)
 	m_pDownMii = m_pAssistMii;
 	m_pDownMii->setEnabled(false);
 }
+void GameScene0::attack0(cocos2d::Ref * pSender)
+{
+	m_pGameScene2->Hero.Buy(100);
+}
 ///////////////物品函数
 void GameScene0::attack1(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(101);
 }
 
 void GameScene0::attack2(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(102);
 }
 
 void GameScene0::attack3(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(103);
 }
 
 void GameScene0::attack4(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(104);
 }
 
 void GameScene0::attack5(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(105);
 }
 
 void GameScene0::attack6(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(106);
 }
 
 void GameScene0::attack7(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(107);
 }
 
 void GameScene0::attack8(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(108);
 }
 
 void GameScene0::attack9(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(109);
 }
 
 void GameScene0::attack10(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(110);
 }
 
 void GameScene0::attack11(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(111);
 }
 
 void GameScene0::attack12(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(112);
 }
 
 void GameScene0::attack13(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(113);
 }
 
 void GameScene0::attack14(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(114);
 }
 
 void GameScene0::attack15(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(115);
 }
 
-void GameScene0::attack16(cocos2d::Ref * pSender)
+void GameScene0::magic0(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(200);
 }
 
 void GameScene0::magic1(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(201);
 }
 
 void GameScene0::magic2(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(202);
 }
 
 void GameScene0::magic3(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(203);
 }
 
 void GameScene0::magic4(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(204);
 }
 
 void GameScene0::magic5(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(205);
 }
 
 void GameScene0::magic6(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(206);
 }
 
 void GameScene0::magic7(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(207);
 }
 
 void GameScene0::magic8(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(208);
 }
 
 void GameScene0::magic9(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(209);
 }
 
 void GameScene0::magic10(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(210);
 }
 
 void GameScene0::magic11(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(211);
 }
 
 void GameScene0::magic12(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(212);
 }
 
 void GameScene0::magic13(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(213);
 }
 
 void GameScene0::magic14(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(214);
 }
 
 void GameScene0::magic15(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(215);
 }
 
-void GameScene0::magic16(cocos2d::Ref * pSender)
+void GameScene0::defense0(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(300);
 }
 
 void GameScene0::defense1(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(301);
 }
 
 void GameScene0::defense2(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(302);
 }
 
 void GameScene0::defense3(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(303);
 }
 
 void GameScene0::defense4(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(304);
 }
 
 void GameScene0::defense5(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(305);
 }
 
 void GameScene0::defense6(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(306);
 }
 
 void GameScene0::defense7(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(307);
 }
 
 void GameScene0::defense8(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(308);
 }
 
 void GameScene0::defense9(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(309);
 }
 
 void GameScene0::defense10(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(310);
 }
 
 void GameScene0::defense11(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(311);
 }
 
 void GameScene0::defense12(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(312);
 }
 
 void GameScene0::defense13(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(313);
 }
 
 void GameScene0::defense14(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(314);
 }
 
 void GameScene0::defense15(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(316);
 }
 
-void GameScene0::defense16(cocos2d::Ref * pSender)
+
+void GameScene0::move0(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(400);
 }
 
 void GameScene0::move1(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(401);
 }
 
 void GameScene0::move2(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(402);
 }
 
 void GameScene0::move3(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(403);
 }
 
 void GameScene0::move4(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(404);
 }
 
 void GameScene0::move5(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(405);
 }
 
 void GameScene0::move6(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(407);
 }
 
-void GameScene0::move7(cocos2d::Ref * pSender)
+
+void GameScene0::battle0(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(500);
 }
 
 void GameScene0::battle1(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(501);
 }
 
 void GameScene0::battle2(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(502);
 }
 
 void GameScene0::battle3(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(503);
 }
 
 void GameScene0::battle4(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(504);
 }
 
 void GameScene0::battle5(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(505);
 }
 
 void GameScene0::battle6(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(506);
 }
 
-void GameScene0::battle7(cocos2d::Ref * pSender)
+
+
+void GameScene0::assist0(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(600);
 }
 
 void GameScene0::assist1(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(601);
 }
 
 void GameScene0::assist2(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(602);
 }
 
 void GameScene0::assist3(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(603);
 }
 
 void GameScene0::assist4(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(604);
 }
 
 void GameScene0::assist5(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(605);
 }
 
 void GameScene0::assist6(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(606);
 }
 
 void GameScene0::assist7(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(607);
 }
 
 void GameScene0::assist8(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(608);
 }
 
-void GameScene0::assist9(cocos2d::Ref * pSender)
-{
-}
+
+
+
+
+
 
 void GameScene0::attack(cocos2d::Ref* pSender)
 {

@@ -24,9 +24,6 @@
     <ClCompile Include="..\Classes\Object.cpp">
       <Filter>NewFilter1</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HUDLayer.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\GameScene0.cpp">
       <Filter>NewFilter1</Filter>
     </ClCompile>
@@ -34,6 +31,9 @@
       <Filter>NewFilter1</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Avene.cpp">
+      <Filter>NewFilter1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\DataDefine.cpp">
       <Filter>NewFilter1</Filter>
     </ClCompile>
   </ItemGroup>
@@ -57,9 +57,6 @@
     <ClInclude Include="..\Classes\Object.h">
       <Filter>NewFilter1</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\HUDLayer.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\GameScene2.h">
       <Filter>NewFilter1</Filter>
     </ClInclude>
@@ -70,6 +67,9 @@
       <Filter>NewFilter1</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Avene.h">
+      <Filter>NewFilter1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DataDefine.h">
       <Filter>NewFilter1</Filter>
     </ClInclude>
   </ItemGroup>

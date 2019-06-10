@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Blood.h"
+#include "DataDefine.h"
 using namespace cocos2d;
 
 class ObjectBase
@@ -19,6 +20,50 @@ public:
 		Charac = Sprite::create(str);
 	}
 	
+	const ObjectBase operator +(const EquipmentData equip) {
+		health += equip.health;
+		magicpoint += equip.magicpoint;
+		healthRecover+=equip.healthRecover;
+		magicpointRecover += equip.magicpointRecover;
+		attack += equip.attack;
+		power += equip.power;
+
+		armor+=equip.armor;
+		magicDenfence+=equip.magicDenfence;
+		armorIgnore+=equip.armorIgnore;
+		magicdenfenceIgnore+=equip.armorIgnore;
+		physicBloodSuck+=equip.physicBloodSuck;
+		magicBloodSuck+=equip.magicBloodSuck;
+		waitLessen+=equip.waitLessen;
+
+		velocity+=(equip.velocity*velocity);
+		attackingSpeed+=attackingSpeed;
+		JudgeAttackSpeedLevel();
+		return *this;
+	}
+
+	const ObjectBase operator -(const EquipmentData equip) {
+		health -= equip.health;
+		magicpoint -= equip.magicpoint;
+		healthRecover -= equip.healthRecover;
+		magicpointRecover -= equip.magicpointRecover;
+		attack -= equip.attack;
+		power -= equip.power;
+
+		armor -= equip.armor;
+		magicDenfence -= equip.magicDenfence;
+		armorIgnore -= equip.armorIgnore;
+		magicdenfenceIgnore -= equip.armorIgnore;
+		physicBloodSuck -= equip.physicBloodSuck;
+		magicBloodSuck -= equip.magicBloodSuck;
+		waitLessen -= equip.waitLessen;
+
+		velocity -= (equip.velocity*velocity);//??
+		attackingSpeed -= attackingSpeed;
+		JudgeAttackSpeedLevel();
+		return *this;
+	}
+
 	bool InRange(Vec2 ene);		//判断ene对象是否在攻击范围内
 	bool Death();                //判断人物是否死亡。死亡：true，存活false
 	bool& isAttacking();		//判断人物是否处于攻击冷却期（两次攻击之间的间隔）
@@ -27,15 +72,32 @@ public:
 	int& getRadium();			//以引用的形式返回人物的攻击范围
 	int getVelocity();			//获取人物的移动速度
 	int Money();				//人物的金钱
+	int tMoney();               //人物总获得金钱
+	int Level();                //人物等级
 	int Attack(ObjectBase& ene);	//攻击函数，造成伤害，动画，击杀
 	float& AttackPower();				//引用形式返回攻击力
 	int& healthPower();				//引用形式返回目前生命
 	int& totalHealth();				//引用形式返回总生命值
-<<<<<<< HEAD
+
 	int ObjectType();
-=======
-	void changeTotalHealth(int h);       //改变总生命值
->>>>>>> 8528b369a6a7704a7ed8907b1e6d5993e1320b9a
+
+	//void changeTotalHealth(int h);       //改变总生命值
+	float AttackSpeed();         //人物攻击速度
+	float Power();               //法术强度
+	int MagicPoint();            //人物法力值
+	float Armor();              //人物护甲值
+	float MagicDefence();      //魔抗
+	int HealthRecover();       //回血
+	int MagicPointRecover();   //回蓝
+	float ArmorIgnore();        //物理穿透
+	float MagicDefenseIgnore();//法术穿透
+	float PhysicBloodSuck();    //物理吸血
+	float MagicBloodSuck();     //法术吸血
+	float WaitLessen();         //冷却缩减
+	float E_Armor();               //获取对手护甲值
+	float E_MagicDenfense();       //获取对手魔抗
+	int E_Kill();       //获取对手击杀数    
+	int E_Level();      //获取对手等级数
 
 	void Die();					//死亡的时候调用
 	void BeAttack(float n);		//被造成伤害（Attack中调用）
@@ -63,6 +125,10 @@ public:
 	void LvUp();								//获取经验值的时候调用，如果升级就改变，不升级不变
 	void setHomerecover();                       //设置在家中的回血回蓝量
 	void removeHomerecover();                    //离开家取消回血回蓝
+	void ExpAndMoneyIncrease(float delta);
+	void Buy(int EquipNumber);
+	void Sale(int locationNum);
+	void setMoney(int n);
 
 	float attackDelay();		//返回攻击延迟时间
 	
@@ -73,21 +139,19 @@ public:
 	
 	ProgressView* BloodView;	//血条
 
-    int e_tower = 0;            //推倒对方塔数
-	int e_money = 300;			//对外击杀获取金钱
-	int e_exp;					//对外击杀获取经验
 	int m_kill = 0;				//我的击杀
 	int m_death = 0;			//我的死亡
 	
 	double DeadTime = 10;		//死亡时间
 	double waitTime = 0;		//等待时间
+	Equipment EquipList;
 protected:
 	float attack;//攻击力
 	float armorIgnore;//护甲穿透
 
 	int health;//总生命值
 	int nowHealth;//当前生命值
-<<<<<<< HEAD
+
 	int healthRecover;//生命回复
 	bool HomeHPRecover=false;//判断是否在泉水中的生命回复
 
@@ -102,27 +166,23 @@ protected:
 	float power;//法术强度
 	float magicdenfenceIgnore;//法术穿透
 
-=======
-	int attack;//攻击力
-	int attackarmor; //物抗
-	int powerarmor;//法抗
-	int power;//法术强度
->>>>>>> 8528b369a6a7704a7ed8907b1e6d5993e1320b9a
+	float physicBloodSuck=0;//物理吸血
+	float magicBloodSuck=0;//法术吸血
+	float waitLessen = 0;//冷却缩减
+
 	int radium;//攻击半径
 
 	float velocity;//移动速度
-<<<<<<< HEAD
+
+	//float damageChance=0; //暴击概率
+
+	int equip[6] = { -1,-1,-1,-1,-1,-1 };
 
 	int m_money=0;//我的金钱
+	int t_money = 0;///总获得金钱数
 	int m_exp;//我的经验值
 	int MyLevel=1;//我的等级
 	int HeroIdentifier;//英雄标签：1.Bowman，2.Savage，3.Wizard
-=======
-	int m_money=300;//我的金钱
-	int m_exp;//我的经验值
-	int m_level;//我的等级
-	int animeIdentifier;//动画标签：1.Bowman，2.Savage，3.Wizard
->>>>>>> 8528b369a6a7704a7ed8907b1e6d5993e1320b9a
 
 	bool isAlive=true;			//是否存活
 	bool attackingFlag=false;	//是否正在攻击
@@ -136,6 +196,7 @@ protected:
 	
 	float HPrecoverTimer = 0;	//生命回复的时间，在函数中调用用
 	float MPrecoverTimer = 0;	//法力回复的时间，在函数中调用用
+	float ExpAndMoneytimer = 0;//金钱和经验的自然增长
 
 	Vec2 Position;				//当前位置
 	Vec2 Spawn;					//出生点
@@ -171,9 +232,9 @@ protected:
 	//14：法力回复，15：法力回复成长
 	//16：移速（不会成长）
 	float HeroData[3][17] = {
-		{180,16.5,0,1,3182,200,41,2,86,18,50,8.5,440,96,16,1.5,360},
-		{164,13,0,1,3622,316,55,3.5,98,21.5,50,8.5,0,0,0,0,390},
-		{170,8.5,0,1,3229,185,55,2,86,17,50,8.5,490,109,18,1.5,360},
+		{180,16.5,0,1,3182,200,41,2,86,18,50,8.5,440,96,16,1.5,36},
+		{164,13,0,1,3622,316,55,3.5,98,21.5,50,8.5,0,0,0,0,39},
+		{170,8.5,0,1,3229,185,55,2,86,17,50,8.5,490,109,18,1.5,36},
 	};
 	//0：Bowman，1：Savage，2：Wizard
 	

@@ -5,6 +5,7 @@
 #include"GameScene2.h"
 #include"HelloWorldScene.h"
 #include"GlobalVal.h"
+#include"DataDefine.h"
 //#include"HUDLayer.h"
 
 
@@ -12,25 +13,43 @@ using namespace cocos2d;
 
 class GameScene0 : public cocos2d::Layer
 {
-public:
-
 private:
 	GameScene2 *m_pGameScene2;
 	//HUDLayer *m_pHUDLayer;
 
-
-public:
+private:
 	////属性
 	int m_kill;   //击杀对手数
 	int m_death;   //死亡数
+	int e_kill;    //对手击杀数
+	int e_death;   //对手死亡数
 	//int m_assist;  //助攻数
 	//int m_monster;  //击杀野怪数
-	int m_tower;
-	int m_money;
-	int m_money2;//目前金钱
+	int m_tower;///推塔数
+	int m_money;//目前金钱
+	int m_money2; //商店
 	int t_money;//获得金钱
-	int m_Score;
-	int m_Level;
+	int m_level; //等级
+	int e_level;//对手等级
+
+	float m_attack;//攻击力
+	float m_power;//法术强度
+	int m_health;//总生命值
+    int magicpoint;//法力值
+	float armor;//护甲值
+	float magicDenfence;//魔抗
+	float attackingSpeed;  //攻击速度
+	float waitLessen;//冷却缩减
+	float velocity;//移动速度
+	int healthRecover;//生命回复
+	int magicpointRecover;//法力回复 
+	float armorIgnore;//护甲穿透
+	float magicdenfenceIgnore;//法术穿透
+	float physicBloodSuck ;//物理吸血
+	float magicBloodSuck ;//法术吸血
+
+	//////装备
+	EquipmentData s_Equip[8][30];
 
 private:
 	///时间
@@ -69,16 +88,42 @@ private:
 	cocos2d::Label *m_pSkill5Text;
 
 private:
-	///数值显示
-	cocos2d::Label *m_pKillText;
+	///////////////数值显示1
+	cocos2d::Label *m_pKillText;//左上
+	cocos2d::Label *m_pKill2Text;
+	cocos2d::Label *m_pKill3Text;///击杀标签
+
 	cocos2d::Label *m_pDeathText;
+	cocos2d::Label *m_pDeath2Text;///死亡标签
+
 	cocos2d::Label *m_pMoneyText;
 	cocos2d::Label *m_pMoney2Text;
-	cocos2d::Label *m_pLevelText;
-	cocos2d::Label *m_pSpeedText;
-	cocos2d::Label *m_pScoreText;
 
-	//属性面板背景及按钮
+	cocos2d::Label *t_pMoneyText;
+	cocos2d::Label *t_pMoney2Text;
+
+	cocos2d::Label *m_pLevelText;
+
+	////////////////数值显示2（属性面板）
+	cocos2d::Label *m_pAttackText;     //物理攻击
+	cocos2d::Label *m_pPowerText;      //法术攻击
+	cocos2d::Label *m_pHelthText;      //最大生命
+	cocos2d::Label *m_pMagicPointText;    //最大法力
+	cocos2d::Label *m_pArmorText;         //物理防御
+	cocos2d::Label *m_pMagicDefenseText;      //法术防御
+	cocos2d::Label *m_pAttackingSpeendText;    //攻击速度
+	cocos2d::Label *m_pWaitLessenText;          //冷却缩减
+	cocos2d::Label *m_pDamageChanceText;        //暴击几率
+	cocos2d::Label *m_pVelocityText;            //移动速度
+	cocos2d::Label *m_pHealthRecoverText;       //每5秒回血
+	cocos2d::Label *m_pMagicPointRecoverText;     //每5秒回蓝
+	cocos2d::Label *m_pArmorIgnoreText;          //物理穿透
+	cocos2d::Label *m_pMagicDefenceText;         //法术穿透
+	cocos2d::Label *m_pPhysicBloodSuckText;      //物理吸血
+	cocos2d::Label *m_pMagicBloodSuckText;       //法术吸血
+	
+
+	//属性面板1背景及按钮(对战）
 	bool AttriIsOpen;
 	cocos2d::Sprite *m_AttriBack1;
 	cocos2d::Sprite *m_AttriBack2;
@@ -86,6 +131,14 @@ private:
 	cocos2d::MenuItemImage  *m_pHeroAttriMii;
 	cocos2d::MenuItemImage *m_pCloseAttri;
 	cocos2d::Menu *m_pAttriMenu;
+
+	///////////////属性面板2背景及按钮（个人详细）
+	cocos2d::Sprite *m_AttriB1;
+	cocos2d::Sprite *m_AttriB2;
+	cocos2d::MenuItemImage *m_button1;
+	cocos2d::MenuItemImage *m_button2;
+	cocos2d::MenuItemImage *m_closebutton;
+	cocos2d::Menu *m_AttriMenu;
 
 	////////////商店面板及按钮
 	bool ShopIsOpen;
@@ -114,119 +167,13 @@ private:
 	cocos2d::Sprite *m_pAssistBac;
 
 	cocos2d::Menu *m_pRecommandMenu;
-	cocos2d::MenuItemImage *m_pRecom1;
-	cocos2d::MenuItemImage *m_pRecom2;
-	cocos2d::MenuItemImage *m_pRecom3;
-	cocos2d::MenuItemImage *m_pRecom4;
-	cocos2d::MenuItemImage *m_pRecom5;
-
 	cocos2d::Menu *m_pAttackMenu;
-	cocos2d::MenuItemImage *m_pAttack1;
-	cocos2d::MenuItemImage *m_pAttack2;
-	cocos2d::MenuItemImage *m_pAttack3;
-	cocos2d::MenuItemImage *m_pAttack4;
-	cocos2d::MenuItemImage *m_pAttack5;
-	cocos2d::MenuItemImage *m_pAttack6;
-	cocos2d::MenuItemImage *m_pAttack7;
-	cocos2d::MenuItemImage *m_pAttack8;
-	cocos2d::MenuItemImage *m_pAttack9;
-	cocos2d::MenuItemImage *m_pAttack10;
-	cocos2d::MenuItemImage *m_pAttack11;
-	cocos2d::MenuItemImage *m_pAttack12;
-	cocos2d::MenuItemImage *m_pAttack13;
-	cocos2d::MenuItemImage *m_pAttack14;
-	cocos2d::MenuItemImage *m_pAttack15;
-	cocos2d::MenuItemImage *m_pAttack16;
-	cocos2d::MenuItemImage *m_pAttack17;
-	cocos2d::MenuItemImage *m_pAttack18;
-	cocos2d::MenuItemImage *m_pAttack19;
-	cocos2d::MenuItemImage *m_pAttack20;
-	cocos2d::MenuItemImage *m_pAttack21;
-	cocos2d::MenuItemImage *m_pAttack22;
-	cocos2d::MenuItemImage *m_pAttack23;
-	cocos2d::MenuItemImage *m_pAttack24;
-	cocos2d::MenuItemImage *m_pAttack25;
-	cocos2d::MenuItemImage *m_pAttack26;
-	cocos2d::MenuItemImage *m_pAttack27;
-	cocos2d::MenuItemImage *m_pAttack28;
-
 	cocos2d::Menu *m_pMagicMenu;
-	cocos2d::MenuItemImage *m_pMagic1;
-	cocos2d::MenuItemImage *m_pMagic2;
-	cocos2d::MenuItemImage *m_pMagic3;
-	cocos2d::MenuItemImage *m_pMagic4;
-	cocos2d::MenuItemImage *m_pMagic5;
-	cocos2d::MenuItemImage *m_pMagic6;
-	cocos2d::MenuItemImage *m_pMagic7;
-	cocos2d::MenuItemImage *m_pMagic8;
-	cocos2d::MenuItemImage *m_pMagic9;
-	cocos2d::MenuItemImage *m_pMagic10;
-	cocos2d::MenuItemImage *m_pMagic11;
-	cocos2d::MenuItemImage *m_pMagic12;
-	cocos2d::MenuItemImage *m_pMagic13;
-	cocos2d::MenuItemImage *m_pMagic14;
-	cocos2d::MenuItemImage *m_pMagic15;
-	cocos2d::MenuItemImage *m_pMagic16;
-	cocos2d::MenuItemImage *m_pMagic17;
-	cocos2d::MenuItemImage *m_pMagic18;
-	cocos2d::MenuItemImage *m_pMagic19;
-	cocos2d::MenuItemImage *m_pMagic20;
-	cocos2d::MenuItemImage *m_pMagic21;
-	cocos2d::MenuItemImage *m_pMagic22;
-	cocos2d::MenuItemImage *m_pMagic23;
-	cocos2d::MenuItemImage *m_pMagic24;
-
 	cocos2d::Menu *m_pDefenseMenu;
-	cocos2d::MenuItemImage *m_pDefense1;
-	cocos2d::MenuItemImage *m_pDefense2;
-	cocos2d::MenuItemImage *m_pDefense3;
-	cocos2d::MenuItemImage *m_pDefense4;
-	cocos2d::MenuItemImage *m_pDefense5;
-	cocos2d::MenuItemImage *m_pDefense6;
-	cocos2d::MenuItemImage *m_pDefense7;
-	cocos2d::MenuItemImage *m_pDefense8;
-	cocos2d::MenuItemImage *m_pDefense9;
-	cocos2d::MenuItemImage *m_pDefense10;
-	cocos2d::MenuItemImage *m_pDefense11;
-	cocos2d::MenuItemImage *m_pDefense12;
-	cocos2d::MenuItemImage *m_pDefense13;
-	cocos2d::MenuItemImage *m_pDefense14;
-	cocos2d::MenuItemImage *m_pDefense15;
-	cocos2d::MenuItemImage *m_pDefense16;
-	cocos2d::MenuItemImage *m_pDefense17;
-	cocos2d::MenuItemImage *m_pDefense18;
-	cocos2d::MenuItemImage *m_pDefense19;
-	cocos2d::MenuItemImage *m_pDefense20;
-
 	cocos2d::Menu *m_pMoveMenu;
-	cocos2d::MenuItemImage *m_pMove1;
-	cocos2d::MenuItemImage *m_pMove2;
-	cocos2d::MenuItemImage *m_pMove3;
-	cocos2d::MenuItemImage *m_pMove4;
-	cocos2d::MenuItemImage *m_pMove5;
-	cocos2d::MenuItemImage *m_pMove6;
-	cocos2d::MenuItemImage *m_pMove7;
-
 	cocos2d::Menu *m_pBattleMenu;
-	cocos2d::MenuItemImage *m_pBattle1;
-	cocos2d::MenuItemImage *m_pBattle2;
-	cocos2d::MenuItemImage *m_pBattle3;
-	cocos2d::MenuItemImage *m_pBattle4;
-	cocos2d::MenuItemImage *m_pBattle5;
-	cocos2d::MenuItemImage *m_pBattle6;
-	cocos2d::MenuItemImage *m_pBattle7;
-
 	cocos2d::Menu *m_pAssistMenu;
-	cocos2d::MenuItemImage *m_pAssist1;
-	cocos2d::MenuItemImage *m_pAssist2;
-	cocos2d::MenuItemImage *m_pAssist3;
-	cocos2d::MenuItemImage *m_pAssist4;
-	cocos2d::MenuItemImage *m_pAssist5;
-	cocos2d::MenuItemImage *m_pAssist6;
-	cocos2d::MenuItemImage *m_pAssist7;
-	cocos2d::MenuItemImage *m_pAssist8;
-	cocos2d::MenuItemImage *m_pAssist9;
-
+	
 	//询问退出界面及按钮
 	bool ExitIsOpen;
 	cocos2d::Sprite *m_ExitBack;
@@ -261,9 +208,17 @@ public:
 	void transToOp(cocos2d::Ref* pSender);
 	void transToHero(cocos2d::Ref* pSender);
 	void closeAttri(cocos2d::Ref* pSender);
+
+	//属性面板2函数
+	void openAttri2(cocos2d::Ref* pSender);
+	void transTo1(cocos2d::Ref* pSender);
+	void transTo2(cocos2d::Ref* pSender);
+	void closeAttri2(cocos2d::Ref* pSender);
+
 	///////////////////商店面板函数
 	void openShop(cocos2d::Ref* pSender);
 	void closeShop(cocos2d::Ref* pSender);
+
 	void RecommendMenu(cocos2d::Ref* pSender);
 	void AttackMenu(cocos2d::Ref* pSender);
 	void MagicMenu(cocos2d::Ref* pSender);
@@ -273,6 +228,7 @@ public:
 	void AssistMenu(cocos2d::Ref* pSender);
 
 	//物品操作函数
+	void attack0(cocos2d::Ref* pSender);
 	void attack1(cocos2d::Ref* pSender);
 	void attack2(cocos2d::Ref* pSender);
 	void attack3(cocos2d::Ref* pSender);
@@ -288,8 +244,8 @@ public:
 	void attack13(cocos2d::Ref* pSender);
 	void attack14(cocos2d::Ref* pSender);
 	void attack15(cocos2d::Ref* pSender);
-	void attack16(cocos2d::Ref* pSender);
-
+	
+    void magic0(cocos2d::Ref* pSender);
 	void magic1(cocos2d::Ref* pSender);
 	void magic2(cocos2d::Ref* pSender);
 	void magic3(cocos2d::Ref* pSender);
@@ -305,8 +261,8 @@ public:
 	void magic13(cocos2d::Ref* pSender);
 	void magic14(cocos2d::Ref* pSender);
 	void magic15(cocos2d::Ref* pSender);
-	void magic16(cocos2d::Ref* pSender);
-
+	
+    void defense0(cocos2d::Ref* pSender);
 	void defense1(cocos2d::Ref* pSender);
 	void defense2(cocos2d::Ref* pSender);
 	void defense3(cocos2d::Ref* pSender);
@@ -322,24 +278,24 @@ public:
 	void defense13(cocos2d::Ref* pSender);
 	void defense14(cocos2d::Ref* pSender);
 	void defense15(cocos2d::Ref* pSender);
-	void defense16(cocos2d::Ref* pSender);
-
+	
+    void move0(cocos2d::Ref* pSender);
 	void move1(cocos2d::Ref* pSender);
 	void move2(cocos2d::Ref* pSender);
 	void move3(cocos2d::Ref* pSender);
 	void move4(cocos2d::Ref* pSender);
 	void move5(cocos2d::Ref* pSender);
 	void move6(cocos2d::Ref* pSender);
-	void move7(cocos2d::Ref* pSender);
-
+	
+    void battle0(cocos2d::Ref* pSender);
 	void battle1(cocos2d::Ref* pSender);
 	void battle2(cocos2d::Ref* pSender);
 	void battle3(cocos2d::Ref* pSender);
 	void battle4(cocos2d::Ref* pSender);
 	void battle5(cocos2d::Ref* pSender);
 	void battle6(cocos2d::Ref* pSender);
-	void battle7(cocos2d::Ref* pSender);
-
+	
+    void assist0(cocos2d::Ref* pSender);
 	void assist1(cocos2d::Ref* pSender);
 	void assist2(cocos2d::Ref* pSender);
 	void assist3(cocos2d::Ref* pSender);
@@ -348,7 +304,7 @@ public:
 	void assist6(cocos2d::Ref* pSender);
 	void assist7(cocos2d::Ref* pSender);
 	void assist8(cocos2d::Ref* pSender);
-	void assist9(cocos2d::Ref* pSender);
+	
 
 	//退出界面函数
 	void openExit(cocos2d::Ref* pSender);
