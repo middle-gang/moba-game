@@ -24,11 +24,13 @@ void ObjectBase::Kill_reward(ObjectBase& ene) {
 	else if (ene.HeroIdentifier == 5) {
 		m_exp += 9;
 		m_money += 35;
+		t_money += 35;
 		LvUp();
 	}
 	else if (ene.HeroIdentifier == 6) {
 		m_exp += 7;
 		m_money += 25;
+		t_money += 25;
 		LvUp();
 	}
 }
@@ -133,6 +135,7 @@ int ObjectBase::Attack(ObjectBase& ene) {
 	return attack;
 }
 
+
 void ObjectBase::setMoveablity(bool mab) {
 	Moveable = mab;
 }
@@ -184,9 +187,9 @@ int& ObjectBase::totalHealth() {
 	return health;
 }
 
-void ObjectBase::changeTotalHealth(int h)
-{
-}
+//void ObjectBase::changeTotalHealth(int h)
+//{
+//}
 
 int& ObjectBase::getRadium() {
 	return radium;
@@ -278,6 +281,16 @@ void ObjectBase::Move(Vec2 dest) {
 
 int ObjectBase::Money() {
 	return m_money;
+}
+
+int ObjectBase::tMoney()
+{
+	return t_money;
+}
+
+int ObjectBase::Level()
+{
+	return MyLevel;
 }
 
 void ObjectBase::setSpawnPoint(Vec2 spawn) {
@@ -439,6 +452,41 @@ void ObjectBase::LvUp() {
 
 int ObjectBase::ObjectType() {
 	return HeroIdentifier;
+}
+
+float ObjectBase::AttackSpeed()
+{
+	return attackingSpeed;
+}
+
+float ObjectBase::Power()
+{
+	return power;
+}
+
+float ObjectBase::PhysicBloodSuck()
+{
+	return physicBloodSuck;
+}
+
+float ObjectBase::MagicBloodSuck()
+{
+	return magicBloodSuck;
+}
+
+float ObjectBase::E_Armor()
+{
+	return 0.0f;
+}
+
+float ObjectBase::E_MagicDenfense()
+{
+	return 0.0f;
+}
+
+int ObjectBase::E_Kill()
+{
+	return 0;
 }
 
 Vec2 ObjectBase::SpawnPoint() {

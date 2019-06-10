@@ -27,15 +27,24 @@ public:
 	int& getRadium();			//以引用的形式返回人物的攻击范围
 	int getVelocity();			//获取人物的移动速度
 	int Money();				//人物的金钱
+	int tMoney();               //人物总获得金钱
+	int Level();                //人物等级
 	int Attack(ObjectBase& ene);	//攻击函数，造成伤害，动画，击杀
 	float& AttackPower();				//引用形式返回攻击力
 	int& healthPower();				//引用形式返回目前生命
 	int& totalHealth();				//引用形式返回总生命值
-<<<<<<< HEAD
+
 	int ObjectType();
-=======
-	void changeTotalHealth(int h);       //改变总生命值
->>>>>>> 8528b369a6a7704a7ed8907b1e6d5993e1320b9a
+
+	//void changeTotalHealth(int h);       //改变总生命值
+	float AttackSpeed();         //人物攻击速度
+	float Power();
+	float PhysicBloodSuck();    //物理吸血
+	float MagicBloodSuck();     //法术吸血
+	float E_Armor();               //获取对手护甲值
+	float E_MagicDenfense();       //获取对手魔抗
+	int E_Kill();       //获取对手击杀数    
+
 
 	void Die();					//死亡的时候调用
 	void BeAttack(float n);		//被造成伤害（Attack中调用）
@@ -87,7 +96,7 @@ protected:
 
 	int health;//总生命值
 	int nowHealth;//当前生命值
-<<<<<<< HEAD
+
 	int healthRecover;//生命回复
 	bool HomeHPRecover=false;//判断是否在泉水中的生命回复
 
@@ -102,27 +111,21 @@ protected:
 	float power;//法术强度
 	float magicdenfenceIgnore;//法术穿透
 
-=======
-	int attack;//攻击力
-	int attackarmor; //物抗
-	int powerarmor;//法抗
-	int power;//法术强度
->>>>>>> 8528b369a6a7704a7ed8907b1e6d5993e1320b9a
+	float physicBloodSuck=0;//物理吸血
+	float magicBloodSuck=0;//法术吸血
+	float waitLessen = 0;//冷却缩减
+
 	int radium;//攻击半径
 
 	float velocity;//移动速度
-<<<<<<< HEAD
+
+	//float damageChance=0; //暴击概率
 
 	int m_money=0;//我的金钱
+	int t_money = 0;///总获得金钱数
 	int m_exp;//我的经验值
 	int MyLevel=1;//我的等级
 	int HeroIdentifier;//英雄标签：1.Bowman，2.Savage，3.Wizard
-=======
-	int m_money=300;//我的金钱
-	int m_exp;//我的经验值
-	int m_level;//我的等级
-	int animeIdentifier;//动画标签：1.Bowman，2.Savage，3.Wizard
->>>>>>> 8528b369a6a7704a7ed8907b1e6d5993e1320b9a
 
 	bool isAlive=true;			//是否存活
 	bool attackingFlag=false;	//是否正在攻击
