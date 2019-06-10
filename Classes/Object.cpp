@@ -122,8 +122,8 @@ int ObjectBase::Attack(ObjectBase& ene) {
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
 		}
-
-		ene.BeAttack(attack);
+		if(atkStrengthen) ene.BeAttack(attack+atkPlus);
+		else ene.BeAttack(attack);
 		if (ene.healthPower() <= 0) {
 			ene.Die();
 			if(HeroIdentifier <= 3) Kill_reward(ene);
@@ -453,4 +453,30 @@ void ObjectBase::setHomerecover() {
 void ObjectBase::removeHomerecover() {
 	HomeHPRecover = false;
 	HomeMPRecover = false;
+}
+
+void ObjectBase::powerQ(){
+	if (flagQ) {
+		flagQ = false;
+		if (HeroIdentifier == 2) {
+			Qeffect = true;
+			velocity += 50;
+			atkStrengthen = true;
+		}
+	}
+}
+
+void ObjectBase::JudgeQ(float delta) {
+	if (!flagQ) {
+		Qtimer += delta;
+		if (Qtimer >= 3&&Qeffect) {
+			Qeffect = false;
+			velocity -= 50;
+			atkStrengthen = false;
+		}
+		if (Qtimer >= 5) {
+			flagQ = true;
+			Qtimer = 0;
+		}
+	}
 }

@@ -255,6 +255,9 @@ void GameScene2::update(float delta){
 	Hero.HealthRebound(delta);
 	Hero.MagicRebound(delta);
 	Hero.BloodView->setCurrentProgress(Hero.healthPower());
+	
+	Hero.JudgeQ(delta);
+
 	Tower[0].BloodView->setCurrentProgress(Tower[0].healthPower());
 	Tower[1].BloodView->setCurrentProgress(Tower[1].healthPower());
 	if(cryInit[0]) Crystal[0].BloodView->setCurrentProgress(Crystal[0].healthPower());
@@ -786,6 +789,9 @@ void GameScene2::setPlayerPosition(Vec2 position)
 void GameScene2::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event) {
 	if (keycode == EventKeyboard::KeyCode::KEY_K) {
 		Hero.CheckBacking() = true;
+	}
+	if (keycode == EventKeyboard::KeyCode::KEY_Q) {
+		Hero.powerQ();
 	}
 }
 
