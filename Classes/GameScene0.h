@@ -22,6 +22,7 @@ private:
 	int m_kill;   //击杀对手数
 	int m_death;   //死亡数
 	int e_kill;    //对手击杀数
+	int e_death;   //对手死亡数
 	//int m_assist;  //助攻数
 	//int m_monster;  //击杀野怪数
 	int m_tower;///推塔数
@@ -29,6 +30,7 @@ private:
 	int m_money2; //商店
 	int t_money;//获得金钱
 	int m_level; //等级
+	int e_level;//对手等级
 
 	float m_attack;//攻击力
 	float m_power;//法术强度
@@ -43,10 +45,8 @@ private:
 	int magicpointRecover;//法力回复 
 	float armorIgnore;//护甲穿透
 	float magicdenfenceIgnore;//法术穿透
-	float physicBloodSuck = 0;//物理吸血
-	float magicBloodSuck = 0;//法术吸血
-
-
+	float physicBloodSuck ;//物理吸血
+	float magicBloodSuck ;//法术吸血
 
 	//////装备
 	EquipmentData s_Equip[8][30];

@@ -37,12 +37,28 @@ bool GameScene0::init()
 
 
 	////////////////////////////////英雄属性
-	m_kill = m_pGameScene2->Hero.m_kill;
+	m_kill = m_pGameScene2->Hero.AttackPower();
 	m_death = m_pGameScene2->Hero.m_death;
 	m_level = m_pGameScene2->Hero.Level();
 	m_money = m_pGameScene2->Hero.Money();
 	t_money = m_pGameScene2->Hero.tMoney();
-	
+
+	 m_attack = m_pGameScene2->Hero.AttackPower();//攻击力
+	 m_power=m_pGameScene2->Hero.Power();//法术强度
+	 m_health=m_pGameScene2->Hero.totalHealth();//总生命值
+	 magicpoint = m_pGameScene2->Hero.MagicPoint();//法力值
+	 armor = m_pGameScene2->Hero.Armor();//护甲值
+	 magicDenfence = m_pGameScene2->Hero.MagicDefence();//魔抗
+	 attackingSpeed = m_pGameScene2->Hero.AttackSpeed();  //攻击速度
+	 waitLessen = m_pGameScene2->Hero.WaitLessen();//冷却缩减
+	 velocity = m_pGameScene2->Hero.getVelocity();//移动速度
+	 healthRecover = m_pGameScene2->Hero.HealthRecover();//生命回复
+	 magicpointRecover= m_pGameScene2->Hero.MagicPointRecover();//法力回复 
+	 armorIgnore= m_pGameScene2->Hero.ArmorIgnore();//护甲穿透
+	 magicdenfenceIgnore= m_pGameScene2->Hero.MagicDefenseIgnore();//法术穿透
+	 physicBloodSuck= m_pGameScene2->Hero.PhysicBloodSuck();//物理吸血
+	 magicBloodSuck = m_pGameScene2->Hero.MagicBloodSuck();//法术吸血
+
 
 	/////游戏时间
 	////游戏时间
@@ -162,10 +178,18 @@ bool GameScene0::init()
 	m_pKill2Text->setPosition(165,405);
 	addChild(m_pKill2Text, 3);
 
+	m_pKill3Text=Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 22);
+	m_pKill3Text->setPosition(342, 287);
+	addChild(m_pKill3Text, 13);
+		
 	sprintf(m_Textbuffer, "%d", m_death);
 	m_pDeathText = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 23);
 	m_pDeathText->setPosition(150, 435);
 	addChild(m_pDeathText, 3);
+
+	m_pDeath2Text = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 22);
+	m_pDeath2Text->setPosition(390, 287);
+	addChild(m_pDeath2Text, 13);
 
 	Label* m_pAssist = Label::createWithTTF("0", "fonts/msyh.ttc", 23);
 	m_pAssist->setPosition(200, 435);
@@ -300,7 +324,7 @@ bool GameScene0::init()
 	s_Equip[1][0].pMenuItemImage = MenuItemImage::create("photo/shop/attack/1.jpg",
 		"photo/shop/attack/1_1.jpg",
 		"photo/shop/attack/1_1.jpg",
-		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
+		CC_CALLBACK_1(GameScene0::attack0, this));
 	s_Equip[1][1].pMenuItemImage = MenuItemImage::create("photo/shop/attack/2.jpg",
 		"photo/shop/attack/2_1.jpg",
 		"photo/shop/attack/2_1.jpg",
@@ -324,7 +348,7 @@ bool GameScene0::init()
 	s_Equip[1][6].pMenuItemImage = MenuItemImage::create("photo/shop/attack/7.jpg",
 		"photo/shop/attack/7_1.jpg",
 		"photo/shop/attack/7_1.jpg",
-		CC_CALLBACK_1(GameScene0::RecommendMenu, this));
+		CC_CALLBACK_1(GameScene0::attack6, this));
 	s_Equip[1][7].pMenuItemImage = MenuItemImage::create("photo/shop/attack/8.jpg",
 		"photo/shop/attack/8_1.jpg",
 		"photo/shop/attack/8_1.jpg",
@@ -364,7 +388,7 @@ bool GameScene0::init()
 
 	for (int i = 0; i <= 15; i++)
 	{
-		s_Equip[1][i].pMenuItemImage->setEnabled(false);
+		//s_Equip[1][i].pMenuItemImage->setEnabled(false);
 		if (i <= 3)
 		{
 			s_Equip[1][i].pMenuItemImage->setPosition(270 + i * 120, 370);
@@ -811,12 +835,12 @@ bool GameScene0::init()
 	s_Equip[2][6].magicBloodSuck = 20;
 	s_Equip[2][6].waitLessen = 0.05;
 	s_Equip[2][7].health = 400;
-	s_Equip[2][7].power = 400;
+	s_Equip[2][7].magicpoint = 400;
 	s_Equip[2][8].power = 70;
 	s_Equip[2][8].health = 300;
 	s_Equip[2][8].magicdenfenceIgnore = 75;
 	s_Equip[2][9].health = 400;
-	s_Equip[2][9].power = 400;
+	s_Equip[2][9].magicpoint = 400;
 	s_Equip[2][10].power = 75;
 	s_Equip[2][10].waitLessen = 0.1;
 	s_Equip[2][10].magicBloodSuck = 0.2;
@@ -1208,9 +1232,9 @@ void GameScene0::update(float delta)
 	
 	///////////////////////属性更新
 
-	if (m_kill != m_pGameScene2->Hero.m_kill)
+	if (m_kill != m_pGameScene2->Hero.AttackPower())
 	{
-		m_kill = m_pGameScene2->Hero.m_kill;
+		m_kill = m_pGameScene2->Hero.AttackPower();
 		sprintf(m_Textbuffer, "%d", m_kill);
 		m_pKillText->setString(m_Textbuffer);
 
@@ -1425,6 +1449,8 @@ void GameScene0::openShop(cocos2d::Ref * pSender)
 	m_pMoney2Text->setString(m_Textbuffer);
 	m_pMoney2Text->setVisible(true);
 
+	m_pDownMii->setEnabled(true);
+	m_pRecomMii->setEnabled(false);
 	m_pRecomBac->setVisible(true);
 	m_pDownBac = m_pRecomBac;
 	m_pRecommandMenu->setVisible(true);
@@ -1584,290 +1610,361 @@ void GameScene0::AssistMenu(cocos2d::Ref * pSender)
 }
 void GameScene0::attack0(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(100);
 }
 ///////////////物品函数
 void GameScene0::attack1(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(101);
 }
 
 void GameScene0::attack2(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(102);
 }
 
 void GameScene0::attack3(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(103);
 }
 
 void GameScene0::attack4(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(104);
 }
 
 void GameScene0::attack5(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(105);
 }
 
 void GameScene0::attack6(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(106);
 }
 
 void GameScene0::attack7(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(107);
 }
 
 void GameScene0::attack8(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(108);
 }
 
 void GameScene0::attack9(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(109);
 }
 
 void GameScene0::attack10(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(110);
 }
 
 void GameScene0::attack11(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(111);
 }
 
 void GameScene0::attack12(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(112);
 }
 
 void GameScene0::attack13(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(113);
 }
 
 void GameScene0::attack14(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(114);
 }
 
 void GameScene0::attack15(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(115);
 }
 
 void GameScene0::magic0(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(200);
 }
 
 void GameScene0::magic1(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(201);
 }
 
 void GameScene0::magic2(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(202);
 }
 
 void GameScene0::magic3(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(203);
 }
 
 void GameScene0::magic4(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(204);
 }
 
 void GameScene0::magic5(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(205);
 }
 
 void GameScene0::magic6(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(206);
 }
 
 void GameScene0::magic7(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(207);
 }
 
 void GameScene0::magic8(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(208);
 }
 
 void GameScene0::magic9(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(209);
 }
 
 void GameScene0::magic10(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(210);
 }
 
 void GameScene0::magic11(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(211);
 }
 
 void GameScene0::magic12(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(212);
 }
 
 void GameScene0::magic13(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(213);
 }
 
 void GameScene0::magic14(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(214);
 }
 
 void GameScene0::magic15(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(215);
 }
 
 void GameScene0::defense0(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(300);
 }
 
 void GameScene0::defense1(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(301);
 }
 
 void GameScene0::defense2(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(302);
 }
 
 void GameScene0::defense3(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(303);
 }
 
 void GameScene0::defense4(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(304);
 }
 
 void GameScene0::defense5(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(305);
 }
 
 void GameScene0::defense6(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(306);
 }
 
 void GameScene0::defense7(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(307);
 }
 
 void GameScene0::defense8(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(308);
 }
 
 void GameScene0::defense9(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(309);
 }
 
 void GameScene0::defense10(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(310);
 }
 
 void GameScene0::defense11(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(311);
 }
 
 void GameScene0::defense12(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(312);
 }
 
 void GameScene0::defense13(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(313);
 }
 
 void GameScene0::defense14(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(314);
 }
 
 void GameScene0::defense15(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(316);
 }
 
 
 void GameScene0::move0(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(400);
 }
 
 void GameScene0::move1(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(401);
 }
 
 void GameScene0::move2(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(402);
 }
 
 void GameScene0::move3(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(403);
 }
 
 void GameScene0::move4(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(404);
 }
 
 void GameScene0::move5(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(405);
 }
 
 void GameScene0::move6(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(407);
 }
 
 
 void GameScene0::battle0(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(500);
 }
 
 void GameScene0::battle1(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(501);
 }
 
 void GameScene0::battle2(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(502);
 }
 
 void GameScene0::battle3(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(503);
 }
 
 void GameScene0::battle4(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(504);
 }
 
 void GameScene0::battle5(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(505);
 }
 
 void GameScene0::battle6(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(506);
 }
 
 
 
 void GameScene0::assist0(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(600);
 }
 
 void GameScene0::assist1(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(601);
 }
 
 void GameScene0::assist2(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(602);
 }
 
 void GameScene0::assist3(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(603);
 }
 
 void GameScene0::assist4(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(604);
 }
 
 void GameScene0::assist5(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(605);
 }
 
 void GameScene0::assist6(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(606);
 }
 
 void GameScene0::assist7(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(607);
 }
 
 void GameScene0::assist8(cocos2d::Ref * pSender)
 {
+	m_pGameScene2->Hero.Buy(608);
 }
 
 

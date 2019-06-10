@@ -77,7 +77,13 @@ void GameScene2::newCloseMinion(int i) {
 	minionbuf.attachToSprite(minionBuf);
 	minionBuf->setPosition(flag[i].GetSpawn());
 	minionBuf->setAnchorPoint(Vec2(0.5, 0.5));
-	if (i == 1) minionBuf->setFlippedX(true);
+	if (i == 1) {
+		minionBuf->setFlippedX(true);
+		minionBuf->setColor(Color3B::BLUE);
+	}
+	if (i == 0) {
+		minionBuf->setColor(Color3B::RED);
+	}
 	minionbuf.initBloodScale();
 	this->addChild(minionbuf.BloodView, 1);
 	flag[i].Container().push_back(minionbuf);
@@ -96,7 +102,13 @@ void GameScene2::newDistantMinion(int i) {
 	minionbuf.attachToSprite(minionBuf);
 	minionBuf->setPosition(flag[i].GetSpawn());
 	minionBuf->setAnchorPoint(Vec2(0.5, 0.5));
-	if (i == 1) minionBuf->setFlippedX(true);
+	if (i == 1) {
+		minionBuf->setFlippedX(true);
+		minionBuf->setColor(Color3B::BLUE);
+	}
+	if (i == 0) {
+		minionBuf->setColor(Color3B::RED);
+	}
 	minionbuf.initBloodScale();
 	this->addChild(minionbuf.BloodView, 1);
 	flag[i].Container().push_back(minionbuf);
@@ -251,7 +263,7 @@ void GameScene2::update(float delta){
 	else {
 		Hero.removeHomerecover();
 	}
-
+	Hero.ExpAndMoneyIncrease(delta);
 	Hero.HealthRebound(delta);
 	Hero.MagicRebound(delta);
 	Hero.BloodView->setCurrentProgress(Hero.healthPower());
@@ -786,6 +798,9 @@ void GameScene2::setPlayerPosition(Vec2 position)
 void GameScene2::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event) {
 	if (keycode == EventKeyboard::KeyCode::KEY_K) {
 		Hero.CheckBacking() = true;
+	}
+	if (keycode == EventKeyboard::KeyCode::KEY_M) {
+		Hero.setMoney(100000);
 	}
 }
 

@@ -158,6 +158,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Blood.cpp" />
     <ClCompile Include="..\Classes\ChooseCharacter.cpp" />
     <ClCompile Include="..\Classes\Daji.cpp" />
+    <ClCompile Include="..\Classes\DataDefine.cpp" />
     <ClCompile Include="..\Classes\GameLogoLayer.cpp" />
     <ClCompile Include="..\Classes\GameScene0.cpp" />
     <ClCompile Include="..\Classes\GameScene2.cpp" />
