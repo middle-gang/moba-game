@@ -31,8 +31,11 @@ public:
 	float& AttackPower();				//引用形式返回攻击力
 	int& healthPower();				//引用形式返回目前生命
 	int& totalHealth();				//引用形式返回总生命值
+<<<<<<< HEAD
 	int ObjectType();
+=======
 	void changeTotalHealth(int h);       //改变总生命值
+>>>>>>> 8528b369a6a7704a7ed8907b1e6d5993e1320b9a
 
 	void Die();					//死亡的时候调用
 	void BeAttack(float n);		//被造成伤害（Attack中调用）
@@ -60,12 +63,6 @@ public:
 	void LvUp();								//获取经验值的时候调用，如果升级就改变，不升级不变
 	void setHomerecover();                       //设置在家中的回血回蓝量
 	void removeHomerecover();                    //离开家取消回血回蓝
-	void powerQ();								//Q技能
-	void JudgeQ(float delta);					//Q技能计时器
-	void powerW();								//W技能
-	void JudgeW(float delta);					//W技能计时器
-	void powerE();								//E技能
-	void JudgeE(float delta);					//E技能计时器
 
 	float attackDelay();		//返回攻击延迟时间
 	
@@ -86,11 +83,11 @@ public:
 	double waitTime = 0;		//等待时间
 protected:
 	float attack;//攻击力
-	float atkPlus = 100000;		//普攻强化值（测试数值）
 	float armorIgnore;//护甲穿透
 
 	int health;//总生命值
 	int nowHealth;//当前生命值
+<<<<<<< HEAD
 	int healthRecover;//生命回复
 	bool HomeHPRecover=false;//判断是否在泉水中的生命回复
 
@@ -105,26 +102,32 @@ protected:
 	float power;//法术强度
 	float magicdenfenceIgnore;//法术穿透
 
+=======
+	int attack;//攻击力
 	int attackarmor; //物抗
 	int powerarmor;//法抗
+	int power;//法术强度
+>>>>>>> 8528b369a6a7704a7ed8907b1e6d5993e1320b9a
 	int radium;//攻击半径
 
 	float velocity;//移动速度
+<<<<<<< HEAD
 
 	int m_money=0;//我的金钱
 	int m_exp;//我的经验值
 	int MyLevel=1;//我的等级
 	int HeroIdentifier;//英雄标签：1.Bowman，2.Savage，3.Wizard
+=======
+	int m_money=300;//我的金钱
+	int m_exp;//我的经验值
+	int m_level;//我的等级
 	int animeIdentifier;//动画标签：1.Bowman，2.Savage，3.Wizard
+>>>>>>> 8528b369a6a7704a7ed8907b1e6d5993e1320b9a
 
 	bool isAlive=true;			//是否存活
 	bool attackingFlag=false;	//是否正在攻击
 	bool Moveable = true;		//是否可以移动
 	bool isBacking = false;		//是否正在回城
-	bool flagQ=true;			//Q技能是否在冷却
-	bool flagW=true;			//W技能是否在冷却
-	bool flagE=true;			//E技能是否在冷却
-	bool atkStrengthen = false; //是否触发普攻强化
 
 	float atkdelay=1;			//攻击间隔
 	float atkSpeedLevel=0;		//攻击速度的等级，根据攻速阈值
@@ -133,11 +136,6 @@ protected:
 	
 	float HPrecoverTimer = 0;	//生命回复的时间，在函数中调用用
 	float MPrecoverTimer = 0;	//法力回复的时间，在函数中调用用
-	float Qtimer=0;				//Q的冷却和效果触发计时器
-	bool Qeffect = false;		//Q的效果持续时间
-	float Wtimer=0;				//W的冷却和效果处罚及时期
-	float Etimer=0;				//E的冷却和效果处罚及时期
-	float Rtimer=0;				//r的冷却和效果处罚及时期
 
 	Vec2 Position;				//当前位置
 	Vec2 Spawn;					//出生点
@@ -173,9 +171,9 @@ protected:
 	//14：法力回复，15：法力回复成长
 	//16：移速（不会成长）
 	float HeroData[3][17] = {
-		{180,16.5,0,1,3182,200,41,2,86,18,50,8.5,440,96,16,1.5,50},
-		{164,13,0,1,3622,316,55,3.5,98,21.5,50,8.5,0,0,0,0,75},
-		{170,8.5,0,1,3229,185,55,2,86,17,50,8.5,490,109,18,1.5,50},
+		{180,16.5,0,1,3182,200,41,2,86,18,50,8.5,440,96,16,1.5,360},
+		{164,13,0,1,3622,316,55,3.5,98,21.5,50,8.5,0,0,0,0,390},
+		{170,8.5,0,1,3229,185,55,2,86,17,50,8.5,490,109,18,1.5,360},
 	};
 	//0：Bowman，1：Savage，2：Wizard
 	
@@ -184,6 +182,7 @@ protected:
 		50,75,125,150,175,200,225,250,275,300,325,350,375,400,425,450,475
 	};//每一次升级所需要的经验值
 };
+
 
 #endif 
 	
