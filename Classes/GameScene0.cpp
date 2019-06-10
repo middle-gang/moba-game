@@ -846,11 +846,78 @@ bool GameScene0::init()
 	s_Equip[2][11].buymoney = 1950;     s_Equip[2][11].sellmoney = 1170;
 	s_Equip[2][12].buymoney = 2050;     s_Equip[2][12].sellmoney = 1230;
 	s_Equip[2][13].buymoney = 2110;     s_Equip[2][13].sellmoney = 1266;
-	s_Equip[2][14].buymoney = 2300;     s_Equip[2][14].sellmoney = 2300;
+	s_Equip[2][14].buymoney = 2300;     s_Equip[2][14].sellmoney = 1380;
 	s_Equip[2][15].buymoney = 1990;     s_Equip[2][15].sellmoney = 1194;
 
 	//////////////////·ÀÓù
+	s_Equip[3][0].health = 300;
+	s_Equip[3][1].armor = 90;
+	s_Equip[3][2].magicDenfence = 90;
+	s_Equip[3][3].magicpointRecover = 30;
+	s_Equip[3][4].health = 1000;
+	s_Equip[3][5].health = 700;
+	s_Equip[3][6].magicDenfence = 120;
+	s_Equip[3][6].health = 700;
+	s_Equip[3][6].healthRecover = 50;
+	s_Equip[3][7].waitLessen = 0.1;
+	s_Equip[3][7].magicpoint = 400;
+	s_Equip[3][7].armor = 110;
+	s_Equip[3][8].armor = 210;
+	s_Equip[3][9].attack = 40;
+	s_Equip[3][9].armor = 420;
+	s_Equip[3][10].attack = 20;
+	s_Equip[3][10].health = 1000;
+	s_Equip[3][11].armor = 240;
+	s_Equip[3][11].health = 1000;
+	s_Equip[3][12].health = 2000;
+	s_Equip[3][13].armor = 270;
+	s_Equip[3][13].health = 1200;
+	s_Equip[3][14].healthRecover = 100;
+	s_Equip[3][14].magicDenfence = 240;
+	s_Equip[3][14].health = 1200;
+	s_Equip[3][15].magicDenfence = 360;
+	s_Equip[3][15].health = 1000;
+
+	//½ðÇ®
+	s_Equip[3][0].buymoney = 300;     s_Equip[3][0].sellmoney = 180;
+	s_Equip[3][1].buymoney = 220;     s_Equip[3][1].sellmoney = 132;
+	s_Equip[3][2].buymoney = 220;     s_Equip[3][2].sellmoney = 132;
+	s_Equip[3][3].buymoney = 140;     s_Equip[3][3].sellmoney = 84;
+	s_Equip[3][4].buymoney = 900;     s_Equip[3][4].sellmoney = 540;
+	s_Equip[3][5].buymoney = 900;     s_Equip[3][5].sellmoney = 540;
+	s_Equip[3][6].buymoney = 1020;     s_Equip[3][6].sellmoney = 612;
+	s_Equip[3][7].buymoney = 900;     s_Equip[3][7].sellmoney = 540;
+	s_Equip[3][8].buymoney = 730;     s_Equip[3][8].sellmoney = 438;
+	s_Equip[3][9].buymoney = 1840;     s_Equip[3][9].sellmoney = 1104;
+	s_Equip[3][10].buymoney = 2120;     s_Equip[3][10].sellmoney = 1272;
+	s_Equip[3][11].buymoney = 1830;     s_Equip[3][11].sellmoney = 1098;
+	s_Equip[3][12].buymoney = 2070;     s_Equip[3][12].sellmoney = 1242;
+	s_Equip[3][13].buymoney = 2180;     s_Equip[3][13].sellmoney = 1308;
+	s_Equip[3][14].buymoney = 2100;     s_Equip[3][14].sellmoney = 1260;
+	s_Equip[3][15].buymoney = 2120;     s_Equip[3][15].sellmoney = 1272;
+
 	//////////////////ÒÆ¶¯
+	s_Equip[4][0].velocity = 30;
+	s_Equip[4][1].armor = 110;
+	s_Equip[4][1].velocity = 60;
+	s_Equip[4][2].magicDenfence = 110;
+	s_Equip[4][3].waitLessen = 0.15;
+	s_Equip[4][4].magicpointRecover = 25;
+	s_Equip[4][4].velocity = 60;
+	s_Equip[4][4].magicdenfenceIgnore = 75;
+	s_Equip[4][5].velocity = 60;
+	s_Equip[4][5].attackingSpeed = m_pGameScene2->Hero.AttackSpeed()*0.3;
+	s_Equip[4][6].velocity = 60;
+
+	//½ðÇ®
+	s_Equip[4][0].buymoney = 250;     s_Equip[4][0].sellmoney = 150;
+	s_Equip[4][1].buymoney = 710;     s_Equip[4][1].sellmoney = 426;
+	s_Equip[4][2].buymoney = 710;     s_Equip[4][2].sellmoney = 426;
+	s_Equip[4][3].buymoney = 710;     s_Equip[4][3].sellmoney = 426;
+	s_Equip[4][4].buymoney = 710;     s_Equip[4][4].sellmoney = 426;
+	s_Equip[4][5].buymoney = 710;     s_Equip[4][5].sellmoney = 426;
+	s_Equip[4][6].buymoney = 530;     s_Equip[4][6].sellmoney = 318;
+
 	//////////////////´òÒ°
 	//////////////////¸¨Öú
 
