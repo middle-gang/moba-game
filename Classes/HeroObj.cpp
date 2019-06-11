@@ -245,6 +245,7 @@ int Hero::Attack(ObjectBase& ene) {
 		ene.BeAttack(attack);
 		if (ene.healthPower() <= 0) {
 			ene.Die();
+			m_kill++;
 			Kill_reward(ene);
 		}
 
@@ -265,4 +266,14 @@ float Hero::MagicBloodSuck()
 float Hero::WaitLessen()
 {
 	return waitLessen;
+}
+
+void Hero::Die() {
+	isAlive = false;
+	m_death++;
+	Sequence* seqAct = Sequence::create(MoveTo::create(0, Vec2(-1000, -1000)), NULL);
+	Charac->runAction(seqAct);
+
+	if (BloodView != nullptr) BloodView->setPosition(Vec2(-1000, -1000));
+	Position = Vec2(-1000, -1000);
 }

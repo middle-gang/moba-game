@@ -9,7 +9,6 @@ bool ObjectBase::InRange(Vec2 ene) {
 
 void ObjectBase::Die() {
 	isAlive = false;
-	m_death++;
 	Sequence* seqAct = Sequence::create(MoveTo::create(0, Vec2(-1000, -1000)), NULL);
 	Charac->runAction(seqAct);
 

@@ -54,7 +54,7 @@ public:
 	int E_Kill();       //获取对手击杀数    
 	int E_Level();      //获取对手等级数
 
-	void Die();					//死亡的时候调用
+	virtual void Die();					//死亡的时候调用
 	virtual void BeAttack(float n);		//被造成伤害（Attack中调用）
 	void setVelocity(int v);	//设置速度
 	void changeVeclocity(int v);   //改变速度
@@ -83,8 +83,6 @@ public:
 	
 	ProgressView* BloodView;	//血条
 
-	int m_kill = 0;				//我的击杀
-	int m_death = 0;			//我的死亡
 	int HeroIdentifier;//英雄标签：1.Bowman，2.Savage，3.Wizard
 	double DeadTime = 10;		//死亡时间
 	double waitTime = 0;		//等待时间
