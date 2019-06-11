@@ -131,7 +131,6 @@ bool GameScene2::init()
 
 	/////
 	
-
 	auto *dispatcher = Director::getInstance()->getEventDispatcher();
 	auto* keyListener = EventListenerKeyboard::create();
 	//Listener
@@ -247,7 +246,13 @@ bool GameScene2::init()
 			}
 		}
 	}
-    
+
+	n_level = Hero.Level();
+	sprintf(Textbuffer, "%d", n_level);
+	_myLevel = Label::createWithTTF(Textbuffer, "fonts/msyh.ttc", 15);
+	_myLevel->setPosition(Vec2(_player->getPosition().x-20, _player->getPosition().y+20) );
+	_myLevel->setColor(Color3B::BLUE);
+	addChild(_myLevel, 3);
     return true;
 
 }
@@ -653,6 +658,12 @@ void GameScene2::update(float delta){
 	}
 
 	setViewpointCenter(_player->getPosition());
+	_myLevel->setPosition(Vec2(_player->getPosition().x-20, _player->getPosition().y+20));
+	if (n_level != Hero.Level())
+	{
+		n_level = Hero.Level();
+		sprintf(Textbuffer, "%d", n_level);
+	}
 }
 
 bool GameScene2::onTouchBegan(Touch* touch, Event* event)
@@ -796,7 +807,7 @@ void GameScene2::setPlayerPosition(Vec2 position)
 
 
 void GameScene2::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event) {
-	if (keycode == EventKeyboard::KeyCode::KEY_K) {
+	if (keycode == EventKeyboard::KeyCode::KEY_B) {
 		Hero.CheckBacking() = true;
 	}
 	if (keycode == EventKeyboard::KeyCode::KEY_M) {

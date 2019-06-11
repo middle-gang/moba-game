@@ -141,6 +141,7 @@ void Hero::ExpAndMoneyIncrease(float delta) {
 	if (ExpAndMoneytimer >= 1) {
 		ExpAndMoneytimer = 0;
 		m_money += 3;
+		t_money += 3;
 		m_exp += 1;
 	}
 }
@@ -271,6 +272,7 @@ float Hero::WaitLessen()
 void Hero::Die() {
 	isAlive = false;
 	m_death++;
+	
 	Sequence* seqAct = Sequence::create(MoveTo::create(0, Vec2(-1000, -1000)), NULL);
 	Charac->runAction(seqAct);
 
