@@ -17,7 +17,7 @@ void ObjectBase::Die() {
 	Position = Vec2(-1000,-1000);
 }
 
-void ObjectBase::Kill_reward(ObjectBase& ene) {
+/*void ObjectBase::Kill_reward(ObjectBase& ene) {
 	if (ene.HeroIdentifier <= 3) {
 
 	}
@@ -33,7 +33,7 @@ void ObjectBase::Kill_reward(ObjectBase& ene) {
 		t_money += 25;
 		LvUp();
 	}
-}
+}*/
 
 bool ObjectBase::Death() {
 	if (!isAlive) return true;
@@ -42,7 +42,6 @@ bool ObjectBase::Death() {
 
 void ObjectBase::BeAttack(float damage) {
 	nowHealth -= damage*602/(602+armor);
-	if (isBacking) Interrupt();
 	if (nowHealth <= 0) {
 		Die();
 	}
@@ -128,7 +127,6 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		ene.BeAttack(attack);
 		if (ene.healthPower() <= 0) {
 			ene.Die();
-			if(HeroIdentifier <= 3) Kill_reward(ene);
 		}
 
 	}
@@ -355,7 +353,7 @@ void ObjectBase::HeroInit(Sprite*& spr,Vec2 spawnP) {
 	initBloodScale();
 }
 
-void ObjectBase::JudgeBack(float& time, float del) {
+/*void ObjectBase::JudgeBack(float& time, float del) {
 	time += del;
 	if (time > backSpawn) {
 		BackToSpawn();
@@ -373,7 +371,7 @@ bool& ObjectBase::CheckBacking() {
 
 void ObjectBase::Interrupt() {
 	isBacking = false;
-}
+}*/
 
 void ObjectBase::JudgeAttackSpeedLevel() {
 	bool limMax = false;
@@ -423,7 +421,7 @@ void ObjectBase::SetAtkSpeedLevel(int n) {
 	atkSpeedLevel = n;
 }
 
-void ObjectBase::LvUp() {
+/*void ObjectBase::LvUp() {
 	if (m_exp >= Exp[MyLevel - 1]) {
 		int h = HeroIdentifier - 1;
 		attack += HeroData[h][1];
@@ -457,7 +455,7 @@ void ObjectBase::ExpAndMoneyIncrease(float delta) {
 		m_money += 3;
 		m_exp += 1;
 	}
-}
+}*/
 
 int ObjectBase::ObjectType() {
 	return HeroIdentifier;
@@ -508,7 +506,7 @@ float ObjectBase::MagicDefenseIgnore()
 	return magicdenfenceIgnore;
 }
 
-float ObjectBase::PhysicBloodSuck()
+/*float ObjectBase::PhysicBloodSuck()
 {
 	return physicBloodSuck;
 }
@@ -521,7 +519,7 @@ float ObjectBase::MagicBloodSuck()
 float ObjectBase::WaitLessen()
 {
 	return waitLessen;
-}
+}*/
 
 float ObjectBase::E_Armor()
 {
@@ -547,7 +545,7 @@ Vec2 ObjectBase::SpawnPoint() {
 	return Spawn;
 }
 
-void ObjectBase::setHomerecover() {
+/*void ObjectBase::setHomerecover() {
 	HomeHPRecover = true;
 	HomeMPRecover = true;
 }
@@ -555,6 +553,50 @@ void ObjectBase::setHomerecover() {
 void ObjectBase::removeHomerecover() {
 	HomeHPRecover = false;
 	HomeMPRecover = false;
+}
+
+const ObjectBase ObjectBase::operator +(const EquipmentData equip) {
+	health += equip.health;
+	magicpoint += equip.magicpoint;
+	healthRecover += equip.healthRecover;
+	magicpointRecover += equip.magicpointRecover;
+	attack += equip.attack;
+	power += equip.power;
+
+	armor += equip.armor;
+	magicDenfence += equip.magicDenfence;
+	armorIgnore += equip.armorIgnore;
+	magicdenfenceIgnore += equip.armorIgnore;
+	physicBloodSuck += equip.physicBloodSuck;
+	magicBloodSuck += equip.magicBloodSuck;
+	waitLessen += equip.waitLessen;
+
+	velocity += (equip.velocity*velocity);
+	attackingSpeed += attackingSpeed;
+	JudgeAttackSpeedLevel();
+	return *this;
+}
+
+const ObjectBase ObjectBase::operator -(const EquipmentData equip) {
+	health -= equip.health;
+	magicpoint -= equip.magicpoint;
+	healthRecover -= equip.healthRecover;
+	magicpointRecover -= equip.magicpointRecover;
+	attack -= equip.attack;
+	power -= equip.power;
+
+	armor -= equip.armor;
+	magicDenfence -= equip.magicDenfence;
+	armorIgnore -= equip.armorIgnore;
+	magicdenfenceIgnore -= equip.armorIgnore;
+	physicBloodSuck -= equip.physicBloodSuck;
+	magicBloodSuck -= equip.magicBloodSuck;
+	waitLessen -= equip.waitLessen;
+
+	velocity -= (equip.velocity*velocity);//??
+	attackingSpeed -= attackingSpeed;
+	JudgeAttackSpeedLevel();
+	return *this;
 }
 
 void ObjectBase::Buy(int EquipNumber) {
@@ -610,4 +652,4 @@ void ObjectBase::Sale(int locNumber) {
 
 void ObjectBase::setMoney(int n) {
 	m_money = n;
-}
+}*/

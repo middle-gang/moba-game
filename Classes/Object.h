@@ -20,61 +20,19 @@ public:
 		Charac = Sprite::create(str);
 	}
 	
-	const ObjectBase operator +(const EquipmentData equip) {
-		health += equip.health;
-		magicpoint += equip.magicpoint;
-		healthRecover+=equip.healthRecover;
-		magicpointRecover += equip.magicpointRecover;
-		attack += equip.attack;
-		power += equip.power;
-
-		armor+=equip.armor;
-		magicDenfence+=equip.magicDenfence;
-		armorIgnore+=equip.armorIgnore;
-		magicdenfenceIgnore+=equip.armorIgnore;
-		physicBloodSuck+=equip.physicBloodSuck;
-		magicBloodSuck+=equip.magicBloodSuck;
-		waitLessen+=equip.waitLessen;
-
-		velocity+=(equip.velocity*velocity);
-		attackingSpeed+=attackingSpeed;
-		JudgeAttackSpeedLevel();
-		return *this;
-	}
-
-	const ObjectBase operator -(const EquipmentData equip) {
-		health -= equip.health;
-		magicpoint -= equip.magicpoint;
-		healthRecover -= equip.healthRecover;
-		magicpointRecover -= equip.magicpointRecover;
-		attack -= equip.attack;
-		power -= equip.power;
-
-		armor -= equip.armor;
-		magicDenfence -= equip.magicDenfence;
-		armorIgnore -= equip.armorIgnore;
-		magicdenfenceIgnore -= equip.armorIgnore;
-		physicBloodSuck -= equip.physicBloodSuck;
-		magicBloodSuck -= equip.magicBloodSuck;
-		waitLessen -= equip.waitLessen;
-
-		velocity -= (equip.velocity*velocity);//??
-		attackingSpeed -= attackingSpeed;
-		JudgeAttackSpeedLevel();
-		return *this;
-	}
+	const ObjectBase operator +(const EquipmentData equip);//增加装备属性
+	const ObjectBase operator -(const EquipmentData equip);//减少装备属性
 
 	bool InRange(Vec2 ene);		//判断ene对象是否在攻击范围内
 	bool Death();                //判断人物是否死亡。死亡：true，存活false
 	bool& isAttacking();		//判断人物是否处于攻击冷却期（两次攻击之间的间隔）
-	bool& CheckBacking();		//判断人物是否在回城
 	
 	int& getRadium();			//以引用的形式返回人物的攻击范围
 	int getVelocity();			//获取人物的移动速度
 	int Money();				//人物的金钱
 	int tMoney();               //人物总获得金钱
 	int Level();                //人物等级
-	int Attack(ObjectBase& ene);	//攻击函数，造成伤害，动画，击杀
+	virtual int Attack(ObjectBase& ene);	//攻击函数，造成伤害，动画，击杀
 	float& AttackPower();				//引用形式返回攻击力
 	int& healthPower();				//引用形式返回目前生命
 	int& totalHealth();				//引用形式返回总生命值
@@ -91,44 +49,30 @@ public:
 	int MagicPointRecover();   //回蓝
 	float ArmorIgnore();        //物理穿透
 	float MagicDefenseIgnore();//法术穿透
-	float PhysicBloodSuck();    //物理吸血
-	float MagicBloodSuck();     //法术吸血
-	float WaitLessen();         //冷却缩减
 	float E_Armor();               //获取对手护甲值
 	float E_MagicDenfense();       //获取对手魔抗
 	int E_Kill();       //获取对手击杀数    
 	int E_Level();      //获取对手等级数
 
 	void Die();					//死亡的时候调用
-	void BeAttack(float n);		//被造成伤害（Attack中调用）
+	virtual void BeAttack(float n);		//被造成伤害（Attack中调用）
 	void setVelocity(int v);	//设置速度
 	void changeVeclocity(int v);   //改变速度
 	void Move(Vec2 dest);		//移动函数，参数为坐标
 	void revive();				//复活到复活点
 	void setAttackingSpeed(float tms);//设置攻击速度（每秒攻击的次数）
 	void attachToSprite(Sprite* spr);//把ObjectBase类与特定对象对接
-	void Kill_reward(ObjectBase& ene);//击杀获得奖励（金钱经验）
 	void setSpawnPoint(Vec2 spawn);//设置出生点
 	void JudgeAttack(float& jt);	//传入参数计时值 jt 假如到达攻击间隔可以再次攻击并且将 jt 归零
 	void setMoveablity(bool mab);	//设置是否为可移动对象（塔和水晶不可移动）
 	void initBloodScale();			//初始化血条
 	void setAnimeIdentifier(int i); //设置动画标签
 	void HeroInit(Sprite*& spr,Vec2 spawnP); //英雄的初始化，精灵的绑定和属性值初始化
-	void BackToSpawn();				//回到出生点
-	void Interrupt();				//打断回城
-	void JudgeBack(float& time, float del);	//传入参数计时值 time 假如回城时间到就回城并且将 time 归零
 	void JudgeAttackSpeedLevel();		//根据档位设置攻击速度
 	void SetAtkSpeedLevel(int n);			//设置攻击速度的等级
 	void HealthRebound(float delta);				//回复生命值
 	void MagicRebound(float delta);				//回复法力值
 	void setArmor(float ar);					//设置护甲值
-	void LvUp();								//获取经验值的时候调用，如果升级就改变，不升级不变
-	void setHomerecover();                       //设置在家中的回血回蓝量
-	void removeHomerecover();                    //离开家取消回血回蓝
-	void ExpAndMoneyIncrease(float delta);
-	void Buy(int EquipNumber);
-	void Sale(int locationNum);
-	void setMoney(int n);
 
 	float attackDelay();		//返回攻击延迟时间
 	
@@ -141,7 +85,7 @@ public:
 
 	int m_kill = 0;				//我的击杀
 	int m_death = 0;			//我的死亡
-	
+	int HeroIdentifier;//英雄标签：1.Bowman，2.Savage，3.Wizard
 	double DeadTime = 10;		//死亡时间
 	double waitTime = 0;		//等待时间
 	Equipment EquipList;
@@ -166,9 +110,6 @@ protected:
 	float power;//法术强度
 	float magicdenfenceIgnore;//法术穿透
 
-	float physicBloodSuck=0;//物理吸血
-	float magicBloodSuck=0;//法术吸血
-	float waitLessen = 0;//冷却缩减
 
 	int radium;//攻击半径
 
@@ -179,15 +120,13 @@ protected:
 	int equip[6] = { -1,-1,-1,-1,-1,-1 };
 
 	int m_money=0;//我的金钱
-	int t_money = 0;///总获得金钱数
+	int t_money = 0;//总获得金钱数
 	int m_exp;//我的经验值
 	int MyLevel=1;//我的等级
-	int HeroIdentifier;//英雄标签：1.Bowman，2.Savage，3.Wizard
 
 	bool isAlive=true;			//是否存活
 	bool attackingFlag=false;	//是否正在攻击
 	bool Moveable = true;		//是否可以移动
-	bool isBacking = false;		//是否正在回城
 
 	float atkdelay=1;			//攻击间隔
 	float atkSpeedLevel=0;		//攻击速度的等级，根据攻速阈值

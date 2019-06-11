@@ -6,6 +6,7 @@
 #include "SimpleAudioEngine.h"
 #include "Object.h"
 #include "MinionController.h"
+#include "HeroObj.h"
 
 class GameScene2 : public cocos2d::Layer
 {
@@ -20,7 +21,7 @@ class GameScene2 : public cocos2d::Layer
 	MinionController flag[2];
 
 public:
-	ObjectBase Hero;
+	Hero Hero;
 	ObjectBase Tower[2];
 	ObjectBase Crystal[2];
 

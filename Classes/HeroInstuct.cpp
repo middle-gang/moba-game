@@ -1,4 +1,4 @@
-#include "hero.h"
+#include "HeroInstuct.h"
 #include "Help.h"
 #include "Arthur.h"
 #include "Houyi.h"
