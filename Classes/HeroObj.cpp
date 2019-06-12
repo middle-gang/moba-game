@@ -242,8 +242,10 @@ int Hero::Attack(ObjectBase& ene) {
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
 		}
-
-		ene.BeAttack(attack);
+		if (attackStrengh)
+			ene.BeAttack(attack + attackplus);
+		else
+			ene.BeAttack(attack);
 		if (ene.healthPower() <= 0) {
 			ene.Die();
 			m_kill++;
@@ -252,6 +254,69 @@ int Hero::Attack(ObjectBase& ene) {
 
 	}
 	return attack;
+}
+
+void Hero::SavageQ()
+{
+	if (QAvail)
+	{
+		attackStrengh = true;
+		velocity += 30;
+		QAvail = false;
+	}
+}
+void Hero::SavageQJudge(float delta)
+{
+	Qtimer += delta;
+	if (Qtimer >= 3) {
+		velocity -= 30;
+		attackStrengh = false;
+	}
+	if (Qtimer >= 5) {
+		QAvail = true;
+		Qtimer = 0;
+	}
+}
+
+void Hero::SavageW()
+{
+	if (WAvail)
+	{
+		armor += 50;
+		magicDenfence += 50;
+		WAvail = false;
+	}
+}
+
+void Hero::SavageWJudge(float delta)
+{
+	Wtimer += delta;
+	if (Wtimer >= 3) {
+		armor -= 50;
+		magicDenfence -= 50;
+	}
+	if (Wtimer >= 5) {
+		WAvail = true;
+		Wtimer = 0;
+	}
+}
+
+void Hero::SavageE()
+{
+	if (EAvail)
+	{
+		EAvail = false;
+		Eflag = true;
+	}
+}
+
+void Hero::SavageEJudge(float delta)
+{
+	Etimer += delta;
+	if (Etimer >= 5) {
+		Etimer = 0;
+		EAvail = true;
+	}
 }
 
 float Hero::PhysicBloodSuck()
