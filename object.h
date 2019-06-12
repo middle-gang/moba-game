@@ -1,260 +1,315 @@
 #ifndef __OBJECT_H__
 #define __OBJECT_H__
 
+
+#define CLASS_IDENTIFICATION( inCode, inClass ) \
+enum { ClassId = inCode }; \
+virtual uint32_t GetClassId() const { return ClassId; } \
+static ObjectBase* CreateInstance() { return static_cast< ObjectBase* >( new inClass() ); } \
+
 #include "cocos2d.h"
 #include "Blood.h"
 #include "DataDefine.h"
-#include "MemoryBitStream.h" 
+#include "MoreauShared.h"
 using namespace cocos2d;
 
 class ObjectBase
 {
 public:
-	ObjectBase()
-	{
-	}
-	ObjectBase(int i,int j,int k,Vec2 pos,std::string str){
-		health = i;
-		attack = j;
-		radium = k;
-		Position = pos;
-		Charac = Sprite::create(str);
-	}
-	
-	enum{
-		kClassId = 'OBJB'
-	}; 
-	virtual uint32_t GetClassId() const {return kClassId;}
-	static ObjectBase* CreateInstance(){
-		return new ObjectBase();
-	}                                          //Õâ¼¸ĞĞÒª¼ÓÔÚËùÓĞÈËÎï×ÓÀàÖĞ 
-	
-	const ObjectBase operator +(const EquipmentData equip) {
-		health += equip.health;
-		magicpoint += equip.magicpoint;
-		healthRecover+=equip.healthRecover;
-		magicpointRecover += equip.magicpointRecover;
-		attack += equip.attack;
-		power += equip.power;
 
-		armor+=equip.armor;
-		magicDenfence+=equip.magicDenfence;
-		armorIgnore+=equip.armorIgnore;
-		magicdenfenceIgnore+=equip.armorIgnore;
-		physicBloodSuck+=equip.physicBloodSuck;
-		magicBloodSuck+=equip.magicBloodSuck;
-		waitLessen+=equip.waitLessen;
+    CLASS_IDENTIFICATION( 'OBJB', ObjectBase )                       //ç±»æ ‡å¿—ç¬¦
+    
+    ObjectBase()
+    {
+    }
+    ObjectBase(int i,int j,int k,Vec2 pos,std::string str,int t){
+        health = i;
+        attack = j;
+        radium = k;
+        Position = pos;
+        Charac = Sprite::create(str);
+        mNetworkId = t;
+//        mIndexInWorld = s;
+    }
+    
+/*
+    enum{
+        kClassId = 'OBJB'
+    };
+    virtual uint32_t GetClassId() const {return kClassId;}
+    static ObjectBase* CreateInstance(){
+        return new ObjectBase();
+    }
+*/
+    
+    int GetNetworkId() const
+    {
+        return mNetworkId;
+    }
+    void SetNetworkId( int inNetworkId )
+    {
+        //this doesn't put you in the map or remove you from it
+        mNetworkId = inNetworkId;
+    }                                                               //ç½‘ç»œæ ‡å¿—ç¬¦
+    
 
-		velocity+=(equip.velocity*velocity);
-		attackingSpeed+=attackingSpeed;
-		JudgeAttackSpeedLevel();
-		return *this;
-	}
-
-	const ObjectBase operator -(const EquipmentData equip) {
-		health -= equip.health;
-		magicpoint -= equip.magicpoint;
-		healthRecover -= equip.healthRecover;
-		magicpointRecover -= equip.magicpointRecover;
-		attack -= equip.attack;
-		power -= equip.power;
-
-		armor -= equip.armor;
-		magicDenfence -= equip.magicDenfence;
-		armorIgnore -= equip.armorIgnore;
-		magicdenfenceIgnore -= equip.armorIgnore;
-		physicBloodSuck -= equip.physicBloodSuck;
-		magicBloodSuck -= equip.magicBloodSuck;
-		waitLessen -= equip.waitLessen;
-
-		velocity -= (equip.velocity*velocity);//??
-		attackingSpeed -= attackingSpeed;
-		JudgeAttackSpeedLevel();
-		return *this;
-	}
-
-	bool InRange(Vec2 ene);		//ÅĞ¶Ïene¶ÔÏóÊÇ·ñÔÚ¹¥»÷·¶Î§ÄÚ
-	bool Death();                //ÅĞ¶ÏÈËÎïÊÇ·ñËÀÍö¡£ËÀÍö£ºtrue£¬´æ»îfalse
-	bool& isAttacking();		//ÅĞ¶ÏÈËÎïÊÇ·ñ´¦ÓÚ¹¥»÷ÀäÈ´ÆÚ£¨Á½´Î¹¥»÷Ö®¼äµÄ¼ä¸ô£©
-	bool& CheckBacking();		//ÅĞ¶ÏÈËÎïÊÇ·ñÔÚ»Ø³Ç
-	
-	int& getRadium();			//ÒÔÒıÓÃµÄĞÎÊ½·µ»ØÈËÎïµÄ¹¥»÷·¶Î§
-	int getVelocity();			//»ñÈ¡ÈËÎïµÄÒÆ¶¯ËÙ¶È
-	int Money();				//ÈËÎïµÄ½ğÇ®
-	int tMoney();               //ÈËÎï×Ü»ñµÃ½ğÇ®
-	int Level();                //ÈËÎïµÈ¼¶
-	int Attack(ObjectBase& ene);	//¹¥»÷º¯Êı£¬Ôì³ÉÉËº¦£¬¶¯»­£¬»÷É±
-	float& AttackPower();				//ÒıÓÃĞÎÊ½·µ»Ø¹¥»÷Á¦
-	int& healthPower();				//ÒıÓÃĞÎÊ½·µ»ØÄ¿Ç°ÉúÃü
-	int& totalHealth();				//ÒıÓÃĞÎÊ½·µ»Ø×ÜÉúÃüÖµ
-
-	int ObjectType();
-
-	//void changeTotalHealth(int h);       //¸Ä±ä×ÜÉúÃüÖµ
-	float AttackSpeed();         //ÈËÎï¹¥»÷ËÙ¶È
-	float Power();               //·¨ÊõÇ¿¶È
-	int MagicPoint();            //ÈËÎï·¨Á¦Öµ
-	float Armor();              //ÈËÎï»¤¼×Öµ
-	float MagicDefence();      //Ä§¿¹
-	int HealthRecover();       //»ØÑª
-	int MagicPointRecover();   //»ØÀ¶
-	float ArmorIgnore();        //ÎïÀí´©Í¸
-	float MagicDefenseIgnore();//·¨Êõ´©Í¸
-	float PhysicBloodSuck();    //ÎïÀíÎüÑª
-	float MagicBloodSuck();     //·¨ÊõÎüÑª
-	float WaitLessen();         //ÀäÈ´Ëõ¼õ
-	float E_Armor();               //»ñÈ¡¶ÔÊÖ»¤¼×Öµ
-	float E_MagicDenfense();       //»ñÈ¡¶ÔÊÖÄ§¿¹
-	int E_Kill();       //»ñÈ¡¶ÔÊÖ»÷É±Êı    
-	int E_Level();      //»ñÈ¡¶ÔÊÖµÈ¼¶Êı
-
-	void Die();					//ËÀÍöµÄÊ±ºòµ÷ÓÃ
-	void BeAttack(float n);		//±»Ôì³ÉÉËº¦£¨AttackÖĞµ÷ÓÃ£©
-	void setVelocity(int v);	//ÉèÖÃËÙ¶È
-	void changeVeclocity(int v);   //¸Ä±äËÙ¶È
-	void Move(Vec2 dest);		//ÒÆ¶¯º¯Êı£¬²ÎÊıÎª×ø±ê
-	void revive();				//¸´»îµ½¸´»îµã
-	void setAttackingSpeed(float tms);//ÉèÖÃ¹¥»÷ËÙ¶È£¨Ã¿Ãë¹¥»÷µÄ´ÎÊı£©
-	void attachToSprite(Sprite* spr);//°ÑObjectBaseÀàÓëÌØ¶¨¶ÔÏó¶Ô½Ó
-	void Kill_reward(ObjectBase& ene);//»÷É±»ñµÃ½±Àø£¨½ğÇ®¾­Ñé£©
-	void setSpawnPoint(Vec2 spawn);//ÉèÖÃ³öÉúµã
-	void JudgeAttack(float& jt);	//´«Èë²ÎÊı¼ÆÊ±Öµ jt ¼ÙÈçµ½´ï¹¥»÷¼ä¸ô¿ÉÒÔÔÙ´Î¹¥»÷²¢ÇÒ½« jt ¹éÁã
-	void setMoveablity(bool mab);	//ÉèÖÃÊÇ·ñÎª¿ÉÒÆ¶¯¶ÔÏó£¨ËşºÍË®¾§²»¿ÉÒÆ¶¯£©
-	void initBloodScale();			//³õÊ¼»¯ÑªÌõ
-	void setAnimeIdentifier(int i); //ÉèÖÃ¶¯»­±êÇ©
-	void HeroInit(Sprite*& spr,Vec2 spawnP); //Ó¢ĞÛµÄ³õÊ¼»¯£¬¾«ÁéµÄ°ó¶¨ºÍÊôĞÔÖµ³õÊ¼»¯
-	void BackToSpawn();				//»Øµ½³öÉúµã
-	void Interrupt();				//´ò¶Ï»Ø³Ç
-	void JudgeBack(float& time, float del);	//´«Èë²ÎÊı¼ÆÊ±Öµ time ¼ÙÈç»Ø³ÇÊ±¼äµ½¾Í»Ø³Ç²¢ÇÒ½« time ¹éÁã
-	void JudgeAttackSpeedLevel();		//¸ù¾İµµÎ»ÉèÖÃ¹¥»÷ËÙ¶È
-	void SetAtkSpeedLevel(int n);			//ÉèÖÃ¹¥»÷ËÙ¶ÈµÄµÈ¼¶
-	void HealthRebound(float delta);				//»Ø¸´ÉúÃüÖµ
-	void MagicRebound(float delta);				//»Ø¸´·¨Á¦Öµ
-	void setArmor(float ar);					//ÉèÖÃ»¤¼×Öµ
-	void LvUp();								//»ñÈ¡¾­ÑéÖµµÄÊ±ºòµ÷ÓÃ£¬Èç¹ûÉı¼¶¾Í¸Ä±ä£¬²»Éı¼¶²»±ä
-	void setHomerecover();                       //ÉèÖÃÔÚ¼ÒÖĞµÄ»ØÑª»ØÀ¶Á¿
-	void removeHomerecover();                    //Àë¿ª¼ÒÈ¡Ïû»ØÑª»ØÀ¶
-	void ExpAndMoneyIncrease(float delta);
-	void Buy(int EquipNumber);
-	void Sale(int locationNum);
-	void setMoney(int n);
-
-	float attackDelay();		//·µ»Ø¹¥»÷ÑÓ³ÙÊ±¼ä
-	
-	Vec2& getPosition();		//»ñÈ¡Î»ÖÃ
-	Vec2 SpawnPoint();			//»ñÈ¡³öÉúµã
-	Sprite* getSprite();		//»ñÈ¡ÈËÎï¾«Áé
-	Sprite* getBullet();		//»ñÈ¡×Óµ¯£¨ÓĞ´ıÉè¼Æ£©
-	
-	ProgressView* BloodView;	//ÑªÌõ
-	
-	void Read(InputMemoryStream& stream) const;              //·â×°ºÃµÄ¶Áº¯Êı 
-	void Write(OutputMemoryStream& stream);            //·â×°ºÃµÄĞ´º¯Êı 
-
-	int m_kill = 0;				//ÎÒµÄ»÷É±
-	int m_death = 0;			//ÎÒµÄËÀÍö
-	
-	double DeadTime = 10;		//ËÀÍöÊ±¼ä
-	double waitTime = 0;		//µÈ´ıÊ±¼ä
-	Equipment EquipList;
+/*
+    void SetIndexInWorld( int inIndex )
+    {
+        mIndexInWorld = inIndex;
+    }
+    int GetIndexInWorld() const
+    {
+        return mIndexInWorld;
+    }
+*/
+    
+    virtual uint32_t Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const
+    {
+        ( void ) inOutputStream;
+        ( void ) inDirtyState;
+        return 0;
+    }
+    virtual void Read( InputMemoryBitStream& inInputStream )
+    {
+        ( void ) inInputStream;
+    }                                                                 //è¯»å–å†™â¼Šæ¯”ç‰¹æµå‡½æ•°
+    
+    
+    const ObjectBase operator +(const EquipmentData equip) {
+        health += equip.health;
+        magicpoint += equip.magicpoint;
+        healthRecover+=equip.healthRecover;
+        magicpointRecover += equip.magicpointRecover;
+        attack += equip.attack;
+        power += equip.power;
+        
+        armor+=equip.armor;
+        magicDenfence+=equip.magicDenfence;
+        armorIgnore+=equip.armorIgnore;
+        magicdenfenceIgnore+=equip.armorIgnore;
+        physicBloodSuck+=equip.physicBloodSuck;
+        magicBloodSuck+=equip.magicBloodSuck;
+        waitLessen+=equip.waitLessen;
+        
+        velocity+=(equip.velocity*velocity);
+        attackingSpeed+=attackingSpeed;
+        JudgeAttackSpeedLevel();
+        return *this;
+    }
+    
+    const ObjectBase operator -(const EquipmentData equip) {
+        health -= equip.health;
+        magicpoint -= equip.magicpoint;
+        healthRecover -= equip.healthRecover;
+        magicpointRecover -= equip.magicpointRecover;
+        attack -= equip.attack;
+        power -= equip.power;
+        
+        armor -= equip.armor;
+        magicDenfence -= equip.magicDenfence;
+        armorIgnore -= equip.armorIgnore;
+        magicdenfenceIgnore -= equip.armorIgnore;
+        physicBloodSuck -= equip.physicBloodSuck;
+        magicBloodSuck -= equip.magicBloodSuck;
+        waitLessen -= equip.waitLessen;
+        
+        velocity -= (equip.velocity*velocity);//??
+        attackingSpeed -= attackingSpeed;
+        JudgeAttackSpeedLevel();
+        return *this;
+    }
+    
+    bool InRange(Vec2 ene);        //åˆ¤æ–­eneå¯¹è±¡æ˜¯å¦åœ¨æ”»å‡»èŒƒå›´å†…
+    bool Death();                //åˆ¤æ–­äººç‰©æ˜¯å¦æ­»äº¡ã€‚æ­»äº¡ï¼štrueï¼Œå­˜æ´»false
+    bool& isAttacking();        //åˆ¤æ–­äººç‰©æ˜¯å¦å¤„äºæ”»å‡»å†·å´æœŸï¼ˆä¸¤æ¬¡æ”»å‡»ä¹‹é—´çš„é—´éš”ï¼‰
+    bool& CheckBacking();        //åˆ¤æ–­äººç‰©æ˜¯å¦åœ¨å›åŸ
+    
+    int& getRadium();            //ä»¥å¼•ç”¨çš„å½¢å¼è¿”å›äººç‰©çš„æ”»å‡»èŒƒå›´
+    int getVelocity();            //è·å–äººç‰©çš„ç§»åŠ¨é€Ÿåº¦
+    int Money();                //äººç‰©çš„é‡‘é’±
+    int tMoney();               //äººç‰©æ€»è·å¾—é‡‘é’±
+    int Level();                //äººç‰©ç­‰çº§
+    int Attack(ObjectBase& ene);    //æ”»å‡»å‡½æ•°ï¼Œé€ æˆä¼¤å®³ï¼ŒåŠ¨ç”»ï¼Œå‡»æ€
+    float& AttackPower();                //å¼•ç”¨å½¢å¼è¿”å›æ”»å‡»åŠ›
+    int& healthPower();                //å¼•ç”¨å½¢å¼è¿”å›ç›®å‰ç”Ÿå‘½
+    int& totalHealth();                //å¼•ç”¨å½¢å¼è¿”å›æ€»ç”Ÿå‘½å€¼
+    
+    int ObjectType();
+    
+    //void changeTotalHealth(int h);       //æ”¹å˜æ€»ç”Ÿå‘½å€¼
+    float AttackSpeed();         //äººç‰©æ”»å‡»é€Ÿåº¦
+    float Power();               //æ³•æœ¯å¼ºåº¦
+    int MagicPoint();            //äººç‰©æ³•åŠ›å€¼
+    float Armor();              //äººç‰©æŠ¤ç”²å€¼
+    float MagicDefence();      //é­”æŠ—
+    int HealthRecover();       //å›è¡€
+    int MagicPointRecover();   //å›è“
+    float ArmorIgnore();        //ç‰©ç†ç©¿é€
+    float MagicDefenseIgnore();//æ³•æœ¯ç©¿é€
+    float PhysicBloodSuck();    //ç‰©ç†å¸è¡€
+    float MagicBloodSuck();     //æ³•æœ¯å¸è¡€
+    float WaitLessen();         //å†·å´ç¼©å‡
+    float E_Armor();               //è·å–å¯¹æ‰‹æŠ¤ç”²å€¼
+    float E_MagicDenfense();       //è·å–å¯¹æ‰‹é­”æŠ—
+    int E_Kill();       //è·å–å¯¹æ‰‹å‡»æ€æ•°
+    int E_Level();      //è·å–å¯¹æ‰‹ç­‰çº§æ•°
+    
+    void Die();                    //æ­»äº¡çš„æ—¶å€™è°ƒç”¨
+    void BeAttack(float n);        //è¢«é€ æˆä¼¤å®³ï¼ˆAttackä¸­è°ƒç”¨ï¼‰
+    void setVelocity(int v);    //è®¾ç½®é€Ÿåº¦
+    void changeVeclocity(int v);   //æ”¹å˜é€Ÿåº¦
+    void Move(Vec2 dest);        //ç§»åŠ¨å‡½æ•°ï¼Œå‚æ•°ä¸ºåæ ‡
+    void revive();                //å¤æ´»åˆ°å¤æ´»ç‚¹
+    void setAttackingSpeed(float tms);//è®¾ç½®æ”»å‡»é€Ÿåº¦ï¼ˆæ¯ç§’æ”»å‡»çš„æ¬¡æ•°ï¼‰
+    void attachToSprite(Sprite* spr);//æŠŠObjectBaseç±»ä¸ç‰¹å®šå¯¹è±¡å¯¹æ¥
+    void Kill_reward(ObjectBase& ene);//å‡»æ€è·å¾—å¥–åŠ±ï¼ˆé‡‘é’±ç»éªŒï¼‰
+    void setSpawnPoint(Vec2 spawn);//è®¾ç½®å‡ºç”Ÿç‚¹
+    void JudgeAttack(float& jt);    //ä¼ å…¥å‚æ•°è®¡æ—¶å€¼ jt å‡å¦‚åˆ°è¾¾æ”»å‡»é—´éš”å¯ä»¥å†æ¬¡æ”»å‡»å¹¶ä¸”å°† jt å½’é›¶
+    void setMoveablity(bool mab);    //è®¾ç½®æ˜¯å¦ä¸ºå¯ç§»åŠ¨å¯¹è±¡ï¼ˆå¡”å’Œæ°´æ™¶ä¸å¯ç§»åŠ¨ï¼‰
+    void initBloodScale();            //åˆå§‹åŒ–è¡€æ¡
+    void setAnimeIdentifier(int i); //è®¾ç½®åŠ¨ç”»æ ‡ç­¾
+    void HeroInit(Sprite*& spr,Vec2 spawnP); //è‹±é›„çš„åˆå§‹åŒ–ï¼Œç²¾çµçš„ç»‘å®šå’Œå±æ€§å€¼åˆå§‹åŒ–
+    void BackToSpawn();                //å›åˆ°å‡ºç”Ÿç‚¹
+    void Interrupt();                //æ‰“æ–­å›åŸ
+    void JudgeBack(float& time, float del);    //ä¼ å…¥å‚æ•°è®¡æ—¶å€¼ time å‡å¦‚å›åŸæ—¶é—´åˆ°å°±å›åŸå¹¶ä¸”å°† time å½’é›¶
+    void JudgeAttackSpeedLevel();        //æ ¹æ®æ¡£ä½è®¾ç½®æ”»å‡»é€Ÿåº¦
+    void SetAtkSpeedLevel(int n);            //è®¾ç½®æ”»å‡»é€Ÿåº¦çš„ç­‰çº§
+    void HealthRebound(float delta);                //å›å¤ç”Ÿå‘½å€¼
+    void MagicRebound(float delta);                //å›å¤æ³•åŠ›å€¼
+    void setArmor(float ar);                    //è®¾ç½®æŠ¤ç”²å€¼
+    void LvUp();                                //è·å–ç»éªŒå€¼çš„æ—¶å€™è°ƒç”¨ï¼Œå¦‚æœå‡çº§å°±æ”¹å˜ï¼Œä¸å‡çº§ä¸å˜
+    void setHomerecover();                       //è®¾ç½®åœ¨å®¶ä¸­çš„å›è¡€å›è“é‡
+    void removeHomerecover();                    //ç¦»å¼€å®¶å–æ¶ˆå›è¡€å›è“
+    void ExpAndMoneyIncrease(float delta);
+    void Buy(int EquipNumber);
+    void Sale(int locationNum);
+    void setMoney(int n);
+    
+    float attackDelay();        //è¿”å›æ”»å‡»å»¶è¿Ÿæ—¶é—´
+    
+    Vec2& getPosition();        //è·å–ä½ç½®
+    Vec2 SpawnPoint();            //è·å–å‡ºç”Ÿç‚¹
+    Sprite* getSprite();        //è·å–äººç‰©ç²¾çµ
+    Sprite* getBullet();        //è·å–å­å¼¹ï¼ˆæœ‰å¾…è®¾è®¡ï¼‰
+    
+    ProgressView* BloodView;    //è¡€æ¡
+    
+    void Read(InputMemoryStream& stream) const;              //å°è£…å¥½çš„è¯»å‡½æ•°
+    void Write(OutputMemoryStream& stream);            //å°è£…å¥½çš„å†™å‡½æ•°
+    
+    int m_kill = 0;                //æˆ‘çš„å‡»æ€
+    int m_death = 0;            //æˆ‘çš„æ­»äº¡
+    
+    double DeadTime = 10;        //æ­»äº¡æ—¶é—´
+    double waitTime = 0;        //ç­‰å¾…æ—¶é—´
+    Equipment EquipList;
+    
+    
 protected:
-	float attack;//¹¥»÷Á¦
-	float armorIgnore;//»¤¼×´©Í¸
-
-	int health;//×ÜÉúÃüÖµ
-	int nowHealth;//µ±Ç°ÉúÃüÖµ
-
-	int healthRecover;//ÉúÃü»Ø¸´
-	bool HomeHPRecover=false;//ÅĞ¶ÏÊÇ·ñÔÚÈªË®ÖĞµÄÉúÃü»Ø¸´
-
-	int magicpoint;//·¨Á¦Öµ
-	int nowMagicpoint;//µ±Ç°·¨Á¦Öµ
-	int magicpointRecover;//·¨Á¦»Ø¸´
-	bool HomeMPRecover = false;//ÅĞ¶ÏÊÇ·ñÔÚÈªË®ÖĞµÄÉúÃü»Ø¸´
-
-	float armor;//»¤¼×Öµ
-	float magicDenfence;//Ä§¿¹
-
-	float power;//·¨ÊõÇ¿¶È
-	float magicdenfenceIgnore;//·¨Êõ´©Í¸
-
-	float physicBloodSuck=0;//ÎïÀíÎüÑª
-	float magicBloodSuck=0;//·¨ÊõÎüÑª
-	float waitLessen = 0;//ÀäÈ´Ëõ¼õ
-
-	int radium;//¹¥»÷°ë¾¶
-
-	float velocity;//ÒÆ¶¯ËÙ¶È
-
-	//float damageChance=0; //±©»÷¸ÅÂÊ
-
-	int equip[6] = { -1,-1,-1,-1,-1,-1 };
-
-	int m_money=0;//ÎÒµÄ½ğÇ®
-	int t_money = 0;///×Ü»ñµÃ½ğÇ®Êı
-	int m_exp;//ÎÒµÄ¾­ÑéÖµ
-	int MyLevel=1;//ÎÒµÄµÈ¼¶
-	int HeroIdentifier;//Ó¢ĞÛ±êÇ©£º1.Bowman£¬2.Savage£¬3.Wizard
-
-	bool isAlive=true;			//ÊÇ·ñ´æ»î
-	bool attackingFlag=false;	//ÊÇ·ñÕıÔÚ¹¥»÷
-	bool Moveable = true;		//ÊÇ·ñ¿ÉÒÔÒÆ¶¯
-	bool isBacking = false;		//ÊÇ·ñÕıÔÚ»Ø³Ç
-
-	float atkdelay=1;			//¹¥»÷¼ä¸ô
-	float atkSpeedLevel=0;		//¹¥»÷ËÙ¶ÈµÄµÈ¼¶£¬¸ù¾İ¹¥ËÙãĞÖµ
-	float attackingSpeed=0;		//¹¥»÷ËÙ¶È£º1s¹¥»÷µÄ´ÎÊı
-	float backSpawn = 5;		//»Ø³ÇÊ±¼ä
-	
-	float HPrecoverTimer = 0;	//ÉúÃü»Ø¸´µÄÊ±¼ä£¬ÔÚº¯ÊıÖĞµ÷ÓÃÓÃ
-	float MPrecoverTimer = 0;	//·¨Á¦»Ø¸´µÄÊ±¼ä£¬ÔÚº¯ÊıÖĞµ÷ÓÃÓÃ
-	float ExpAndMoneytimer = 0;//½ğÇ®ºÍ¾­ÑéµÄ×ÔÈ»Ôö³¤
-
-	Vec2 Position;				//µ±Ç°Î»ÖÃ
-	Vec2 Spawn;					//³öÉúµã
-	Sprite* Charac;				//ÈËÎï¾«Áé
-	Sprite* Blood=Sprite::create("blood.png");		//ÑªÌõ£¨ºì£©
-	Sprite* Bar=Sprite::create("bar.png");			//ÑªÌõ±³¾°£¨°×£©
-	Sprite* Bullet = Sprite::create("bulletTest.png");//×Óµ¯
-
-	//¹¥ËÙãĞÖµ»úÖÆ£¨ÏêÇé¼û°Ù¶È£©
-	//Ã¿·ÖÖÓ¹¥»÷´ÎÊı£¬´ïµ½ÁËãĞÖµÔö¼Ó£¬Ã»´ïµ½ãĞÖµ²»±ä
-	float HeroAtkSpeedLim[3][11] = {
-		{52,55,58,62,66,71,77,84,92,102,115},
-		{55,58,62,66,71,77,84,92,102,115.131},
-		{55,58,62,66,71,77,84,92,102,115.131}
-	};
-
-	//Èı¸öÓ¢ĞÛµÄ¹¥»÷ãĞÖµ
-	//¹¥»÷ËÙ¶ÈÌáÉıµÄ½Úµã
-	float AtkSpeed[3][11] = {
-		{0,2,10,17,28,38,54,70,91,117,154},
-		{0,1,9,17,27,38,52,69,90,116,152},
-		{0,1,9,17,27,38,52,69,90,116,152}
-	};
-
-	//Èı¸öÓ¢ĞÛµÄ»ù´¡ÊıÖµ¼°³É³¤
-	//0£º¹¥»÷Á¦£¬1£º¹¥»÷³É³¤
-	//2£º¹¥»÷ËÙ¶È£¬3£º¹¥»÷ËÙ¶È³É³¤
-	//4£ºÉúÃüÖµ£¬5£ºÉúÃüÖµ³É³¤
-	//6£ºÉúÃü»Ø¸´£¬7£ºÉúÃü»Ø¸´³É³¤
-	//8£ºÎï¿¹£¬9£ºÎï¿¹³É³¤
-	//10£ºÄ§¿¹£¬11£ºÄ§¿¹³É³¤
-	//12£º·¨Á¦Öµ£¬13£º·¨Á¦Öµ³É³¤
-	//14£º·¨Á¦»Ø¸´£¬15£º·¨Á¦»Ø¸´³É³¤
-	//16£ºÒÆËÙ£¨²»»á³É³¤£©
-	float HeroData[3][17] = {
-		{180,16.5,0,1,3182,200,41,2,86,18,50,8.5,440,96,16,1.5,36},
-		{164,13,0,1,3622,316,55,3.5,98,21.5,50,8.5,0,0,0,0,39},
-		{170,8.5,0,1,3229,185,55,2,86,17,50,8.5,490,109,18,1.5,36},
-	};
-	//0£ºBowman£¬1£ºSavage£¬2£ºWizard
-	
-	//¾­ÑéÖµ£¨×Ô¶¨Òå£¬ÎŞÏêÏ¸×ÊÁÏ£©
-	int Exp[17] = {
-		50,75,125,150,175,200,225,250,275,300,325,350,375,400,425,450,475
-	};//Ã¿Ò»´ÎÉı¼¶ËùĞèÒªµÄ¾­ÑéÖµ
+    
+//    int mIndexInWorld;
+    int mNetworkId;
+    
+    float attack;//æ”»å‡»åŠ›
+    float armorIgnore;//æŠ¤ç”²ç©¿é€
+    
+    int health;//æ€»ç”Ÿå‘½å€¼
+    int nowHealth;//å½“å‰ç”Ÿå‘½å€¼
+    
+    int healthRecover;//ç”Ÿå‘½å›å¤
+    bool HomeHPRecover=false;//åˆ¤æ–­æ˜¯å¦åœ¨æ³‰æ°´ä¸­çš„ç”Ÿå‘½å›å¤
+    
+    int magicpoint;//æ³•åŠ›å€¼
+    int nowMagicpoint;//å½“å‰æ³•åŠ›å€¼
+    int magicpointRecover;//æ³•åŠ›å›å¤
+    bool HomeMPRecover = false;//åˆ¤æ–­æ˜¯å¦åœ¨æ³‰æ°´ä¸­çš„ç”Ÿå‘½å›å¤
+    
+    float armor;//æŠ¤ç”²å€¼
+    float magicDenfence;//é­”æŠ—
+    
+    float power;//æ³•æœ¯å¼ºåº¦
+    float magicdenfenceIgnore;//æ³•æœ¯ç©¿é€
+    
+    float physicBloodSuck=0;//ç‰©ç†å¸è¡€
+    float magicBloodSuck=0;//æ³•æœ¯å¸è¡€
+    float waitLessen = 0;//å†·å´ç¼©å‡
+    
+    int radium;//æ”»å‡»åŠå¾„
+    
+    float velocity;//ç§»åŠ¨é€Ÿåº¦
+    
+    //float damageChance=0; //æš´å‡»æ¦‚ç‡
+    
+    int equip[6] = { -1,-1,-1,-1,-1,-1 };
+    
+    int m_money=0;//æˆ‘çš„é‡‘é’±
+    int t_money = 0;///æ€»è·å¾—é‡‘é’±æ•°
+    int m_exp;//æˆ‘çš„ç»éªŒå€¼
+    int MyLevel=1;//æˆ‘çš„ç­‰çº§
+    int HeroIdentifier;//è‹±é›„æ ‡ç­¾ï¼š1.Bowmanï¼Œ2.Savageï¼Œ3.Wizard
+    
+    bool isAlive=true;            //æ˜¯å¦å­˜æ´»
+    bool attackingFlag=false;    //æ˜¯å¦æ­£åœ¨æ”»å‡»
+    bool Moveable = true;        //æ˜¯å¦å¯ä»¥ç§»åŠ¨
+    bool isBacking = false;        //æ˜¯å¦æ­£åœ¨å›åŸ
+    
+    float atkdelay=1;            //æ”»å‡»é—´éš”
+    float atkSpeedLevel=0;        //æ”»å‡»é€Ÿåº¦çš„ç­‰çº§ï¼Œæ ¹æ®æ”»é€Ÿé˜ˆå€¼
+    float attackingSpeed=0;        //æ”»å‡»é€Ÿåº¦ï¼š1sæ”»å‡»çš„æ¬¡æ•°
+    float backSpawn = 5;        //å›åŸæ—¶é—´
+    
+    float HPrecoverTimer = 0;    //ç”Ÿå‘½å›å¤çš„æ—¶é—´ï¼Œåœ¨å‡½æ•°ä¸­è°ƒç”¨ç”¨
+    float MPrecoverTimer = 0;    //æ³•åŠ›å›å¤çš„æ—¶é—´ï¼Œåœ¨å‡½æ•°ä¸­è°ƒç”¨ç”¨
+    float ExpAndMoneytimer = 0;//é‡‘é’±å’Œç»éªŒçš„è‡ªç„¶å¢é•¿
+    
+    Vec2 Position;                //å½“å‰ä½ç½®
+    Vec2 Spawn;                    //å‡ºç”Ÿç‚¹
+    Sprite* Charac;                //äººç‰©ç²¾çµ
+    Sprite* Blood=Sprite::create("blood.png");        //è¡€æ¡ï¼ˆçº¢ï¼‰
+    Sprite* Bar=Sprite::create("bar.png");            //è¡€æ¡èƒŒæ™¯ï¼ˆç™½ï¼‰
+    Sprite* Bullet = Sprite::create("bulletTest.png");//å­å¼¹
+    
+    //æ”»é€Ÿé˜ˆå€¼æœºåˆ¶ï¼ˆè¯¦æƒ…è§ç™¾åº¦ï¼‰
+    //æ¯åˆ†é’Ÿæ”»å‡»æ¬¡æ•°ï¼Œè¾¾åˆ°äº†é˜ˆå€¼å¢åŠ ï¼Œæ²¡è¾¾åˆ°é˜ˆå€¼ä¸å˜
+    float HeroAtkSpeedLim[3][11] = {
+        {52,55,58,62,66,71,77,84,92,102,115},
+        {55,58,62,66,71,77,84,92,102,115.131},
+        {55,58,62,66,71,77,84,92,102,115.131}
+    };
+    
+    //ä¸‰ä¸ªè‹±é›„çš„æ”»å‡»é˜ˆå€¼
+    //æ”»å‡»é€Ÿåº¦æå‡çš„èŠ‚ç‚¹
+    float AtkSpeed[3][11] = {
+        {0,2,10,17,28,38,54,70,91,117,154},
+        {0,1,9,17,27,38,52,69,90,116,152},
+        {0,1,9,17,27,38,52,69,90,116,152}
+    };
+    
+    //ä¸‰ä¸ªè‹±é›„çš„åŸºç¡€æ•°å€¼åŠæˆé•¿
+    //0ï¼šæ”»å‡»åŠ›ï¼Œ1ï¼šæ”»å‡»æˆé•¿
+    //2ï¼šæ”»å‡»é€Ÿåº¦ï¼Œ3ï¼šæ”»å‡»é€Ÿåº¦æˆé•¿
+    //4ï¼šç”Ÿå‘½å€¼ï¼Œ5ï¼šç”Ÿå‘½å€¼æˆé•¿
+    //6ï¼šç”Ÿå‘½å›å¤ï¼Œ7ï¼šç”Ÿå‘½å›å¤æˆé•¿
+    //8ï¼šç‰©æŠ—ï¼Œ9ï¼šç‰©æŠ—æˆé•¿
+    //10ï¼šé­”æŠ—ï¼Œ11ï¼šé­”æŠ—æˆé•¿
+    //12ï¼šæ³•åŠ›å€¼ï¼Œ13ï¼šæ³•åŠ›å€¼æˆé•¿
+    //14ï¼šæ³•åŠ›å›å¤ï¼Œ15ï¼šæ³•åŠ›å›å¤æˆé•¿
+    //16ï¼šç§»é€Ÿï¼ˆä¸ä¼šæˆé•¿ï¼‰
+    float HeroData[3][17] = {
+        {180,16.5,0,1,3182,200,41,2,86,18,50,8.5,440,96,16,1.5,36},
+        {164,13,0,1,3622,316,55,3.5,98,21.5,50,8.5,0,0,0,0,39},
+        {170,8.5,0,1,3229,185,55,2,86,17,50,8.5,490,109,18,1.5,36},
+    };
+    //0ï¼šBowmanï¼Œ1ï¼šSavageï¼Œ2ï¼šWizard
+    
+    //ç»éªŒå€¼ï¼ˆè‡ªå®šä¹‰ï¼Œæ— è¯¦ç»†èµ„æ–™ï¼‰
+    int Exp[17] = {
+        50,75,125,150,175,200,225,250,275,300,325,350,375,400,425,450,475
+    };//æ¯ä¸€æ¬¡å‡çº§æ‰€éœ€è¦çš„ç»éªŒå€¼
 };
 
 
-#endif 
+typedef shared_ptr< GameObject > GameObjectPtr;
+
+#endif

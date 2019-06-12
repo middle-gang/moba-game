@@ -49,7 +49,6 @@
     <ClInclude Include="..\Classes\GameLogoLayer.h" />
     <ClInclude Include="..\Classes\GlobalVal.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
-    <ClInclude Include="..\Classes\Help.h" />
     <ClInclude Include="..\Classes\Houyi.h" />
     <ClInclude Include="..\Classes\menuScene1st.h" />
     <ClInclude Include="..\Classes\MinionController.h" />
@@ -75,9 +74,13 @@
     </ClInclude>
     <ClInclude Include="..\Classes\HeroObj.h" />
     <ClInclude Include="..\Classes\HeroInstuct.h" />
+
+    <ClInclude Include="..\Classes\Help.h" />
+
     <ClInclude Include="..\Classes\AnimationEdition.h">
       <Filter>NewFilter1</Filter>
     </ClInclude>
+
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
