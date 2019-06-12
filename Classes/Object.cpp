@@ -652,3 +652,10 @@ void ObjectBase::Sale(int locNumber) {
 void ObjectBase::setMoney(int n) {
 	m_money = n;
 }*/
+
+bool ObjectBase::isHero() {
+	if (HeroIdentifier <= 3) {
+		return true;
+	}
+	return false;
+}

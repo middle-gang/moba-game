@@ -203,6 +203,13 @@ bool GameScene2::init()
 	flag[0].setminionDes(Vec2(x, y));
 	flag[1].setminionSpawn(Vec2(x, y));
 
+	Sprite* EneSpr;
+	Opponent.setAnimeIdentifier(2);
+	Opponent.HeroInit(EneSpr, Vec2(x, y));
+	addChild(EneSpr, 2, 200);
+	addChild(Opponent.BloodView, 2);
+	addChild(Opponent.getBullet(), 2);
+
 	ValueMap enemyTowerPoint = group->getObject("enemyTower");
 
 	x = enemyTowerPoint["x"].asFloat();
@@ -259,6 +266,7 @@ bool GameScene2::init()
 
 void GameScene2::update(float delta){
 	Hero.getPosition() = Hero.getSprite()->getPosition();
+	
 	if (Hero.getPosition().x<=Hero.SpawnPoint().x + 30 &&
 		Hero.getPosition().x >= Hero.SpawnPoint().x - 30 &&
 		Hero.getPosition().y <= Hero.SpawnPoint().y + 30 &&
@@ -267,13 +275,27 @@ void GameScene2::update(float delta){
 	}
 	else {
 		Hero.removeHomerecover();
-	}
-	Hero.ExpAndMoneyIncrease(delta);
-	Hero.HealthRebound(delta);
-	Hero.MagicRebound(delta);
+	}//在泉水附加额外回血
+
+	Hero.ExpAndMoneyIncrease(delta);//金币经验的自然增长
+	Hero.HealthRebound(delta);//自然回血
+	Hero.MagicRebound(delta);//自然回蓝
+
 	Hero.BloodView->setCurrentProgress(Hero.healthPower());
+	
+	if (Hero.QIsUsed()) {
+		Hero.Qjudge(delta);
+	}
+	if (Hero.WIsUsed()) {
+		Hero.Wjudge(delta);
+	}
+	if (Hero.EIsUsed()) {
+		Hero.Ejudge(delta);
+	}//判断三个技能的冷却时间并进行冷却的计时
+
 	Tower[0].BloodView->setCurrentProgress(Tower[0].healthPower());
 	Tower[1].BloodView->setCurrentProgress(Tower[1].healthPower());
+	
 	if(cryInit[0]) Crystal[0].BloodView->setCurrentProgress(Crystal[0].healthPower());
 	if(cryInit[1]) Crystal[1].BloodView->setCurrentProgress(Crystal[1].healthPower());
 	
@@ -670,6 +692,79 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 {
     //log("onTouchBegan");
 
+	if (Hero.QBoundJudge == true) {
+		//Vec2 Direc = touch->getLocation() - Hero.getPosition();
+		if (touch->getLocation().distance(Hero.getPosition<=200)) {
+			Vec2 Direc = touch->getLocation() - Hero.getPosition();
+			Hero.QActivate = true;
+			for (int i = 0; i < flag[1].Container().size(); i++) {
+				Vec2 dd = flag[1].Container()[i].getPosition() - Hero.getPosition();
+				float dy = ccpLength(ccpProject(dd, Direc));
+				float dx = sqrt(ccpLength(dd)*ccpLength(dd) - dy * dy);
+				if (dy<=250&&dx<=50) {
+					Hero.Qtarget.push_back(flag[1].Container()[i]);
+				}
+			}
+			Vec2 dd = Opponent.getPosition() - Hero.getPosition();
+			float dy = ccpLength(ccpProject(dd, Direc));
+			float dx = sqrt(ccpLength(dd)*ccpLength(dd) - dy * dy);
+			if (dy<=250&&dx<=50) {
+				Hero.Wtarget.push_back(Opponent);
+			}
+			Hero.Ability1st();
+			return;
+		}
+		else {
+			Hero.QBoundJudge == false;
+		}
+	}
+
+	if (Hero.EBoundJudge == true) {
+		if (touch->getLocation().distance(Opponent.getPosition()) < 20&&
+			touch->getLocation().distance(Hero.getPosition())<200) {
+			Hero.EActivate = true;
+			Hero.Etarget = &Opponent;
+			Hero.Ability3st();
+			return;
+		}
+		else {
+			Hero.EBoundJudge == false;
+		}
+	}
+
+	if (Hero.WBoundJudge == true) {
+		if (Hero.HeroIdentifier == 1) {
+			if (touch->getLocation().distance(Hero.getPosition()) < 250) {
+				Hero.WActivate = true;
+				for (int i = 0; i < flag[1].Container().size(); i++) {
+					if (flag[1].Container()[i].getPosition().distance(touch->getLocation()) < 100) {
+						Hero.Wtarget.push_back(flag[1].Container()[i]);
+					}
+				}
+				if (touch->getLocation().distance(Opponent.getPosition()) < 100) {
+					Hero.Wtarget.push_back(Opponent);
+				}
+				Hero.Ability2st();
+				return;
+			}
+			else {
+				Hero.WBoundJudge == false;
+			}
+		}
+		if (Hero.HeroIdentifier == 3) {
+			if (touch->getLocation().distance(Opponent.getPosition()) < 20 &&
+				touch->getLocation().distance(Hero.getPosition()) < 200) {
+				Hero.WActivate = true;
+				Hero.Wtarget.push_back(Opponent);
+				Hero.Ability2st();
+				return;
+			}
+			else {
+				Hero.WBoundJudge == false;
+			}
+		}
+	}
+
 	Vec2 faceDirection = touch->getLocation() - Hero.getPosition();
 	if (faceDirection.x < 0 && !isRight) {
 		isRight = true;
@@ -812,6 +907,9 @@ void GameScene2::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event) {
 	}
 	if (keycode == EventKeyboard::KeyCode::KEY_M) {
 		Hero.setMoney(100000);
+	}
+	if (keycode == EventKeyboard::KeyCode::KEY_E) {
+		Hero.EBoundJudge = true;
 	}
 }
 

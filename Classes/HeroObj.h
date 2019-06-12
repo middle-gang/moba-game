@@ -1,9 +1,9 @@
 #include "Object.h"
 
-class Hero :public ObjectBase {
+class HeroObj :public ObjectBase {
 public:
-	const Hero Hero::operator -(const EquipmentData equip);
-	const Hero Hero::operator +(const EquipmentData equip);
+	const HeroObj HeroObj::operator -(const EquipmentData equip);
+	const HeroObj HeroObj::operator +(const EquipmentData equip);
 	void LvUp();								//获取经验值的时候调用，如果升级就改变，不升级不变
 	void setHomerecover();                       //设置在家中的回血回蓝量
 	void removeHomerecover();                    //离开家取消回血回蓝
@@ -24,6 +24,29 @@ public:
 	float WaitLessen();         //冷却缩减
 
 	bool& CheckBacking();
+	bool QIsUsed();		//Q技能是否使用
+	bool WIsUsed();		//W技能是否使用
+	bool EIsUsed();		//E机能是否使用
+
+	void Ability1st();
+	void Ability2st();
+	void Ability3st();
+
+	void Qjudge(float delta);
+	void Wjudge(float delta);
+	void Ejudge(float delta);
+
+	bool EBoundJudge = false;
+	bool EActivate = false;
+	HeroObj* Etarget;
+
+	bool WBoundJudge = false;
+	bool WActivate = false;
+	std::vector<ObjectBase> Wtarget;
+
+	bool QBoundJudge = false;
+	bool QActivate = false;
+	std::vector<ObjectBase> Qtarget;
 
 	int m_kill = 0;				//我的击杀
 	int m_death = 0;			//我的死亡
@@ -34,6 +57,16 @@ private:
 	float physicBloodSuck = 0;//物理吸血
 	float magicBloodSuck = 0;//法术吸血
 	float waitLessen = 0;//冷却缩减
+
+	float Qtimer = 0;		//Q技能计时器
+	float Wtimer = 0;		//W技能计时器
+	float Etimer = 0;		//E技能计时器
+
+	bool Qflag = false;		//Q技能状态
+	bool Wflag = false;		//W技能状态
+	bool Eflag = false;		//E技能状态
+
+	bool attackStrength = false;	//是否产生普攻强化
 
 	bool isBacking = false;		//是否正在回城
 

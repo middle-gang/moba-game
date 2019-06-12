@@ -26,6 +26,7 @@ public:
 	bool InRange(Vec2 ene);		//判断ene对象是否在攻击范围内
 	bool Death();                //判断人物是否死亡。死亡：true，存活false
 	bool& isAttacking();		//判断人物是否处于攻击冷却期（两次攻击之间的间隔）
+	bool isHero();				//判断人物是不是英雄
 	
 	int& getRadium();			//以引用的形式返回人物的攻击范围
 	int getVelocity();			//获取人物的移动速度
