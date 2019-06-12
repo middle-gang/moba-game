@@ -276,19 +276,6 @@ void ObjectBase::Move(Vec2 dest) {
 
 }
 
-int ObjectBase::Money() {
-	return m_money;
-}
-
-int ObjectBase::tMoney()
-{
-	return t_money;
-}
-
-int ObjectBase::Level()
-{
-	return MyLevel;
-}
 
 void ObjectBase::setSpawnPoint(Vec2 spawn) {
 	Spawn = spawn;
@@ -419,42 +406,6 @@ void ObjectBase::setArmor(float ar) {
 void ObjectBase::SetAtkSpeedLevel(int n) {
 	atkSpeedLevel = n;
 }
-
-/*void ObjectBase::LvUp() {
-	if (m_exp >= Exp[MyLevel - 1]) {
-		int h = HeroIdentifier - 1;
-		attack += HeroData[h][1];
-		atkSpeedLevel += HeroData[h][3];
-		health += HeroData[h][5];
-		healthRecover += HeroData[h][7];
-		armor += HeroData[h][9];
-		magicDenfence += HeroData[h][11];
-		magicpoint += HeroData[h][13];
-		magicpointRecover += HeroData[h][15];
-		m_exp = 0;
-		if (nowHealth + HeroData[h][5] < health) {
-			nowHealth += HeroData[h][5];
-		}
-		else {
-			nowHealth = health;
-		}
-		if (nowMagicpoint + HeroData[h][13] < magicpoint) {
-			nowMagicpoint += HeroData[h][13];
-		}
-		else {
-			nowMagicpoint = magicpoint;
-		}
-	}
-}
-
-void ObjectBase::ExpAndMoneyIncrease(float delta) {
-	ExpAndMoneytimer += delta;
-	if (ExpAndMoneytimer >= 1) {
-		ExpAndMoneytimer = 0;
-		m_money += 3;
-		m_exp += 1;
-	}
-}*/
 
 int ObjectBase::ObjectType() {
 	return HeroIdentifier;

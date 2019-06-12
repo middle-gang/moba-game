@@ -694,7 +694,7 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 
 	if (Hero.QBoundJudge == true) {
 		//Vec2 Direc = touch->getLocation() - Hero.getPosition();
-		if (touch->getLocation().distance(Hero.getPosition<=200)) {
+		if (touch->getLocation().distance(Hero.getPosition())<=200) {
 			Vec2 Direc = touch->getLocation() - Hero.getPosition();
 			Hero.QActivate = true;
 			for (int i = 0; i < flag[1].Container().size(); i++) {
@@ -712,7 +712,7 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 				Hero.Wtarget.push_back(Opponent);
 			}
 			Hero.Ability1st();
-			return;
+			return true;
 		}
 		else {
 			Hero.QBoundJudge == false;
@@ -725,7 +725,7 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 			Hero.EActivate = true;
 			Hero.Etarget = &Opponent;
 			Hero.Ability3st();
-			return;
+			return true;
 		}
 		else {
 			Hero.EBoundJudge == false;
@@ -745,7 +745,7 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 					Hero.Wtarget.push_back(Opponent);
 				}
 				Hero.Ability2st();
-				return;
+				return true;
 			}
 			else {
 				Hero.WBoundJudge == false;
@@ -757,7 +757,7 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 				Hero.WActivate = true;
 				Hero.Wtarget.push_back(Opponent);
 				Hero.Ability2st();
-				return;
+				return true;
 			}
 			else {
 				Hero.WBoundJudge == false;
@@ -908,8 +908,22 @@ void GameScene2::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event) {
 	if (keycode == EventKeyboard::KeyCode::KEY_M) {
 		Hero.setMoney(100000);
 	}
+	if (keycode == EventKeyboard::KeyCode::KEY_Q) {
+		if (Hero.HeroIdentifier == 1) Hero.Ability1st();
+		if (Hero.HeroIdentifier == 2) Hero.Ability1st();
+		if (Hero.HeroIdentifier == 3) Hero.QBoundJudge = true;
+	}
+	if (keycode == EventKeyboard::KeyCode::KEY_W) {
+		if (Hero.HeroIdentifier == 1) Hero.WBoundJudge = true;
+		if (Hero.HeroIdentifier == 2) Hero.Ability2st();
+		if (Hero.HeroIdentifier == 3) Hero.WBoundJudge = true;
+	}
 	if (keycode == EventKeyboard::KeyCode::KEY_E) {
-		Hero.EBoundJudge = true;
+		if (Hero.HeroIdentifier == 1) {
+
+		}
+		if (Hero.HeroIdentifier == 2) Hero.EBoundJudge = true;
+		if (Hero.HeroIdentifier == 3) Hero.Ability3st();
 	}
 }
 

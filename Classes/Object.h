@@ -30,9 +30,6 @@ public:
 	
 	int& getRadium();			//以引用的形式返回人物的攻击范围
 	int getVelocity();			//获取人物的移动速度
-	int Money();				//人物的金钱
-	int tMoney();               //人物总获得金钱
-	int Level();                //人物等级
 	virtual int Attack(ObjectBase& ene);	//攻击函数，造成伤害，动画，击杀
 	float& AttackPower();				//引用形式返回攻击力
 	int& healthPower();				//引用形式返回目前生命
@@ -118,10 +115,6 @@ protected:
 
 	int equip[6] = { -1,-1,-1,-1,-1,-1 };
 
-	int m_money=0;//我的金钱
-	int t_money = 0;//总获得金钱数
-	int m_exp;//我的经验值
-	int MyLevel=1;//我的等级
 
 	bool isAlive=true;			//是否存活
 	bool attackingFlag=false;	//是否正在攻击

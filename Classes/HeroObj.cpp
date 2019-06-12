@@ -110,7 +110,11 @@ void HeroObj::setMoney(int n) {
 }
 
 void HeroObj::LvUp() {
-	if (m_exp >= Exp[MyLevel - 1]) {
+	if (m_exp >= Exp[MyLevel - 1]&&MyLevel < 18) {
+		
+		m_exp = 0;
+		MyLevel++;
+
 		int h = HeroIdentifier - 1;
 		attack += HeroData[h][1];
 		atkSpeedLevel += HeroData[h][3];
@@ -120,7 +124,6 @@ void HeroObj::LvUp() {
 		magicDenfence += HeroData[h][11];
 		magicpoint += HeroData[h][13];
 		magicpointRecover += HeroData[h][15];
-		m_exp = 0;
 		if (nowHealth + HeroData[h][5] < health) {
 			nowHealth += HeroData[h][5];
 		}
@@ -143,6 +146,7 @@ void HeroObj::ExpAndMoneyIncrease(float delta) {
 		m_money += 3;
 		t_money += 3;
 		m_exp += 1;
+		LvUp();
 	}
 }
 
@@ -150,7 +154,7 @@ void HeroObj::BackToSpawn() {
 	Charac->setPosition(Spawn);
 }
 
-void Hero::Interrupt() {
+void HeroObj::Interrupt() {
 	isBacking = false;
 }
 
@@ -242,7 +246,6 @@ int HeroObj::Attack(ObjectBase& ene) {
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
 		}
-<<<<<<< HEAD
 
 		if (attackStrength) {
 			attackStrength = false;
@@ -250,12 +253,6 @@ int HeroObj::Attack(ObjectBase& ene) {
 		}
 		else ene.BeAttack(attack);
 		
-=======
-		if (attackStrengh)
-			ene.BeAttack(attack + attackplus);
-		else
-			ene.BeAttack(attack);
->>>>>>> 5df2551df0f6bfaa87f9c0bf14551d188beb0fae
 		if (ene.healthPower() <= 0) {
 			ene.Die();
 			m_kill++;
@@ -266,74 +263,7 @@ int HeroObj::Attack(ObjectBase& ene) {
 	return attack;
 }
 
-<<<<<<< HEAD
 float HeroObj::PhysicBloodSuck()
-=======
-void Hero::SavageQ()
-{
-	if (QAvail)
-	{
-		attackStrengh = true;
-		velocity += 30;
-		QAvail = false;
-	}
-}
-void Hero::SavageQJudge(float delta)
-{
-	Qtimer += delta;
-	if (Qtimer >= 3) {
-		velocity -= 30;
-		attackStrengh = false;
-	}
-	if (Qtimer >= 5) {
-		QAvail = true;
-		Qtimer = 0;
-	}
-}
-
-void Hero::SavageW()
-{
-	if (WAvail)
-	{
-		armor += 50;
-		magicDenfence += 50;
-		WAvail = false;
-	}
-}
-
-void Hero::SavageWJudge(float delta)
-{
-	Wtimer += delta;
-	if (Wtimer >= 3) {
-		armor -= 50;
-		magicDenfence -= 50;
-	}
-	if (Wtimer >= 5) {
-		WAvail = true;
-		Wtimer = 0;
-	}
-}
-
-void Hero::SavageE()
-{
-	if (EAvail)
-	{
-		EAvail = false;
-		Eflag = true;
-	}
-}
-
-void Hero::SavageEJudge(float delta)
-{
-	Etimer += delta;
-	if (Etimer >= 5) {
-		Etimer = 0;
-		EAvail = true;
-	}
-}
-
-float Hero::PhysicBloodSuck()
->>>>>>> 5df2551df0f6bfaa87f9c0bf14551d188beb0fae
 {
 	return physicBloodSuck;
 }
@@ -375,6 +305,7 @@ void HeroObj::Ability1st() {
 	if (QIsUsed()) return;
 	if(HeroIdentifier == 2) {
 		velocity += 20;
+		Qrecover = true;
 		attackStrength = true;
 		Qflag = false;
 		attackingFlag = false;//È¡ÏûºóÒ¡
@@ -382,6 +313,7 @@ void HeroObj::Ability1st() {
 	if (HeroIdentifier == 1) {
 		attackingSpeed += 2;
 		JudgeAttackSpeedLevel();
+		Qrecover = true;
 		Qflag = false;
 	}
 	if (HeroIdentifier == 3) {
@@ -400,8 +332,9 @@ void HeroObj::Ability1st() {
 void HeroObj::Qjudge(float delta) {
 	Qtimer += delta;
 	if (HeroIdentifier == 2) {
-		if (Qtimer >= 3) {
+		if (Qtimer >= 3&&Qrecover) {
 			velocity -= 20;
+			Qrecover = false;
 			attackStrength = false;
 		}
 		if (Qtimer == 6) {
@@ -410,8 +343,9 @@ void HeroObj::Qjudge(float delta) {
 		}
 	}
 	if (HeroIdentifier == 1) {
-		if (Qtimer >= 3) {
+		if (Qtimer >= 3&&Qrecover) {
 			attackingSpeed -= 2;
+			Qrecover = false;
 			JudgeAttackSpeedLevel();
 		}
 		if (Qtimer == 6) {
@@ -432,6 +366,7 @@ void HeroObj::Ability2st() {
 	if (HeroIdentifier == 2) {
 		armor += 30;
 		magicDenfence += 50;
+		Wrecover = true;
 		Wflag = false;
 	}
 	if (HeroIdentifier == 1) {
@@ -465,6 +400,7 @@ void HeroObj::Wjudge(float delta) {
 		if (Wtimer >= 3) {
 			armor -= 30;
 			magicDenfence -= 50;
+			Wrecover = false;
 			attackStrength = false;
 		}
 		if (Wtimer >= 6) {
@@ -528,4 +464,16 @@ void HeroObj::Ejudge(float delta) {
 			Etimer = 0;
 		}
 	}
+}
+
+int HeroObj::Level() {
+	return MyLevel;
+}
+
+int HeroObj::tMoney() {
+	return t_money;
+}
+
+int HeroObj::Money() {
+	return m_money;
 }
