@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\Classes\AnimationEdition.cpp" />
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Arthur.cpp" />
     <ClCompile Include="..\Classes\Astar.cpp" />
@@ -37,9 +36,11 @@
     </ClCompile>
     <ClCompile Include="..\Classes\HeroObj.cpp" />
     <ClCompile Include="..\Classes\HeroInstuct.cpp" />
+    <ClCompile Include="..\Classes\AnimationEdition.cpp">
+      <Filter>NewFilter1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Classes\AnimationEdition.h" />
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Arthur.h" />
     <ClInclude Include="..\Classes\Astar.h" />
@@ -73,7 +74,13 @@
     </ClInclude>
     <ClInclude Include="..\Classes\HeroObj.h" />
     <ClInclude Include="..\Classes\HeroInstuct.h" />
+
     <ClInclude Include="..\Classes\Help.h" />
+
+    <ClInclude Include="..\Classes\AnimationEdition.h">
+      <Filter>NewFilter1</Filter>
+    </ClInclude>
+
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
