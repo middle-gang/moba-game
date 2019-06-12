@@ -10,6 +10,9 @@
 
 class GameScene2 : public cocos2d::Layer
 {
+	char Textbuffer[100];
+	int n_level;
+	cocos2d::Label *_myLevel;
 	cocos2d::TMXTiledMap* _tileMap;
 	cocos2d::TMXLayer* _collidable;
     cocos2d::Sprite *_player;
@@ -24,9 +27,6 @@ public:
 	Hero Hero;
 	ObjectBase Tower[2];
 	ObjectBase Crystal[2];
-
-//public:
-//	int myChoice;
 
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance Vec2er
