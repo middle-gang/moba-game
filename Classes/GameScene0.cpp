@@ -60,6 +60,7 @@ bool GameScene0::init()
 	physicBloodSuck = m_pGameScene2->Hero.PhysicBloodSuck();//物理吸血
 	magicBloodSuck = m_pGameScene2->Hero.MagicBloodSuck();//法术吸血
 
+	
 	 ///////////////////属性数值显示
 
 	sprintf(m_Textbuffer, "%d", m_kill);
@@ -380,7 +381,7 @@ bool GameScene0::init()
 
 	/////////////////////////////////////////////////////////////////////////////////商店物品
 
-	//memset(& Equipment, 0, sizeof( Equipment));
+	//memset(&  Equip, 0, sizeof(  Equip));
 	//////////////////////////////////////////////////////按钮
 	////推荐
 	m_pBac[0] = Sprite::create("photo/shop/recomB.png");
@@ -388,37 +389,37 @@ bool GameScene0::init()
 	addChild(m_pBac[0], 14);
 	m_pBac[0]->setVisible(false);
 
-	Equipment[0][0] = MenuItemImage::create("photo/shop/move/1.jpg",
+	 Equip[0][0] = MenuItemImage::create("photo/shop/move/1.jpg",
 		"photo/shop/move/1_1.jpg",
 		"photo/shop/move/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::move0, this));
-	Equipment[0][1] = MenuItemImage::create("photo/shop/defense/1.jpg",
+	 Equip[0][1] = MenuItemImage::create("photo/shop/defense/1.jpg",
 		"photo/shop/defense/1_1.jpg",
 		"photo/shop/defense/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense0, this));
-	Equipment[0][2] = MenuItemImage::create("photo/shop/defense/2.jpg",
+	 Equip[0][2] = MenuItemImage::create("photo/shop/defense/2.jpg",
 		"photo/shop/defense/2_1.jpg",
 		"photo/shop/defense/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense1, this));
-	Equipment[0][3] = MenuItemImage::create("photo/shop/defense/3.jpg",
+	 Equip[0][3] = MenuItemImage::create("photo/shop/defense/3.jpg",
 		"photo/shop/defense/3_1.jpg",
 		"photo/shop/defense/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense2, this));
-	Equipment[0][4] = MenuItemImage::create("photo/shop/magic/2.jpg",
+	 Equip[0][4] = MenuItemImage::create("photo/shop/magic/2.jpg",
 		"photo/shop/magic/2_1.jpg",
 		"photo/shop/magic/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic1, this));
 
 	for (int i = 0; i <= 3; i++)
 	{
-		Equipment[0][i]->setPosition(270 + i * 120, 370);
-		Equipment[0][i]->setEnabled(false);
+		 Equip[0][i]->setPosition(270 + i * 120, 370);
+		// Equip[0][i]->setEnabled(false);
 	}
-	Equipment[0][4]->setPosition(270, 285);
-	Equipment[0][4]->setEnabled(false);
+	 Equip[0][4]->setPosition(270, 285);
+	// Equip[0][4]->setEnabled(false);
 
-	m_pRecommandMenu = Menu::create(Equipment[0][0], Equipment[0][1], Equipment[0][2], Equipment[0][3],
-		Equipment[0][4], NULL);
+	m_pRecommandMenu = Menu::create( Equip[0][0],  Equip[0][1],  Equip[0][2],  Equip[0][3],
+		 Equip[0][4], NULL);
 	m_pRecommandMenu->setPosition(Vec2::ZERO);
 	addChild(m_pRecommandMenu, 13);
 	m_pRecommandMenu->setVisible(false);
@@ -429,88 +430,88 @@ bool GameScene0::init()
 	addChild(m_pBac[1], 14);
 	m_pBac[1]->setVisible(false);
 
-	Equipment[1][0] = MenuItemImage::create("photo/shop/attack/1.jpg",
+	 Equip[1][0] = MenuItemImage::create("photo/shop/attack/1.jpg",
 		"photo/shop/attack/1_1.jpg",
 		"photo/shop/attack/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack0, this));
-	Equipment[1][1] = MenuItemImage::create("photo/shop/attack/2.jpg",
+	 Equip[1][1] = MenuItemImage::create("photo/shop/attack/2.jpg",
 		"photo/shop/attack/2_1.jpg",
 		"photo/shop/attack/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack1, this));
-	Equipment[1][2] = MenuItemImage::create("photo/shop/attack/3.jpg",
+	 Equip[1][2] = MenuItemImage::create("photo/shop/attack/3.jpg",
 		"photo/shop/attack/3_1.jpg",
 		"photo/shop/attack/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack2, this));
-	Equipment[1][3] = MenuItemImage::create("photo/shop/attack/4.jpg",
+	 Equip[1][3] = MenuItemImage::create("photo/shop/attack/4.jpg",
 		"photo/shop/attack/4_1.jpg",
 		"photo/shop/attack/4_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack3, this));
-	Equipment[1][4] = MenuItemImage::create("photo/shop/attack/5.jpg",
+	 Equip[1][4] = MenuItemImage::create("photo/shop/attack/5.jpg",
 		"photo/shop/attack/5_1.jpg",
 		"photo/shop/attack/5_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack4, this));
-	Equipment[1][5] = MenuItemImage::create("photo/shop/attack/6.jpg",
+	 Equip[1][5] = MenuItemImage::create("photo/shop/attack/6.jpg",
 		"photo/shop/attack/6_1.jpg",
 		"photo/shop/attack/6_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack5, this));
-	Equipment[1][6] = MenuItemImage::create("photo/shop/attack/7.jpg",
+	 Equip[1][6] = MenuItemImage::create("photo/shop/attack/7.jpg",
 		"photo/shop/attack/7_1.jpg",
 		"photo/shop/attack/7_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack6, this));
-	Equipment[1][7] = MenuItemImage::create("photo/shop/attack/8.jpg",
+	 Equip[1][7] = MenuItemImage::create("photo/shop/attack/8.jpg",
 		"photo/shop/attack/8_1.jpg",
 		"photo/shop/attack/8_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack7, this));
-	Equipment[1][8] = MenuItemImage::create("photo/shop/attack/9.jpg",
+	 Equip[1][8] = MenuItemImage::create("photo/shop/attack/9.jpg",
 		"photo/shop/attack/9_1.jpg",
 		"photo/shop/attack/9_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack8, this));
-	Equipment[1][9] = MenuItemImage::create("photo/shop/attack/10.jpg",
+	 Equip[1][9] = MenuItemImage::create("photo/shop/attack/10.jpg",
 		"photo/shop/attack/10_1.jpg",
 		"photo/shop/attack/10_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack9, this));
-	Equipment[1][10] = MenuItemImage::create("photo/shop/attack/11.jpg",
+	 Equip[1][10] = MenuItemImage::create("photo/shop/attack/11.jpg",
 		"photo/shop/attack/11_1.jpg",
 		"photo/shop/attack/11_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack10, this));
-	Equipment[1][11] = MenuItemImage::create("photo/shop/attack/12.jpg",
+	 Equip[1][11] = MenuItemImage::create("photo/shop/attack/12.jpg",
 		"photo/shop/attack/12_1.jpg",
 		"photo/shop/attack/12_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack11, this));
-	Equipment[1][12] = MenuItemImage::create("photo/shop/attack/13.jpg",
+	 Equip[1][12] = MenuItemImage::create("photo/shop/attack/13.jpg",
 		"photo/shop/attack/13_1.jpg",
 		"photo/shop/attack/13_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack12, this));
-	Equipment[1][13] = MenuItemImage::create("photo/shop/attack/14.jpg",
+	 Equip[1][13] = MenuItemImage::create("photo/shop/attack/14.jpg",
 		"photo/shop/attack/14_1.jpg",
 		"photo/shop/attack/14_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack13, this));
-	Equipment[1][14] = MenuItemImage::create("photo/shop/attack/15.jpg",
+	 Equip[1][14] = MenuItemImage::create("photo/shop/attack/15.jpg",
 		"photo/shop/attack/15_1.jpg",
 		"photo/shop/attack/15_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack13, this));
-	Equipment[1][15] = MenuItemImage::create("photo/shop/attack/16.jpg",
+	 Equip[1][15] = MenuItemImage::create("photo/shop/attack/16.jpg",
 		"photo/shop/attack/16_1.jpg",
 		"photo/shop/attack/16_1.jpg",
 		CC_CALLBACK_1(GameScene0::attack14, this));
 
 	for (int i = 0; i <= 15; i++)
 	{
-		// Equipment[1][i]->setEnabled(false);
+		//  Equip[1][i]->setEnabled(false);
 		if (i <= 3)
 		{
-			Equipment[1][i]->setPosition(270 + i * 120, 370);
+			 Equip[1][i]->setPosition(270 + i * 120, 370);
 		}
 		else //if(i<=7)
 		{
-			Equipment[1][i]->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
+			 Equip[1][i]->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
 		}
 	}
 
-	m_pAttackMenu = Menu::create(Equipment[1][0], Equipment[1][1], Equipment[1][2], Equipment[1][3],
-		Equipment[1][4], Equipment[1][5], Equipment[1][6], Equipment[1][7],
-		Equipment[1][8], Equipment[1][9], Equipment[1][10], Equipment[1][11],
-		Equipment[1][12], Equipment[1][13], Equipment[1][14], Equipment[1][15], NULL);
+	m_pAttackMenu = Menu::create( Equip[1][0],  Equip[1][1],  Equip[1][2],  Equip[1][3],
+		 Equip[1][4],  Equip[1][5],  Equip[1][6],  Equip[1][7],
+		 Equip[1][8],  Equip[1][9],  Equip[1][10],  Equip[1][11],
+		 Equip[1][12],  Equip[1][13],  Equip[1][14],  Equip[1][15], NULL);
 	m_pAttackMenu->setPosition(Vec2::ZERO);
 	addChild(m_pAttackMenu, 13);
 	m_pAttackMenu->setVisible(false);
@@ -521,88 +522,88 @@ bool GameScene0::init()
 	addChild(m_pBac[2], 14);
 	m_pBac[2]->setVisible(false);
 
-	Equipment[2][0] = MenuItemImage::create("photo/shop/magic/1.jpg",
+	 Equip[2][0] = MenuItemImage::create("photo/shop/magic/1.jpg",
 		"photo/shop/magic/1_1.jpg",
 		"photo/shop/magic/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic0, this));
-	Equipment[2][1] = MenuItemImage::create("photo/shop/magic/2.jpg",
+	 Equip[2][1] = MenuItemImage::create("photo/shop/magic/2.jpg",
 		"photo/shop/magic/2_1.jpg",
 		"photo/shop/magic/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic1, this));
-	Equipment[2][2] = MenuItemImage::create("photo/shop/magic/3.jpg",
+	 Equip[2][2] = MenuItemImage::create("photo/shop/magic/3.jpg",
 		"photo/shop/magic/3_1.jpg",
 		"photo/shop/magic/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic2, this));
-	Equipment[2][3] = MenuItemImage::create("photo/shop/magic/4.jpg",
+	 Equip[2][3] = MenuItemImage::create("photo/shop/magic/4.jpg",
 		"photo/shop/magic/4_1.jpg",
 		"photo/shop/magic/4_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic3, this));
-	Equipment[2][4] = MenuItemImage::create("photo/shop/magic/5.jpg",
+	 Equip[2][4] = MenuItemImage::create("photo/shop/magic/5.jpg",
 		"photo/shop/magic/5_1.jpg",
 		"photo/shop/magic/5_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic4, this));
-	Equipment[2][5] = MenuItemImage::create("photo/shop/magic/6.jpg",
+	 Equip[2][5] = MenuItemImage::create("photo/shop/magic/6.jpg",
 		"photo/shop/magic/6_1.jpg",
 		"photo/shop/magic/6_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic5, this));
-	Equipment[2][6] = MenuItemImage::create("photo/shop/magic/7.jpg",
+	 Equip[2][6] = MenuItemImage::create("photo/shop/magic/7.jpg",
 		"photo/shop/magic/7_1.jpg",
 		"photo/shop/magic/7_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic6, this));
-	Equipment[2][7] = MenuItemImage::create("photo/shop/magic/8.jpg",
+	 Equip[2][7] = MenuItemImage::create("photo/shop/magic/8.jpg",
 		"photo/shop/magic/8_1.jpg",
 		"photo/shop/magic/8_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic7, this));
-	Equipment[2][8] = MenuItemImage::create("photo/shop/magic/9.jpg",
+	 Equip[2][8] = MenuItemImage::create("photo/shop/magic/9.jpg",
 		"photo/shop/magic/9_1.jpg",
 		"photo/shop/magic/9_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic8, this));
-	Equipment[2][9] = MenuItemImage::create("photo/shop/magic/10.jpg",
+	 Equip[2][9] = MenuItemImage::create("photo/shop/magic/10.jpg",
 		"photo/shop/magic/10_1.jpg",
 		"photo/shop/magic/10_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic9, this));
-	Equipment[2][10] = MenuItemImage::create("photo/shop/magic/11.jpg",
+	 Equip[2][10] = MenuItemImage::create("photo/shop/magic/11.jpg",
 		"photo/shop/magic/11_1.jpg",
 		"photo/shop/magic/11_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic10, this));
-	Equipment[2][11] = MenuItemImage::create("photo/shop/magic/12.jpg",
+	 Equip[2][11] = MenuItemImage::create("photo/shop/magic/12.jpg",
 		"photo/shop/magic/12_1.jpg",
 		"photo/shop/magic/12_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic11, this));
-	Equipment[2][12] = MenuItemImage::create("photo/shop/magic/13.jpg",
+	 Equip[2][12] = MenuItemImage::create("photo/shop/magic/13.jpg",
 		"photo/shop/magic/13_1.jpg",
 		"photo/shop/magic/13_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic12, this));
-	Equipment[2][13] = MenuItemImage::create("photo/shop/magic/14.jpg",
+	 Equip[2][13] = MenuItemImage::create("photo/shop/magic/14.jpg",
 		"photo/shop/magic/14_1.jpg",
 		"photo/shop/magic/14_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic13, this));
-	Equipment[2][14] = MenuItemImage::create("photo/shop/magic/15.jpg",
+	 Equip[2][14] = MenuItemImage::create("photo/shop/magic/15.jpg",
 		"photo/shop/magic/15_1.jpg",
 		"photo/shop/magic/15_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic14, this));
-	Equipment[2][15] = MenuItemImage::create("photo/shop/magic/16.jpg",
+	 Equip[2][15] = MenuItemImage::create("photo/shop/magic/16.jpg",
 		"photo/shop/magic/16_1.jpg",
 		"photo/shop/magic/16_1.jpg",
 		CC_CALLBACK_1(GameScene0::magic15, this));
 
 	for (int i = 0; i <= 15; i++)
 	{
-		Equipment[2][i]->setEnabled(false);
+		// Equip[2][i]->setEnabled(false);
 		if (i <= 3)
 		{
-			Equipment[2][i]->setPosition(270 + i * 120, 370);
+			 Equip[2][i]->setPosition(270 + i * 120, 370);
 		}
 		else //if(i<=7)
 		{
-			Equipment[2][i]->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
+			 Equip[2][i]->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
 		}
 	}
 
-	m_pMagicMenu = Menu::create(Equipment[2][0], Equipment[2][1], Equipment[2][2], Equipment[2][3],
-		Equipment[2][4], Equipment[2][5], Equipment[2][6], Equipment[2][7],
-		Equipment[2][8], Equipment[2][9], Equipment[2][10], Equipment[2][11],
-		Equipment[2][12], Equipment[2][13], Equipment[2][14], Equipment[2][15], NULL);
+	m_pMagicMenu = Menu::create( Equip[2][0],  Equip[2][1],  Equip[2][2],  Equip[2][3],
+		 Equip[2][4],  Equip[2][5],  Equip[2][6],  Equip[2][7],
+		 Equip[2][8],  Equip[2][9],  Equip[2][10],  Equip[2][11],
+		 Equip[2][12],  Equip[2][13],  Equip[2][14],  Equip[2][15], NULL);
 	m_pMagicMenu->setPosition(Vec2::ZERO);
 	addChild(m_pMagicMenu, 13);
 	m_pMagicMenu->setVisible(false);
@@ -613,88 +614,88 @@ bool GameScene0::init()
 	addChild(m_pBac[3], 14);
 	m_pBac[3]->setVisible(false);
 
-	Equipment[3][0] = MenuItemImage::create("photo/shop/defense/1.jpg",
+	 Equip[3][0] = MenuItemImage::create("photo/shop/defense/1.jpg",
 		"photo/shop/defense/1_1.jpg",
 		"photo/shop/defense/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense0, this));
-	Equipment[3][1] = MenuItemImage::create("photo/shop/defense/2.jpg",
+	 Equip[3][1] = MenuItemImage::create("photo/shop/defense/2.jpg",
 		"photo/shop/defense/2_1.jpg",
 		"photo/shop/defense/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense1, this));
-	Equipment[3][2] = MenuItemImage::create("photo/shop/defense/3.jpg",
+	 Equip[3][2] = MenuItemImage::create("photo/shop/defense/3.jpg",
 		"photo/shop/defense/3_1.jpg",
 		"photo/shop/defense/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense2, this));
-	Equipment[3][3] = MenuItemImage::create("photo/shop/defense/4.jpg",
+	 Equip[3][3] = MenuItemImage::create("photo/shop/defense/4.jpg",
 		"photo/shop/defense/4_1.jpg",
 		"photo/shop/defense/4_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense3, this));
-	Equipment[3][4] = MenuItemImage::create("photo/shop/defense/5.jpg",
+	 Equip[3][4] = MenuItemImage::create("photo/shop/defense/5.jpg",
 		"photo/shop/defense/5_1.jpg",
 		"photo/shop/defense/5_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense4, this));
-	Equipment[3][5] = MenuItemImage::create("photo/shop/defense/6.jpg",
+	 Equip[3][5] = MenuItemImage::create("photo/shop/defense/6.jpg",
 		"photo/shop/defense/6_1.jpg",
 		"photo/shop/defense/6_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense5, this));
-	Equipment[3][6] = MenuItemImage::create("photo/shop/defense/7.jpg",
+	 Equip[3][6] = MenuItemImage::create("photo/shop/defense/7.jpg",
 		"photo/shop/defense/7_1.jpg",
 		"photo/shop/defense/7_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense6, this));
-	Equipment[3][7] = MenuItemImage::create("photo/shop/defense/8.jpg",
+	 Equip[3][7] = MenuItemImage::create("photo/shop/defense/8.jpg",
 		"photo/shop/defense/8_1.jpg",
 		"photo/shop/defense/8_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense7, this));
-	Equipment[3][8] = MenuItemImage::create("photo/shop/defense/9.jpg",
+	 Equip[3][8] = MenuItemImage::create("photo/shop/defense/9.jpg",
 		"photo/shop/defense/9_1.jpg",
 		"photo/shop/defense/9_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense8, this));
-	Equipment[3][9] = MenuItemImage::create("photo/shop/defense/10.jpg",
+	 Equip[3][9] = MenuItemImage::create("photo/shop/defense/10.jpg",
 		"photo/shop/defense/10_1.jpg",
 		"photo/shop/defense/10_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense9, this));
-	Equipment[3][10] = MenuItemImage::create("photo/shop/defense/11.jpg",
+	 Equip[3][10] = MenuItemImage::create("photo/shop/defense/11.jpg",
 		"photo/shop/defense/11_1.jpg",
 		"photo/shop/defense/11_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense10, this));
-	Equipment[3][11] = MenuItemImage::create("photo/shop/defense/12.jpg",
+	 Equip[3][11] = MenuItemImage::create("photo/shop/defense/12.jpg",
 		"photo/shop/defense/12_1.jpg",
 		"photo/shop/defense/12_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense11, this));
-	Equipment[3][12] = MenuItemImage::create("photo/shop/defense/13.jpg",
+	 Equip[3][12] = MenuItemImage::create("photo/shop/defense/13.jpg",
 		"photo/shop/defense/13_1.jpg",
 		"photo/shop/defense/13_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense12, this));
-	Equipment[3][13] = MenuItemImage::create("photo/shop/defense/14.jpg",
+	 Equip[3][13] = MenuItemImage::create("photo/shop/defense/14.jpg",
 		"photo/shop/defense/14_1.jpg",
 		"photo/shop/defense/14_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense13, this));
-	Equipment[3][14] = MenuItemImage::create("photo/shop/defense/15.jpg",
+	 Equip[3][14] = MenuItemImage::create("photo/shop/defense/15.jpg",
 		"photo/shop/defense/15_1.jpg",
 		"photo/shop/defense/15_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense14, this));
-	Equipment[3][15] = MenuItemImage::create("photo/shop/defense/16.jpg",
+	 Equip[3][15] = MenuItemImage::create("photo/shop/defense/16.jpg",
 		"photo/shop/defense/16_1.jpg",
 		"photo/shop/defense/16_1.jpg",
 		CC_CALLBACK_1(GameScene0::defense15, this));
 
 	for (int i = 0; i <= 15; i++)
 	{
-		Equipment[3][i]->setEnabled(false);
+		// Equip[3][i]->setEnabled(false);
 		if (i <= 3)
 		{
-			Equipment[3][i]->setPosition(270 + i * 120, 370);
+			 Equip[3][i]->setPosition(270 + i * 120, 370);
 		}
 		else //if(i<=7)
 		{
-			Equipment[3][i]->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
+			 Equip[3][i]->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
 		}
 	}
 
-	m_pDefenseMenu = Menu::create(Equipment[3][0], Equipment[3][1], Equipment[3][2], Equipment[3][3],
-		Equipment[3][4], Equipment[3][5], Equipment[3][6], Equipment[3][7],
-		Equipment[3][8], Equipment[3][9], Equipment[3][10], Equipment[3][11],
-		Equipment[3][12], Equipment[3][13], Equipment[3][14], Equipment[3][15], NULL);
+	m_pDefenseMenu = Menu::create( Equip[3][0],  Equip[3][1],  Equip[3][2],  Equip[3][3],
+		 Equip[3][4],  Equip[3][5],  Equip[3][6],  Equip[3][7],
+		 Equip[3][8],  Equip[3][9],  Equip[3][10],  Equip[3][11],
+		 Equip[3][12],  Equip[3][13],  Equip[3][14],  Equip[3][15], NULL);
 	m_pDefenseMenu->setPosition(Vec2::ZERO);
 	addChild(m_pDefenseMenu, 13);
 	m_pDefenseMenu->setVisible(false);
@@ -705,49 +706,49 @@ bool GameScene0::init()
 	addChild(m_pBac[4], 14);
 	m_pBac[4]->setVisible(false);
 
-	Equipment[4][0] = MenuItemImage::create("photo/shop/move/1.jpg",
+	 Equip[4][0] = MenuItemImage::create("photo/shop/move/1.jpg",
 		"photo/shop/move/1_1.jpg",
 		"photo/shop/move/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::move0, this));
-	Equipment[4][1] = MenuItemImage::create("photo/shop/move/2.jpg",
+	 Equip[4][1] = MenuItemImage::create("photo/shop/move/2.jpg",
 		"photo/shop/move/2_1.jpg",
 		"photo/shop/move/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::move1, this));
-	Equipment[4][2] = MenuItemImage::create("photo/shop/move/3.jpg",
+	 Equip[4][2] = MenuItemImage::create("photo/shop/move/3.jpg",
 		"photo/shop/move/3_1.jpg",
 		"photo/shop/move/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::move2, this));
-	Equipment[4][3] = MenuItemImage::create("photo/shop/move/4.jpg",
+	 Equip[4][3] = MenuItemImage::create("photo/shop/move/4.jpg",
 		"photo/shop/move/4_1.jpg",
 		"photo/shop/move/4_1.jpg",
 		CC_CALLBACK_1(GameScene0::move3, this));
-	Equipment[4][4] = MenuItemImage::create("photo/shop/move/5.jpg",
+	 Equip[4][4] = MenuItemImage::create("photo/shop/move/5.jpg",
 		"photo/shop/move/5_1.jpg",
 		"photo/shop/move/5_1.jpg",
 		CC_CALLBACK_1(GameScene0::move4, this));
-	Equipment[4][5] = MenuItemImage::create("photo/shop/move/6.jpg",
+	 Equip[4][5] = MenuItemImage::create("photo/shop/move/6.jpg",
 		"photo/shop/move/6_1.jpg",
 		"photo/shop/move/6_1.jpg",
 		CC_CALLBACK_1(GameScene0::move5, this));
-	Equipment[4][6] = MenuItemImage::create("photo/shop/move/7.jpg",
+	 Equip[4][6] = MenuItemImage::create("photo/shop/move/7.jpg",
 		"photo/shop/move/7_1.jpg",
 		"photo/shop/move/7_1.jpg",
 		CC_CALLBACK_1(GameScene0::move6, this));
 
 	for (int i = 0; i <= 6; i++)
 	{
-		// Equipment[4][i]->setEnabled(false);
+		//  Equip[4][i]->setEnabled(false);
 		if (i <= 3)
 		{
-			Equipment[4][i]->setPosition(270 + i * 120, 370);
+			 Equip[4][i]->setPosition(270 + i * 120, 370);
 		}
 		else //if(i<=7)
 		{
-			Equipment[4][i]->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
+			 Equip[4][i]->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
 		}
 	}
-	m_pMoveMenu = Menu::create(Equipment[4][0], Equipment[4][1], Equipment[4][2], Equipment[4][3],
-		Equipment[4][4], Equipment[4][5], Equipment[4][6], NULL);
+	m_pMoveMenu = Menu::create( Equip[4][0],  Equip[4][1],  Equip[4][2],  Equip[4][3],
+		 Equip[4][4],  Equip[4][5],  Equip[4][6], NULL);
 	m_pMoveMenu->setPosition(Vec2::ZERO);
 	addChild(m_pMoveMenu, 13);
 	m_pMoveMenu->setVisible(false);
@@ -758,50 +759,50 @@ bool GameScene0::init()
 	addChild(m_pBac[5], 14);
 	m_pBac[5]->setVisible(false);
 
-	Equipment[5][0] = MenuItemImage::create("photo/shop/battle/1.jpg",
+	 Equip[5][0] = MenuItemImage::create("photo/shop/battle/1.jpg",
 		"photo/shop/battle/1_1.jpg",
 		"photo/shop/battle/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::battle0, this));
-	Equipment[5][1] = MenuItemImage::create("photo/shop/battle/2.jpg",
+	 Equip[5][1] = MenuItemImage::create("photo/shop/battle/2.jpg",
 		"photo/shop/battle/2_1.jpg",
 		"photo/shop/battle/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::battle1, this));
-	Equipment[5][2] = MenuItemImage::create("photo/shop/battle/3.jpg",
+	 Equip[5][2] = MenuItemImage::create("photo/shop/battle/3.jpg",
 		"photo/shop/battle/3_1.jpg",
 		"photo/shop/battle/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::battle2, this));
-	Equipment[5][3] = MenuItemImage::create("photo/shop/battle/4.jpg",
+	 Equip[5][3] = MenuItemImage::create("photo/shop/battle/4.jpg",
 		"photo/shop/battle/4_1.jpg",
 		"photo/shop/battle/4_1.jpg",
 		CC_CALLBACK_1(GameScene0::battle3, this));
-	Equipment[5][4] = MenuItemImage::create("photo/shop/battle/5.jpg",
+	 Equip[5][4] = MenuItemImage::create("photo/shop/battle/5.jpg",
 		"photo/shop/battle/5_1.jpg",
 		"photo/shop/battle/5_1.jpg",
 		CC_CALLBACK_1(GameScene0::battle4, this));
-	Equipment[5][5] = MenuItemImage::create("photo/shop/battle/6.jpg",
+	 Equip[5][5] = MenuItemImage::create("photo/shop/battle/6.jpg",
 		"photo/shop/battle/6_1.jpg",
 		"photo/shop/battle/6_1.jpg",
 		CC_CALLBACK_1(GameScene0::battle5, this));
-	Equipment[5][6] = MenuItemImage::create("photo/shop/battle/7.jpg",
+	 Equip[5][6] = MenuItemImage::create("photo/shop/battle/7.jpg",
 		"photo/shop/battle/7_1.jpg",
 		"photo/shop/battle/7_1.jpg",
 		CC_CALLBACK_1(GameScene0::battle6, this));
 
 	for (int i = 0; i <= 6; i++)
 	{
-		// Equipment[5][i]->setEnabled(false);
+		//  Equip[5][i]->setEnabled(false);
 		if (i <= 3)
 		{
-			Equipment[5][i]->setPosition(270 + i * 120, 370);
+			 Equip[5][i]->setPosition(270 + i * 120, 370);
 		}
 		else //if(i<=7)
 		{
-			Equipment[5][i]->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
+			 Equip[5][i]->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
 		}
 	}
 
-	m_pBattleMenu = Menu::create(Equipment[5][0], Equipment[5][1], Equipment[5][2], Equipment[5][3],
-		Equipment[5][4], Equipment[5][5], Equipment[5][6], NULL);
+	m_pBattleMenu = Menu::create( Equip[5][0],  Equip[5][1],  Equip[5][2],  Equip[5][3],
+		 Equip[5][4],  Equip[5][5],  Equip[5][6], NULL);
 	m_pBattleMenu->setPosition(Vec2::ZERO);
 	addChild(m_pBattleMenu, 13);
 	m_pBattleMenu->setVisible(false);
@@ -812,58 +813,58 @@ bool GameScene0::init()
 	addChild(m_pBac[6], 14);
 	m_pBac[6]->setVisible(false);
 
-	Equipment[6][0] = MenuItemImage::create("photo/shop/assist/1.jpg",
+	 Equip[6][0] = MenuItemImage::create("photo/shop/assist/1.jpg",
 		"photo/shop/assist/1_1.jpg",
 		"photo/shop/assist/1_1.jpg",
 		CC_CALLBACK_1(GameScene0::assist0, this));
-	Equipment[6][1] = MenuItemImage::create("photo/shop/assist/2.jpg",
+	 Equip[6][1] = MenuItemImage::create("photo/shop/assist/2.jpg",
 		"photo/shop/assist/2_1.jpg",
 		"photo/shop/assist/2_1.jpg",
 		CC_CALLBACK_1(GameScene0::assist1, this));
-	Equipment[6][2] = MenuItemImage::create("photo/shop/assist/3.jpg",
+	 Equip[6][2] = MenuItemImage::create("photo/shop/assist/3.jpg",
 		"photo/shop/assist/3_1.jpg",
 		"photo/shop/assist/3_1.jpg",
 		CC_CALLBACK_1(GameScene0::assist2, this));
-	Equipment[6][3] = MenuItemImage::create("photo/shop/assist/4.jpg",
+	 Equip[6][3] = MenuItemImage::create("photo/shop/assist/4.jpg",
 		"photo/shop/assist/4_1.jpg",
 		"photo/shop/assist/4_1.jpg",
 		CC_CALLBACK_1(GameScene0::assist3, this));
-	Equipment[6][4] = MenuItemImage::create("photo/shop/assist/5.jpg",
+	 Equip[6][4] = MenuItemImage::create("photo/shop/assist/5.jpg",
 		"photo/shop/assist/5_1.jpg",
 		"photo/shop/assist/5_1.jpg",
 		CC_CALLBACK_1(GameScene0::assist4, this));
-	Equipment[6][5] = MenuItemImage::create("photo/shop/assist/6.jpg",
+	 Equip[6][5] = MenuItemImage::create("photo/shop/assist/6.jpg",
 		"photo/shop/assist/6_1.jpg",
 		"photo/shop/assist/6_1.jpg",
 		CC_CALLBACK_1(GameScene0::assist5, this));
-	Equipment[6][6] = MenuItemImage::create("photo/shop/assist/7.jpg",
+	 Equip[6][6] = MenuItemImage::create("photo/shop/assist/7.jpg",
 		"photo/shop/assist/7_1.jpg",
 		"photo/shop/assist/7_1.jpg",
 		CC_CALLBACK_1(GameScene0::assist6, this));
-	Equipment[6][7] = MenuItemImage::create("photo/shop/assist/8.jpg",
+	 Equip[6][7] = MenuItemImage::create("photo/shop/assist/8.jpg",
 		"photo/shop/assist/8_1.jpg",
 		"photo/shop/assist/8_1.jpg",
 		CC_CALLBACK_1(GameScene0::assist7, this));
-	Equipment[6][8] = MenuItemImage::create("photo/shop/assist/9.jpg",
+	 Equip[6][8] = MenuItemImage::create("photo/shop/assist/9.jpg",
 		"photo/shop/assist/9_1.jpg",
 		"photo/shop/assist/9_1.jpg",
 		CC_CALLBACK_1(GameScene0::assist8, this));
 	for (int i = 0; i <= 8; i++)
 	{
-		Equipment[6][i]->setEnabled(false);
+		// Equip[6][i]->setEnabled(false);
 		if (i <= 3)
 		{
-			Equipment[6][i]->setPosition(270 + i * 120, 370);
+			 Equip[6][i]->setPosition(270 + i * 120, 370);
 		}
 		else //if(i<=7)
 		{
-			Equipment[6][i]->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
+			 Equip[6][i]->setPosition(270 + (i % 4) * 120, 370 - (i / 4) * 85);
 		}
 	}
 
-	m_pAssistMenu = Menu::create(Equipment[6][0], Equipment[6][1], Equipment[6][2], Equipment[6][3],
-		Equipment[6][4], Equipment[6][5], Equipment[6][6], Equipment[6][7],
-		Equipment[6][8], NULL);
+	m_pAssistMenu = Menu::create( Equip[6][0],  Equip[6][1],  Equip[6][2],  Equip[6][3],
+		 Equip[6][4],  Equip[6][5],  Equip[6][6],  Equip[6][7],
+		 Equip[6][8], NULL);
 	m_pAssistMenu->setPosition(Vec2::ZERO);
 	addChild(m_pAssistMenu, 13);
 	m_pAssistMenu->setVisible(false);
@@ -1248,7 +1249,7 @@ void GameScene0::update(float delta)
 	{
 		magicBloodSuck = m_pGameScene2->Hero.MagicBloodSuck();
 		sprintf(m_Textbuffer, "%d", magicBloodSuck);
-		m_pAttri2Text[6]->setString(m_Textbuffer);
+		m_pAttri2Text[15]->setString(m_Textbuffer);
 	}
 }
 
@@ -1422,6 +1423,11 @@ void GameScene0::transTo1(cocos2d::Ref * pSender)
 	m_button2->setEnabled(true);
 	m_AttriB1->setVisible(true);
 	m_AttriB2->setVisible(false);
+	for (int i = 0; i < 6; i++)
+	{
+		if (pEquip[i])
+			pEquip[i]->setVisible(false);
+	}
 }
 
 void GameScene0::transTo2(cocos2d::Ref * pSender)
@@ -1432,12 +1438,37 @@ void GameScene0::transTo2(cocos2d::Ref * pSender)
 	m_button2->setEnabled(false);
 	m_AttriB1->setVisible(false);
 	m_AttriB2->setVisible(true);
+	for (int i = 0; i < 6; i++)
+	{
+		if (m_pGameScene2->Hero.equip[i] != -1)
+		{
+			int m = m_pGameScene2->Hero.equip[i];
+			int n1 = m/100;
+			int n2 = m %100;
+			//m_Equip[i] = myEquip.findEquip(m).pSprite;
+			//m_Equip[i]->setPosition(200, 200);
+		
+			pEquip[i] = Sprite::create("photo/shop/equip.png");
+			pEquip[i]->setTextureRect(Rect(49*n2,49*(n1-1),49,49));
+			pEquip[i]->setPosition(300+100*i, 350);
+			//myEquip.findEquip(m).pSprite->setPosition(200, 200);
+			addChild(pEquip[i], 20);
+			pEquip[i]->setVisible(true);
+		}
+		else
+			break;
+	}
 }
 
 void GameScene0::closeAttri2(cocos2d::Ref * pSender)
 {
 	for (int i = 0; i < 16; i++)
 		m_pAttri2Text[i]->setVisible(false);
+	for (int i = 0; i < 6; i++)
+	{
+		if (pEquip[i])
+			pEquip[i]->setVisible(false);
+	}
 	m_pMenu->setEnabled(true);
 	m_pSkillMenu->setEnabled(true);
 	m_pMaskImage->setVisible(false);

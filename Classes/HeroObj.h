@@ -60,6 +60,8 @@ public:
 	int m_exp;//我的经验值
 	int MyLevel = 1;//我的等级
 
+
+	int equip[6] = { -1,-1,-1,-1,-1,-1 };
 private:
 
 	Equipment EquipList;		//装备信息
@@ -84,6 +86,6 @@ private:
 
 	bool isBacking = false;		//是否正在回城
 
-	int equip[6] = { -1,-1,-1,-1,-1,-1 };
+//	int equip[6] = { -1,-1,-1,-1,-1,-1 };
 };
 

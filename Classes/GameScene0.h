@@ -48,8 +48,9 @@ private:
 
 	//////装备
 	//EquipmentData s_Equip[8][30];
-	cocos2d::MenuItemImage*Equipment[8][30];
-
+	cocos2d::MenuItemImage*Equip[8][30];
+	cocos2d::Sprite *pEquip[7];
+   // Equipment myEquip;
 private:
 	///时间
 	char m_Textbuffer[999];
@@ -71,6 +72,8 @@ private:
 
 	cocos2d::Label *m_pSkillText[6];
 
+	///装备栏
+	cocos2d::Sprite *m_Equip[7];
 private:
 	///////////////数值显示1
 	cocos2d::Label *m_pKillText[4];//左上
