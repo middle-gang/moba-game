@@ -108,7 +108,7 @@ bool GameScene0::init()
 	addChild(m_pAttri2Text[2], 13);
 
 	//物理攻击
-	sprintf(m_Textbuffer, "%d", m_attack);
+	sprintf(m_Textbuffer, "%0.0f", m_attack);
 	m_pAttri1Text[1] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	m_pAttri1Text[1]->setPosition(280, 250);
 	addChild(m_pAttri1Text[1], 13);
@@ -116,7 +116,7 @@ bool GameScene0::init()
 	m_pAttri2Text[0] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[0], 13);
 	//法术攻击
-	sprintf(m_Textbuffer, "%d", m_power);
+	sprintf(m_Textbuffer, "%0.0f", m_power);
 	m_pAttri1Text[2] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	m_pAttri1Text[2]->setPosition(330,250);
 	addChild(m_pAttri1Text[2], 13);
@@ -124,7 +124,7 @@ bool GameScene0::init()
 	m_pAttri2Text[1] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[1], 13);
 	//物理防御
-	sprintf(m_Textbuffer, "%d", armor);
+	sprintf(m_Textbuffer, "%0.0f", armor);
 	m_pAttri1Text[3] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	m_pAttri1Text[3]->setPosition(382, 250);
 	addChild(m_pAttri1Text[3], 13);
@@ -133,7 +133,7 @@ bool GameScene0::init()
 	addChild(m_pAttri2Text[4], 13);
 
 	//法术防御
-	sprintf(m_Textbuffer, "%d", magicDenfence);
+	sprintf(m_Textbuffer, "%0.0f", magicDenfence);
 	m_pAttri1Text[4] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	m_pAttri1Text[4]->setPosition(434, 250);
 	addChild(m_pAttri1Text[4], 13);
@@ -146,18 +146,18 @@ bool GameScene0::init()
 	m_pAttri2Text[3] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[3], 13);
 	//攻击速度
-	sprintf(m_Textbuffer, "%d", attackingSpeed);
+	sprintf(m_Textbuffer, "%0.0f", attackingSpeed);
 	m_pAttri2Text[6] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[6], 13);
 	//冷却缩减
-	sprintf(m_Textbuffer, "%d", waitLessen);
+	sprintf(m_Textbuffer, "%0.0f", waitLessen);
 	m_pAttri2Text[7] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[7], 13);
 	//暴击概率
 	m_pAttri2Text[8] = Label::createWithTTF("0", "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[8], 13);
 	//移动速度
-	sprintf(m_Textbuffer, "%d", velocity);
+	sprintf(m_Textbuffer, "%0.0f", velocity);
 	m_pAttri2Text[9] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[9], 13);
 	//回血
@@ -169,19 +169,19 @@ bool GameScene0::init()
 	m_pAttri2Text[11] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[11], 13);
 	//物理穿透
-	sprintf(m_Textbuffer, "%d", armorIgnore);
+	sprintf(m_Textbuffer, "%0.0f", armorIgnore);
 	m_pAttri2Text[12] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[12], 13);
 	//法术穿透
-	sprintf(m_Textbuffer, "%d", magicdenfenceIgnore);
+	sprintf(m_Textbuffer, "%0.0f", magicdenfenceIgnore);
 	m_pAttri2Text[13] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[13], 13);
 	//物理吸血
-	sprintf(m_Textbuffer, "%d", physicBloodSuck);
+	sprintf(m_Textbuffer, "%0.0f", physicBloodSuck);
 	m_pAttri2Text[14] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[14], 13);
 	//法术吸血
-	sprintf(m_Textbuffer, "%d", magicBloodSuck);
+	sprintf(m_Textbuffer, "%0.0f", magicBloodSuck);
 	m_pAttri2Text[15] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[15], 13);
 
@@ -1130,13 +1130,6 @@ void GameScene0::update(float delta)
 			m_pKillText[i]->setString(m_Textbuffer);
 	}
 
-	if (e_kill != m_pGameScene2->Hero.E_Kill())
-	{
-		m_kill = m_pGameScene2->Hero.m_kill;
-		sprintf(m_Textbuffer, "%d", m_kill);
-		for (int i = 0; i < 3; i++)
-			m_pKillText[i]->setString(m_Textbuffer);
-	}
 	if (m_death != m_pGameScene2->Hero.m_death)
 	{
 		m_death = m_pGameScene2->Hero.m_death;
@@ -1148,16 +1141,16 @@ void GameScene0::update(float delta)
 
 	if (m_health != m_pGameScene2->Hero.totalHealth())
 	{
-		m_kill = m_pGameScene2->Hero.totalHealth();
-		sprintf(m_Textbuffer, "%d", m_kill);
+		m_health = m_pGameScene2->Hero.totalHealth();
+		sprintf(m_Textbuffer, "%d", m_health);
 		m_pAttri1Text[0]->setString(m_Textbuffer);
 		m_pAttri2Text[2]->setString(m_Textbuffer);
 	}
 	
 	if (m_attack != m_pGameScene2->Hero.AttackPower())
 	{
-		m_kill = m_pGameScene2->Hero.AttackPower();
-		sprintf(m_Textbuffer, "%d", m_attack);
+		m_attack = m_pGameScene2->Hero.AttackPower();
+		sprintf(m_Textbuffer, "%0.0f", m_attack);
 		m_pAttri1Text[1]->setString(m_Textbuffer);
 		m_pAttri2Text[0]->setString(m_Textbuffer);
 	}
@@ -1165,7 +1158,7 @@ void GameScene0::update(float delta)
 	if (m_power != m_pGameScene2->Hero.Power())
 	{
 		m_power = m_pGameScene2->Hero.Power();
-		sprintf(m_Textbuffer, "%d", m_power);
+		sprintf(m_Textbuffer, "%0.0f", m_power);
 		m_pAttri1Text[2]->setString(m_Textbuffer);
 		m_pAttri2Text[1]->setString(m_Textbuffer);
 	}
@@ -1173,7 +1166,7 @@ void GameScene0::update(float delta)
 	if (armor != m_pGameScene2->Hero.Armor())
 	{
 		armor = m_pGameScene2->Hero.Armor();
-		sprintf(m_Textbuffer, "%d", armor);
+		sprintf(m_Textbuffer, "%0.0f", armor);
 		m_pAttri1Text[3]->setString(m_Textbuffer);
 		m_pAttri2Text[4]->setString(m_Textbuffer);
 	}
@@ -1181,7 +1174,7 @@ void GameScene0::update(float delta)
 	if (magicDenfence != m_pGameScene2->Hero.MagicDefence())
 	{
 		magicDenfence = m_pGameScene2->Hero.MagicDefence();
-		sprintf(m_Textbuffer, "%d", magicDenfence);
+		sprintf(m_Textbuffer, "%0.0f", magicDenfence);
 		m_pAttri1Text[4]->setString(m_Textbuffer);
 		m_pAttri2Text[5]->setString(m_Textbuffer);
 	}
@@ -1196,21 +1189,21 @@ void GameScene0::update(float delta)
 	if (attackingSpeed != m_pGameScene2->Hero.AttackSpeed())
 	{
 		attackingSpeed = m_pGameScene2->Hero.AttackSpeed();
-		sprintf(m_Textbuffer, "%d", attackingSpeed);
+		sprintf(m_Textbuffer, "%0.0f", attackingSpeed);
 		m_pAttri2Text[6]->setString(m_Textbuffer);
 	}
 
 	if (waitLessen != m_pGameScene2->Hero.WaitLessen())
 	{
 		waitLessen = m_pGameScene2->Hero.WaitLessen();
-		sprintf(m_Textbuffer, "%d", waitLessen);
+		sprintf(m_Textbuffer, "%0.0f", waitLessen);
 		m_pAttri2Text[7]->setString(m_Textbuffer);
 	}
 	
 	if (velocity != m_pGameScene2->Hero.getVelocity())
 	{
 		velocity = m_pGameScene2->Hero.getVelocity();
-		sprintf(m_Textbuffer, "%d", velocity);
+		sprintf(m_Textbuffer, "%0.0f", velocity);
 		m_pAttri2Text[9]->setString(m_Textbuffer);
 	}
 	
@@ -1230,25 +1223,25 @@ void GameScene0::update(float delta)
 	if (armorIgnore != m_pGameScene2->Hero.ArmorIgnore())
 	{
 		armorIgnore = m_pGameScene2->Hero.ArmorIgnore();
-		sprintf(m_Textbuffer, "%d", armorIgnore);
+		sprintf(m_Textbuffer, "%0.0f", armorIgnore);
 		m_pAttri2Text[12]->setString(m_Textbuffer);
 	}
 	if (magicdenfenceIgnore != m_pGameScene2->Hero.MagicDefenseIgnore())
 	{
 		magicdenfenceIgnore = m_pGameScene2->Hero.MagicDefenseIgnore();
-		sprintf(m_Textbuffer, "%d", magicdenfenceIgnore);
+		sprintf(m_Textbuffer, "%0.0f", magicdenfenceIgnore);
 		m_pAttri2Text[13]->setString(m_Textbuffer);
 	}
 	if (physicBloodSuck != m_pGameScene2->Hero.PhysicBloodSuck())
 	{
 		physicBloodSuck = m_pGameScene2->Hero.PhysicBloodSuck();
-		sprintf(m_Textbuffer, "%d", physicBloodSuck);
+		sprintf(m_Textbuffer, "%0.0f", physicBloodSuck);
 		m_pAttri2Text[14]->setString(m_Textbuffer);
 	}
 	if (magicBloodSuck != m_pGameScene2->Hero.MagicBloodSuck())
 	{
 		magicBloodSuck = m_pGameScene2->Hero.MagicBloodSuck();
-		sprintf(m_Textbuffer, "%d", magicBloodSuck);
+		sprintf(m_Textbuffer, "%0.0f", magicBloodSuck);
 		m_pAttri2Text[15]->setString(m_Textbuffer);
 	}
 }
