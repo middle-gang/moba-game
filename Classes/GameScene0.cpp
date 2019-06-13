@@ -146,7 +146,7 @@ bool GameScene0::init()
 	m_pAttri2Text[3] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[3], 13);
 	//¹¥»÷ËÙ¶È
-	sprintf(m_Textbuffer, "%0.0f", attackingSpeed);
+	sprintf(m_Textbuffer, "%0.1f", attackingSpeed);
 	m_pAttri2Text[6] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
 	addChild(m_pAttri2Text[6], 13);
 	//ÀäÈ´Ëõ¼õ
@@ -1189,7 +1189,7 @@ void GameScene0::update(float delta)
 	if (attackingSpeed != m_pGameScene2->Hero.AttackSpeed())
 	{
 		attackingSpeed = m_pGameScene2->Hero.AttackSpeed();
-		sprintf(m_Textbuffer, "%0.0f", attackingSpeed);
+		sprintf(m_Textbuffer, "%0.1f", attackingSpeed);
 		m_pAttri2Text[6]->setString(m_Textbuffer);
 	}
 

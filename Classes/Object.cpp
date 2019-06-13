@@ -9,6 +9,7 @@ bool ObjectBase::InRange(Vec2 ene) {
 
 void ObjectBase::Die() {
 	isAlive = false;
+	m_death++;
 	Sequence* seqAct = Sequence::create(MoveTo::create(0, Vec2(-1000, -1000)), NULL);
 	Charac->runAction(seqAct);
 
@@ -124,9 +125,9 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		}
 
 		ene.BeAttack(attack);
-		if (ene.healthPower() <= 0) {
-			ene.Die();
-		}
+		///*if (ene.healthPower() <= 0) {
+		//	ene.Die();*/
+		//}
 
 	}
 	return attack;
@@ -365,6 +366,7 @@ void ObjectBase::JudgeAttackSpeedLevel() {
 	for (int i = 0; i < 11; i++) {
 		if (atkSpeedLevel < AtkSpeed[HeroIdentifier-1][i]) {
 			atkdelay = 60 / (HeroAtkSpeedLim[HeroIdentifier-1][i-1]);
+			attackingSpeed = HeroAtkSpeedLim[HeroIdentifier - 1][i-1] / 60;
 			limMax = true;
 			return;
 		}
@@ -413,7 +415,8 @@ int ObjectBase::ObjectType() {
 
 float ObjectBase::AttackSpeed()
 {
-	return attackingSpeed;
+	return atkdelay;
+	//return attackingSpeed;
 }
 
 float ObjectBase::Power()

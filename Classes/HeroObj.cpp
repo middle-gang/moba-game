@@ -198,70 +198,70 @@ void HeroObj::BeAttack(float damage) {
 	}
 }
 
-int HeroObj::Attack(ObjectBase& ene) {
-	if (!attackingFlag) {
-		attackingFlag = true;
-		Charac->stopAllActions();
-		Animation * animation = Animation::create();
-		if (HeroIdentifier == 1) {
-			//Animation * animation = Animation::create();
-			for (int i = 1; i <= 3; i++) {
-				__String * frameName = __String::createWithFormat("BowmanAttack%d.png", i);
-				//log("frameName = %s", frameName->getCString());
-				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
-				animation->addSpriteFrame(spriteFrame);
-			}
-
-			animation->setDelayPerUnit(0.08f);
-			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
-
-			Animate * action = Animate::create(animation);
-			Charac->runAction(action);
-		}
-		else if (HeroIdentifier == 2) {
-			for (int i = 1; i <= 3; i++) {
-				__String * frameName = __String::createWithFormat("SavageAttack%d.png", i);
-				//log("frameName = %s", frameName->getCString());
-				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
-				animation->addSpriteFrame(spriteFrame);
-			}
-
-			animation->setDelayPerUnit(0.08f);
-			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
-
-			Animate * action = Animate::create(animation);
-			Charac->runAction(action);
-		}
-		else if (HeroIdentifier == 3) {
-			for (int i = 1; i <= 4; i++) {
-				__String * frameName = __String::createWithFormat("WizardAttack%d.png", i);
-				//log("frameName = %s", frameName->getCString());
-				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
-				animation->addSpriteFrame(spriteFrame);
-			}
-
-			animation->setDelayPerUnit(0.08f);
-			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
-
-			Animate * action = Animate::create(animation);
-			Charac->runAction(action);
-		}
-
-		if (attackStrength) {
-			attackStrength = false;
-			ene.BeAttack(attack*1.2);
-		}
-		else ene.BeAttack(attack);
-		
-		if (ene.healthPower() <= 0) {
-			ene.Die();
-			m_kill++;
-			Kill_reward(ene);
-		}
-
-	}
-	return attack;
-}
+//int HeroObj::Attack(ObjectBase& ene) {
+//	if (!attackingFlag) {
+//		attackingFlag = true;
+//		Charac->stopAllActions();
+//		Animation * animation = Animation::create();
+//		if (HeroIdentifier == 1) {
+//			//Animation * animation = Animation::create();
+//			for (int i = 1; i <= 3; i++) {
+//				__String * frameName = __String::createWithFormat("BowmanAttack%d.png", i);
+//				//log("frameName = %s", frameName->getCString());
+//				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+//				animation->addSpriteFrame(spriteFrame);
+//			}
+//
+//			animation->setDelayPerUnit(0.08f);
+//			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+//
+//			Animate * action = Animate::create(animation);
+//			Charac->runAction(action);
+//		}
+//		else if (HeroIdentifier == 2) {
+//			for (int i = 1; i <= 3; i++) {
+//				__String * frameName = __String::createWithFormat("SavageAttack%d.png", i);
+//				//log("frameName = %s", frameName->getCString());
+//				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+//				animation->addSpriteFrame(spriteFrame);
+//			}
+//
+//			animation->setDelayPerUnit(0.08f);
+//			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+//
+//			Animate * action = Animate::create(animation);
+//			Charac->runAction(action);
+//		}
+//		else if (HeroIdentifier == 3) {
+//			for (int i = 1; i <= 4; i++) {
+//				__String * frameName = __String::createWithFormat("WizardAttack%d.png", i);
+//				//log("frameName = %s", frameName->getCString());
+//				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+//				animation->addSpriteFrame(spriteFrame);
+//			}
+//
+//			animation->setDelayPerUnit(0.08f);
+//			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+//
+//			Animate * action = Animate::create(animation);
+//			Charac->runAction(action);
+//		}
+//
+//		if (attackStrength) {
+//			attackStrength = false;
+//			ene.BeAttack(attack*1.2);
+//		}
+//		else ene.BeAttack(attack);
+//		
+//		if (ene.healthPower() <= 0) {
+//			ene.Die();
+//			m_kill++;
+//			Kill_reward(ene);
+//		}
+//
+//	}
+//	return attack;
+//}
 
 float HeroObj::PhysicBloodSuck()
 {
@@ -278,16 +278,16 @@ float HeroObj::WaitLessen()
 	return waitLessen;
 }
 
-void HeroObj::Die() {
-	isAlive = false;
-	m_death++;
-	
-	Sequence* seqAct = Sequence::create(MoveTo::create(0, Vec2(-1000, -1000)), NULL);
-	Charac->runAction(seqAct);
-
-	if (BloodView != nullptr) BloodView->setPosition(Vec2(-1000, -1000));
-	Position = Vec2(-1000, -1000);
-}
+//void HeroObj::Die() {
+//	isAlive = false;
+//	m_death++;
+//	
+//	Sequence* seqAct = Sequence::create(MoveTo::create(0, Vec2(-1000, -1000)), NULL);
+//	Charac->runAction(seqAct);
+//
+//	if (BloodView != nullptr) BloodView->setPosition(Vec2(-1000, -1000));
+//	Position = Vec2(-1000, -1000);
+//}
 
 bool HeroObj::QIsUsed() {
 	return !Qflag;
@@ -397,7 +397,7 @@ void HeroObj::Ability2st() {
 void HeroObj::Wjudge(float delta) {
 	Wtimer += delta;
 	if (HeroIdentifier == 2) {
-		if (Wtimer >= 3) {
+		if (Wtimer >= 3&&Wrecover) {
 			armor -= 30;
 			magicDenfence -= 50;
 			Wrecover = false;

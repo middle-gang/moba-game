@@ -30,7 +30,7 @@ public:
 	
 	int& getRadium();			//以引用的形式返回人物的攻击范围
 	int getVelocity();			//获取人物的移动速度
-	virtual int Attack(ObjectBase& ene);	//攻击函数，造成伤害，动画，击杀
+	int Attack(ObjectBase& ene);	//攻击函数，造成伤害，动画，击杀
 	float& AttackPower();				//引用形式返回攻击力
 	int& healthPower();				//引用形式返回目前生命
 	int& totalHealth();				//引用形式返回总生命值
@@ -52,7 +52,7 @@ public:
 	int E_Kill();       //获取对手击杀数    
 	int E_Level();      //获取对手等级数
 
-	virtual void Die();					//死亡的时候调用
+    void Die();					//死亡的时候调用
 	virtual void BeAttack(float n);		//被造成伤害（Attack中调用）
 	void setVelocity(int v);	//设置速度
 	void changeVeclocity(int v);   //改变速度
@@ -80,6 +80,8 @@ public:
 	Sprite* getBullet();		//获取子弹（有待设计）
 	
 	ProgressView* BloodView;	//血条
+
+	int m_death = 0;			//我的死亡
 
 	int HeroIdentifier;//英雄标签：1.Bowman，2.Savage，3.Wizard
 	double DeadTime = 10;		//死亡时间
