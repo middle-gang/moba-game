@@ -201,9 +201,9 @@ public:
 		s_Equip[3][5].ingriEquip.push_back(300);
 
 		s_Equip[3][6].magicDenfence = 120;
-		s_Equip[3][6].ingriEquip.push_back(300);
 		s_Equip[3][6].health = 700;
 		s_Equip[3][6].healthRecover = 50;
+		s_Equip[3][6].ingriEquip.push_back(300);
 		s_Equip[3][6].ingriEquip.push_back(302);
 
 		s_Equip[3][7].waitLessen = 0.1;
@@ -260,13 +260,12 @@ public:
 		s_Equip[3][13].buymoney = 2180;     s_Equip[3][13].sellmoney = 1308;
 		s_Equip[3][14].buymoney = 2100;     s_Equip[3][14].sellmoney = 1260;
 		s_Equip[3][15].buymoney = 2120;     s_Equip[3][15].sellmoney = 1272;
-
+		
 		//////////////////ÒÆ¶¯
-		s_Equip[4][0].velocity = 30;
-		s_Equip[4][0].ingriEquip.push_back(400);
+		s_Equip[4][0].velocity = 0.15;
 
 		s_Equip[4][1].armor = 110;
-		s_Equip[4][1].velocity = 60;
+		s_Equip[4][1].velocity = 0.3;
 		s_Equip[4][1].ingriEquip.push_back(400);
 
 		s_Equip[4][2].magicDenfence = 110;
@@ -276,15 +275,15 @@ public:
 		s_Equip[4][3].ingriEquip.push_back(400);
 
 		s_Equip[4][4].magicpointRecover = 25;
-		s_Equip[4][4].velocity = 60;
+		s_Equip[4][4].velocity = 0.3;
 		s_Equip[4][4].magicdenfenceIgnore = 75;
 		s_Equip[4][4].ingriEquip.push_back(400);
 
-		s_Equip[4][5].velocity = 60;
+		s_Equip[4][5].velocity = 0.3;
 		s_Equip[4][5].attackingSpeed = 0.3;
 		s_Equip[4][5].ingriEquip.push_back(400);
 
-		s_Equip[4][6].velocity = 60;
+		s_Equip[4][6].velocity = 0.3;
 		s_Equip[4][6].ingriEquip.push_back(400);
 
 		//½ðÇ®

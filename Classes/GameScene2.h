@@ -24,6 +24,8 @@ class GameScene2 : public cocos2d::Layer
 	MinionController flag[2];
 
 public:
+	float PosX();
+	float PosY();
 	HeroObj Hero;
 	HeroObj Opponent;
 	ObjectBase Tower[2];

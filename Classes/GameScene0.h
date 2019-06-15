@@ -14,8 +14,7 @@ class GameScene0 : public cocos2d::Layer
 {
 private:
 	GameScene2 *m_pGameScene2;
-	//HUDLayer *m_pHUDLayer;
-
+	
 private:
 	////属性
 	int m_kill;   //击杀对手数
@@ -46,12 +45,11 @@ private:
 	float physicBloodSuck;//物理吸血
 	float magicBloodSuck;//法术吸血
 
-	//////装备
-	//EquipmentData s_Equip[8][30];
-	cocos2d::MenuItemImage*Equip[8][30];
-	cocos2d::Sprite *pEquip[7];
-   // Equipment myEquip;
+	cocos2d::Sprite *myHero;
 private:
+	//小地图
+	float posX;
+	float posY;
 	///时间
 	char m_Textbuffer[999];
 	int time_min;
@@ -65,15 +63,21 @@ private:
 	////技能冷却
 	int m_SkillWait[6];
 	int SkillWait[6];
-
 	bool m_SkillUp[6];
-
 	float m_pass[6];
 
 	cocos2d::Label *m_pSkillText[6];
 
 	///装备栏
+
+	cocos2d::MenuItemImage*Equip[8][30];
+	cocos2d::Sprite *pEquip[7];
+	cocos2d::Menu *pSaleMenu;
+	cocos2d::MenuItemImage *SaleMII[8];
 	cocos2d::Sprite *m_Equip[7];
+	int EquipNumber[7];
+	int n1[7];
+	int n2[7];
 private:
 	///////////////数值显示1
 	cocos2d::Label *m_pKillText[4];//左上
@@ -94,22 +98,6 @@ private:
 
 	////////////////数值显示2（属性面板）
 	cocos2d::Label  *m_pAttri2Text[17];
-	//cocos2d::Label *m_pAttackText;     //物理攻击
-	//cocos2d::Label *m_pPowerText;      //法术攻击
-	//cocos2d::Label *m_pHelthText;      //最大生命
-	//cocos2d::Label *m_pMagicPointText;    //最大法力
-	//cocos2d::Label *m_pArmorText;         //物理防御
-	//cocos2d::Label *m_pMagicDefenseText;      //法术防御
-	//cocos2d::Label *m_pAttackingSpeendText;    //攻击速度
-	//cocos2d::Label *m_pWaitLessenText;          //冷却缩减
-	//cocos2d::Label *m_pDamageChanceText;        //暴击几率
-	//cocos2d::Label *m_pVelocityText;            //移动速度
-	//cocos2d::Label *m_pHealthRecoverText;       //每5秒回血
-	//cocos2d::Label *m_pMagicPointRecoverText;     //每5秒回蓝
-	//cocos2d::Label *m_pArmorIgnoreText;          //物理穿透
-	//cocos2d::Label *m_pMagicDefenceText;         //法术穿透
-	//cocos2d::Label *m_pPhysicBloodSuckText;      //物理吸血
-	//cocos2d::Label *m_pMagicBloodSuckText;       //法术吸血
 
 
 	//属性面板1背景及按钮(对战）
@@ -132,30 +120,18 @@ private:
 	////////////商店面板及按钮
 	bool ShopIsOpen;
 	cocos2d::Sprite *m_ShopBack;
-	cocos2d::MenuItemImage *m_pRecomMii;
-	cocos2d::MenuItemImage *m_pAttackMii;
-	cocos2d::MenuItemImage *m_pMagicMii;
-	cocos2d::MenuItemImage *m_pDefenseMii;
-	cocos2d::MenuItemImage *m_pMoveMii;
-	cocos2d::MenuItemImage *m_pBattleMii;
-	cocos2d::MenuItemImage *m_pAssistMii;
 	cocos2d::MenuItemImage *m_pDownMii;///记录按下去的
+	cocos2d::MenuItemImage *m_pShopMii[8];
 	cocos2d::MenuItemImage *m_pCloseShop;
-	cocos2d::Menu *m_pShopMenu;
+	cocos2d::Menu *m_ShopMenu;
 
 	//商店菜单
 	cocos2d::Menu *m_pDownMenu;//记录按下去的；
 	cocos2d::Sprite *m_pDownBac;
 
 	cocos2d::Sprite *m_pBac[8];
+	cocos2d::Menu *m_pShopMenu[8];
 
-	cocos2d::Menu *m_pRecommandMenu;
-	cocos2d::Menu *m_pAttackMenu;
-	cocos2d::Menu *m_pMagicMenu;
-	cocos2d::Menu *m_pDefenseMenu;
-	cocos2d::Menu *m_pMoveMenu;
-	cocos2d::Menu *m_pBattleMenu;
-	cocos2d::Menu *m_pAssistMenu;
 
 	//询问退出界面及按钮
 	bool ExitIsOpen;
@@ -181,10 +157,13 @@ private:
 
 
 public:
+	void BoundTrans(bool a, bool b);
 	//属性面板函数
 	void transToOp(cocos2d::Ref* pSender);
 	void transToHero(cocos2d::Ref* pSender);
 	void closeAttri(cocos2d::Ref* pSender);
+	void AttriBound(bool a, bool b);
+	void AttriTrans(bool a, bool b);
 
 	//属性面板2函数
 	void openAttri2(cocos2d::Ref* pSender);
@@ -192,9 +171,11 @@ public:
 	void transTo2(cocos2d::Ref* pSender);
 	void closeAttri2(cocos2d::Ref* pSender);
 
-	///////////////////商店面板函数
+	//商店开关操作
+	void ShopBound(bool a, bool b);
 	void openShop(cocos2d::Ref* pSender);
 	void closeShop(cocos2d::Ref* pSender);
+	void ShopTrans(int i);
 
 	void RecommendMenu(cocos2d::Ref* pSender);
 	void AttackMenu(cocos2d::Ref* pSender);
@@ -204,7 +185,19 @@ public:
 	void BattleMenu(cocos2d::Ref* pSender);
 	void AssistMenu(cocos2d::Ref* pSender);
 
+
+public:
 	//物品操作函数
+	////////////////////////////////////////卖物品
+	void sellEquip0(cocos2d::Ref* pSender);////卖道具
+	void sellEquip1(cocos2d::Ref* pSender);////卖道具
+	void sellEquip2(cocos2d::Ref* pSender);
+	void sellEquip3(cocos2d::Ref* pSender);
+	void sellEquip4(cocos2d::Ref* pSender);
+	void sellEquip5(cocos2d::Ref* pSender);
+	void sellEquip(int number);
+
+    /////////////买物品
 	void attack0(cocos2d::Ref* pSender);
 	void attack1(cocos2d::Ref* pSender);
 	void attack2(cocos2d::Ref* pSender);
@@ -295,6 +288,7 @@ public:
 	void attack(cocos2d::Ref* pSender);
 	void recover(cocos2d::Ref* pSender);
 	void cure(cocos2d::Ref* pSender);
+
 
 
 public:

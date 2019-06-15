@@ -62,7 +62,7 @@ void HeroObj::Buy(int EquipNumber) {
 		std::vector<int> appList;
 		int virtualMoney = m_money;
 		for (int i = 0; i < 6; i++) {
-			if (equip[i] == -1) {
+			if (equip[i] != -1) {
 				nonSubst++;
 				continue;
 			}
@@ -99,9 +99,12 @@ void HeroObj::Buy(int EquipNumber) {
 	}
 }
 
-void HeroObj::Sale(int locNumber) {
+void HeroObj::Sale(int locNumber,int Equipnumber) {
+	EquipmentData buf = EquipList.findEquip(Equipnumber);
 	if (equip[locNumber] != -1) {
 		equip[locNumber] = -1;
+		m_money += buf.sellmoney;
+		this->operator-(buf);
 	}
 }
 
@@ -110,8 +113,8 @@ void HeroObj::setMoney(int n) {
 }
 
 void HeroObj::LvUp() {
-	if (m_exp >= Exp[MyLevel - 1]&&MyLevel < 18) {
-		
+	if (m_exp >= Exp[MyLevel - 1] && MyLevel < 18) {
+
 		m_exp = 0;
 		MyLevel++;
 
@@ -195,7 +198,7 @@ bool& HeroObj::CheckBacking() {
 //			}
 //
 //			animation->setDelayPerUnit(0.08f);
-//			animation->setRestoreOriginalFrame(true);     //¶¯»­Ö´ĞĞºó»¹Ô­³õÊ¼×´Ì¬
+//			animation->setRestoreOriginalFrame(true);     //åŠ¨ç”»æ‰§è¡Œåè¿˜åŸåˆå§‹çŠ¶æ€
 //
 //			Animate * action = Animate::create(animation);
 //			Charac->runAction(action);
@@ -209,7 +212,7 @@ bool& HeroObj::CheckBacking() {
 //			}
 //
 //			animation->setDelayPerUnit(0.08f);
-//			animation->setRestoreOriginalFrame(true);     //¶¯»­Ö´ĞĞºó»¹Ô­³õÊ¼×´Ì¬
+//			animation->setRestoreOriginalFrame(true);     //åŠ¨ç”»æ‰§è¡Œåè¿˜åŸåˆå§‹çŠ¶æ€
 //
 //			Animate * action = Animate::create(animation);
 //			Charac->runAction(action);
@@ -223,7 +226,7 @@ bool& HeroObj::CheckBacking() {
 //			}
 //
 //			animation->setDelayPerUnit(0.08f);
-//			animation->setRestoreOriginalFrame(true);     //¶¯»­Ö´ĞĞºó»¹Ô­³õÊ¼×´Ì¬
+//			animation->setRestoreOriginalFrame(true);     //åŠ¨ç”»æ‰§è¡Œåè¿˜åŸåˆå§‹çŠ¶æ€
 //
 //			Animate * action = Animate::create(animation);
 //			Charac->runAction(action);
@@ -285,13 +288,13 @@ bool HeroObj::EIsUsed() {
 
 void HeroObj::Ability1st() {
 	if (QIsUsed()) return;
-	if(HeroIdentifier == 2) {
+	if (HeroIdentifier == 2) {
 		log("Q activate!");
 		velocity += 20;
 		Qrecover = true;
 		attackStrength = true;
 		Qflag = true;
-		attackingFlag = false;//È¡ÏûºóÒ¡
+		attackingFlag = false;//å–æ¶ˆåæ‘‡
 	}
 	if (HeroIdentifier == 1) {
 		attackingSpeed += 2;
@@ -302,7 +305,7 @@ void HeroObj::Ability1st() {
 	if (HeroIdentifier == 3) {
 		if (QActivate) {
 			for (int i = 0; i < Qtarget.size(); i++) {
-				Qtarget[i].BeAttack(50+power*1.1);
+				Qtarget[i].BeAttack(50 + power * 1.1);
 				if (Qtarget[i].healthPower() <= 0) {
 					Kill_reward(Qtarget[i]);
 				}
@@ -319,7 +322,7 @@ void HeroObj::Ability1st() {
 void HeroObj::Qjudge(float delta) {
 	Qtimer += delta;
 	if (HeroIdentifier == 2) {
-		if (Qtimer >= 3&&Qrecover) {
+		if (Qtimer >= 3 && Qrecover) {
 			velocity -= 20;
 			Qrecover = false;
 			attackStrength = false;
@@ -330,7 +333,7 @@ void HeroObj::Qjudge(float delta) {
 		}
 	}
 	if (HeroIdentifier == 1) {
-		if (Qtimer >= 3&&Qrecover) {
+		if (Qtimer >= 3 && Qrecover) {
 			attackingSpeed -= 2;
 			Qrecover = false;
 			JudgeAttackSpeedLevel();
@@ -366,17 +369,17 @@ void HeroObj::Ability2st() {
 			Wflag = true;
 			return;
 		}
-		WBoundJudge = true;				//¿ªÆôEµÄ·¶Î§ÅĞ¶Ï£¬ÀàËÆÖÇÄÜÊ©·¨
+		WBoundJudge = true;				//å¼€å¯Eçš„èŒƒå›´åˆ¤æ–­ï¼Œç±»ä¼¼æ™ºèƒ½æ–½æ³•
 	}
 	if (HeroIdentifier == 3) {
 		if (WActivate) {
 			for (int i = 0; i < Wtarget.size(); i++) {
-				Wtarget[i].BeAttack(1000+power*0.8);
+				Wtarget[i].BeAttack(1000 + power * 0.8);
 				if (Wtarget[i].healthPower() <= 0) {
 					Kill_reward(Wtarget[i]);
 				}
-				log("W launch on %d",Wtarget[i].HeroIdentifier);
-				//ÕâÀï»¹ĞèÒª¼ÓÈëÑ£ÔÎĞ§¹û
+				log("W launch on %d", Wtarget[i].HeroIdentifier);
+				//è¿™é‡Œè¿˜éœ€è¦åŠ å…¥çœ©æ™•æ•ˆæœ
 			}
 			Wtarget.clear();
 			WBoundJudge = false;
@@ -390,7 +393,7 @@ void HeroObj::Ability2st() {
 void HeroObj::Wjudge(float delta) {
 	Wtimer += delta;
 	if (HeroIdentifier == 2) {
-		if (Wtimer >= 3&&Wrecover) {
+		if (Wtimer >= 3 && Wrecover) {
 			armor -= 30;
 			magicDenfence -= 50;
 			Wrecover = false;
@@ -428,7 +431,7 @@ void HeroObj::Ability3st() {
 			Eflag = true;
 			return;
 		}
-		EBoundJudge = true;				//¿ªÆôEµÄ·¶Î§ÅĞ¶Ï£¬ÀàËÆÖÇÄÜÊ©·¨
+		EBoundJudge = true;				//å¼€å¯Eçš„èŒƒå›´åˆ¤æ–­ï¼Œç±»ä¼¼æ™ºèƒ½æ–½æ³•
 	}
 	if (HeroIdentifier == 1) {
 	}
@@ -436,7 +439,7 @@ void HeroObj::Ability3st() {
 		Qflag = false;
 		Wflag = false;
 		Qtimer = 0;
-		Wtimer = 0;//Ë¢ĞÂËùÓĞ¼¼ÄÜÊ±¼ä
+		Wtimer = 0;//åˆ·æ–°æ‰€æœ‰æŠ€èƒ½æ—¶é—´
 		Wflag = true;
 	}
 }
@@ -508,7 +511,7 @@ int HeroObj::Attack(ObjectBase& ene) {
 			}
 
 			animation->setDelayPerUnit(0.08f);
-			animation->setRestoreOriginalFrame(true);     //¶¯»­Ö´ĞĞºó»¹Ô­³õÊ¼×´Ì¬
+			animation->setRestoreOriginalFrame(true);     //åŠ¨ç”»æ‰§è¡Œåè¿˜åŸåˆå§‹çŠ¶æ€
 
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
@@ -522,7 +525,7 @@ int HeroObj::Attack(ObjectBase& ene) {
 			}
 
 			animation->setDelayPerUnit(0.08f);
-			animation->setRestoreOriginalFrame(true);     //¶¯»­Ö´ĞĞºó»¹Ô­³õÊ¼×´Ì¬
+			animation->setRestoreOriginalFrame(true);     //åŠ¨ç”»æ‰§è¡Œåè¿˜åŸåˆå§‹çŠ¶æ€
 
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
@@ -536,7 +539,7 @@ int HeroObj::Attack(ObjectBase& ene) {
 			}
 
 			animation->setDelayPerUnit(0.08f);
-			animation->setRestoreOriginalFrame(true);     //¶¯»­Ö´ĞĞºó»¹Ô­³õÊ¼×´Ì¬
+			animation->setRestoreOriginalFrame(true);     //åŠ¨ç”»æ‰§è¡Œåè¿˜åŸåˆå§‹çŠ¶æ€
 
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
@@ -550,7 +553,7 @@ int HeroObj::Attack(ObjectBase& ene) {
 			}
 
 			animation->setDelayPerUnit(0.08f);
-			animation->setRestoreOriginalFrame(true);     //¶¯»­Ö´ĞĞºó»¹Ô­³õÊ¼×´Ì¬
+			animation->setRestoreOriginalFrame(true);     //åŠ¨ç”»æ‰§è¡Œåè¿˜åŸåˆå§‹çŠ¶æ€
 
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);
@@ -564,7 +567,7 @@ int HeroObj::Attack(ObjectBase& ene) {
 			}
 
 			animation->setDelayPerUnit(0.08f);
-			animation->setRestoreOriginalFrame(true);     //¶¯»­Ö´ĞĞºó»¹Ô­³õÊ¼×´Ì¬
+			animation->setRestoreOriginalFrame(true);     //åŠ¨ç”»æ‰§è¡Œåè¿˜åŸåˆå§‹çŠ¶æ€
 
 			Animate * action = Animate::create(animation);
 			Charac->runAction(action);

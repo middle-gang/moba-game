@@ -57,33 +57,26 @@ void GameLogoLayer::update(float delta)
 {
 	float rate;
 	m_LogoPassTime += delta;
-	if (m_LogoPassTime <= m_LogoTime)
-	{
-		if (m_LogoPassTime <= m_LogoInTime)
-		{
+	if (m_LogoPassTime <= m_LogoTime){
+		if (m_LogoPassTime <= m_LogoInTime){
 			//logo进入的时候
 			rate = m_LogoPassTime / m_LogoInTime;
 			((Sprite *)getChildByTag(LOGOBACKID))->setOpacity(rate * 255);
 		}
-		else
-		{
-			if ((m_LogoPassTime - m_LogoInTime) <= m_LogoWaitTime)
-			{
+		else{
+			if ((m_LogoPassTime - m_LogoInTime) <= m_LogoWaitTime){
 				//logo等待的时候
 				((Sprite *)getChildByTag(LOGOBACKID))->setOpacity(255);
 			}
-			else
-			{
+			else{
 				//logo出去的时候
 				rate = 1.0f - (m_LogoPassTime - (m_LogoInTime + m_LogoWaitTime)) / m_LogoOutTime;
 				((Sprite *)getChildByTag(LOGOBACKID))->setOpacity(rate * 255);
 			}
 		}
 	}
-	else
-	{
-		if (!m_IsChangeScene)
-		{
+	else{
+		if (!m_IsChangeScene){
 			Scene *pScene = HelloWorld::createScene();
 			Director::getInstance()->replaceScene(pScene);
 			m_IsChangeScene = true;
