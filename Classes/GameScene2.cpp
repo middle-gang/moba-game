@@ -26,6 +26,16 @@ std::list<PointCk *> pathFound;
 //std::map<ObjectBase, bool> minionAlive;
 Astar ast;
 
+float GameScene2::PosX()
+{
+	return _player->getPosition().x;
+}
+
+float GameScene2::PosY()
+{
+	return _player->getPosition().y;
+}
+
 Scene* GameScene2::createScene()
 {
 	// 'scene' is an autorelease object
@@ -690,6 +700,7 @@ void GameScene2::update(float delta){
 	{
 		n_level = Hero.Level();
 		sprintf(Textbuffer, "%d", n_level);
+		_myLevel->setString(Textbuffer);
 	}
 }
 
@@ -765,6 +776,7 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 					Hero.Wtarget.push_back(Opponent);
 				}
 				Hero.Ability2st();
+
 				return true;
 			}
 			else {

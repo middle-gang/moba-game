@@ -9,7 +9,7 @@ public:
 	void removeHomerecover();                    //离开家取消回血回蓝
 	void ExpAndMoneyIncrease(float delta);		//金币和经验的自然增长
 	void Buy(int EquipNumber);					//买东西
-	void Sale(int locationNum);					//卖东西（装备栏某个位置的）
+	void Sale(int locationNum,int Equipnumber);					//卖东西（装备栏某个位置的）
 	void setMoney(int n);						//设置金钱（调试用）
 	void BackToSpawn();				//回到出生点
 	void Interrupt();				//打断回城
