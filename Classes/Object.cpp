@@ -337,7 +337,7 @@ void ObjectBase::HeroInit(Sprite*& spr,Vec2 spawnP) {
 	magicpoint = HeroData[h][12];
 	magicpointRecover = HeroData[h][14];
 	velocity = HeroData[h][16];
-	getRadium() = 50;
+	getRadium() = 100;
 	power = 1000;
 	initBloodScale();
 }
