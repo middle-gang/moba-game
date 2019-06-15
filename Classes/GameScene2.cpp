@@ -50,7 +50,7 @@ void GameScene2::TowerInit(int i,Sprite*& spr) {
 	Tower[i].setAnimeIdentifier(2);
 	Tower[i].SetAtkSpeedLevel(0);
 	Tower[i].JudgeAttackSpeedLevel();
-	log("%f", Tower[i].attackDelay());
+	//log("%f", Tower[i].attackDelay());
 	Tower[i].totalHealth() = 1000;
 	Tower[i].healthPower() = 1000;
 	Tower[i].AttackPower() = 470;
@@ -162,11 +162,21 @@ bool GameScene2::init()
 	float x = spawnPoint["x"].asFloat();
 	float y = spawnPoint["y"].asFloat();
 	
+	log("%f %f", x, y);
+
 	Hero.setAnimeIdentifier(myChoice);
 	Hero.HeroInit(_player,Vec2(x, y));
 	addChild(_player, 2, 200);
 	addChild(Hero.BloodView, 2);
 	addChild(Hero.getBullet(), 2);
+
+	Sprite* EneSpr;
+	Opponent.setAnimeIdentifier(2);
+	Opponent.HeroInit(EneSpr, Vec2(x, y));
+	Opponent.getPosition() = EneSpr->getPosition();
+	addChild(EneSpr, 2, 200);
+	addChild(Opponent.BloodView, 2);
+	addChild(Opponent.getBullet(), 2);
 
 
 	ValueMap myCrystalPoint = group->getObject("myCrystal");
@@ -203,12 +213,6 @@ bool GameScene2::init()
 	flag[0].setminionDes(Vec2(x, y));
 	flag[1].setminionSpawn(Vec2(x, y));
 
-	Sprite* EneSpr;
-	Opponent.setAnimeIdentifier(2);
-	Opponent.HeroInit(EneSpr, Vec2(x, y));
-	addChild(EneSpr, 2, 200);
-	addChild(Opponent.BloodView, 2);
-	addChild(Opponent.getBullet(), 2);
 
 	ValueMap enemyTowerPoint = group->getObject("enemyTower");
 
@@ -244,11 +248,11 @@ bool GameScene2::init()
 				std::string collision = propValueMap["Collidable"].asString();
 				if (collision == "true") {
 					ast.maze[i][j] = 1;
-					log("%d %d C", i, j);
+					//log("%d %d C", i, j);
 				}
 				else {
 					ast.maze[i][j] = 0;
-					log("%d %d E", i, j);
+					//log("%d %d E", i, j);
 				}
 			}
 		}
@@ -282,6 +286,7 @@ void GameScene2::update(float delta){
 	Hero.MagicRebound(delta);//自然回蓝
 
 	Hero.BloodView->setCurrentProgress(Hero.healthPower());
+	Opponent.BloodView->setCurrentProgress(Opponent.healthPower());
 	
 	if (Hero.QIsUsed()) {
 		Hero.Qjudge(delta);
@@ -690,24 +695,34 @@ void GameScene2::update(float delta){
 
 bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 {
+	auto target = static_cast<Sprite*>(event->getCurrentTarget());
+	Point locationInNode = target->convertToNodeSpace(touch->getLocation());
+
+	Hero.getSprite()->stopAllActions();
     //log("onTouchBegan");
 
 	if (Hero.QBoundJudge == true) {
 		//Vec2 Direc = touch->getLocation() - Hero.getPosition();
-		if (touch->getLocation().distance(Hero.getPosition())<=200) {
-			Vec2 Direc = touch->getLocation() - Hero.getPosition();
+		log("%f", locationInNode.distance(Hero.getPosition()));
+		if (locationInNode.distance(Hero.getPosition())<=200) {
+			log("Judge activate");//correct
+			Vec2 Direc = locationInNode - Hero.getPosition();
 			Hero.QActivate = true;
 			for (int i = 0; i < flag[1].Container().size(); i++) {
 				Vec2 dd = flag[1].Container()[i].getPosition() - Hero.getPosition();
+				log("%f %f", dd.x ,dd.y);
 				float dy = ccpLength(ccpProject(dd, Direc));
 				float dx = sqrt(ccpLength(dd)*ccpLength(dd) - dy * dy);
+				log("%f %f", dx, dy);
 				if (dy<=250&&dx<=50) {
 					Hero.Qtarget.push_back(flag[1].Container()[i]);
 				}
 			}
 			Vec2 dd = Opponent.getPosition() - Hero.getPosition();
+			log("%f %f", dd.x, dd.y);
 			float dy = ccpLength(ccpProject(dd, Direc));
 			float dx = sqrt(ccpLength(dd)*ccpLength(dd) - dy * dy);
+			log("%f %f", dx, dy);
 			if (dy<=250&&dx<=50) {
 				Hero.Wtarget.push_back(Opponent);
 			}
@@ -715,20 +730,25 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 			return true;
 		}
 		else {
-			Hero.QBoundJudge == false;
+			Hero.QBoundJudge = false;
 		}
 	}
 
+	log("%d", Hero.EBoundJudge);
 	if (Hero.EBoundJudge == true) {
-		if (touch->getLocation().distance(Opponent.getPosition()) < 20&&
-			touch->getLocation().distance(Hero.getPosition())<200) {
+		log("(%f %f) (%f,%f) %f", locationInNode.x, locationInNode.y,
+			Opponent.getPosition().x, Opponent.getPosition().y, 
+			locationInNode.distance(Opponent.getPosition()));
+		if (locationInNode.distance(Opponent.getPosition()) <= 20&&
+			locationInNode.distance(Hero.getPosition())<200) {
 			Hero.EActivate = true;
 			Hero.Etarget = &Opponent;
 			Hero.Ability3st();
 			return true;
 		}
 		else {
-			Hero.EBoundJudge == false;
+			log("E bound judge false");
+			Hero.EBoundJudge = false;
 		}
 	}
 
@@ -748,19 +768,21 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 				return true;
 			}
 			else {
-				Hero.WBoundJudge == false;
+				Hero.WBoundJudge = false;
 			}
 		}
 		if (Hero.HeroIdentifier == 3) {
-			if (touch->getLocation().distance(Opponent.getPosition()) < 20 &&
-				touch->getLocation().distance(Hero.getPosition()) < 200) {
+			if (locationInNode.distance(Opponent.getPosition()) <= 20 &&
+				locationInNode.distance(Hero.getPosition()) <= 200) {
+				log("Wact");
 				Hero.WActivate = true;
 				Hero.Wtarget.push_back(Opponent);
 				Hero.Ability2st();
 				return true;
 			}
 			else {
-				Hero.WBoundJudge == false;
+				log("W fail");
+				Hero.WBoundJudge = false;
 			}
 		}
 	}
@@ -776,8 +798,6 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 	}
 	Vec2 myCoord = this->tileCoordFromPosition(Hero.getPosition());
 
-	auto target = static_cast<Sprite*>(event->getCurrentTarget());
-	Point locationInNode = target->convertToNodeSpace(touch->getLocation());
 	Vec2 tileCoord = this->tileCoordFromPosition(locationInNode);
 	
 	Vec2 vectorPoint = (locationInNode - Hero.getPosition())/64;
@@ -788,7 +808,7 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 		//log("%f %f", iter.x, iter.y);
 		Vec2 tileIter = this->tileCoordFromPosition(iter);
 		//log("%d %d", int(tileIter.x), int(tileIter.y));
-		log("%d", ast.maze[int(tileIter.x)][int(tileIter.y)]);
+		//log("%d", ast.maze[int(tileIter.x)][int(tileIter.y)]);
 		if (ast.maze[int(tileIter.x)][int(tileIter.y)] == 1) {
 			routeColli = true;
 		}
@@ -909,21 +929,28 @@ void GameScene2::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event) {
 		Hero.setMoney(100000);
 	}
 	if (keycode == EventKeyboard::KeyCode::KEY_Q) {
+		//log("Q is pressed!%d should be activate",Hero.HeroIdentifier);
+		if (Hero.QIsUsed()) return;
 		if (Hero.HeroIdentifier == 1) Hero.Ability1st();
 		if (Hero.HeroIdentifier == 2) Hero.Ability1st();
 		if (Hero.HeroIdentifier == 3) Hero.QBoundJudge = true;
 	}
 	if (keycode == EventKeyboard::KeyCode::KEY_W) {
+		if (Hero.WIsUsed()) return;
 		if (Hero.HeroIdentifier == 1) Hero.WBoundJudge = true;
 		if (Hero.HeroIdentifier == 2) Hero.Ability2st();
 		if (Hero.HeroIdentifier == 3) Hero.WBoundJudge = true;
 	}
 	if (keycode == EventKeyboard::KeyCode::KEY_E) {
+		if (Hero.EIsUsed()) return;
 		if (Hero.HeroIdentifier == 1) {
 
 		}
 		if (Hero.HeroIdentifier == 2) Hero.EBoundJudge = true;
 		if (Hero.HeroIdentifier == 3) Hero.Ability3st();
+	}
+	if (keycode == EventKeyboard::KeyCode::KEY_S) {
+		Hero.getSprite()->stopAllActions();
 	}
 }
 
@@ -977,7 +1004,7 @@ void GameScene2::playMove() {
 		return;
 	}
 	if (pathFound.size() != 0) {
-		log("%d %d", pathFound.front()->x, pathFound.front()->y);
+		//log("%d %d", pathFound.front()->x, pathFound.front()->y);
 		pathFound.pop_front();
 		Vec2 dest = Vec2(31 * pathFound.front()->x + 16,
 			1024 - (31 * (pathFound.front()->y) + 16) - 32);

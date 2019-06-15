@@ -8,8 +8,10 @@ bool ObjectBase::InRange(Vec2 ene) {
 }
 
 void ObjectBase::Die() {
+	Charac->stopAllActions();
 	isAlive = false;
 	m_death++;
+	Moveable = false;
 	Sequence* seqAct = Sequence::create(MoveTo::create(0, Vec2(-1000, -1000)), NULL);
 	Charac->runAction(seqAct);
 
@@ -125,9 +127,6 @@ int ObjectBase::Attack(ObjectBase& ene) {
 		}
 
 		ene.BeAttack(attack);
-		///*if (ene.healthPower() <= 0) {
-		//	ene.Die();*/
-		//}
 
 	}
 	return attack;
@@ -151,6 +150,7 @@ float& ObjectBase::AttackPower() {
 
 void ObjectBase::revive() {
 	isAlive = true;
+	Moveable = true;
 	Charac->setPosition(Spawn);
 	Position = Charac->getPosition();
 	nowHealth =health ;
@@ -194,6 +194,7 @@ int& ObjectBase::getRadium() {
 }
 
 void ObjectBase::Move(Vec2 dest) {
+	if (!Moveable) return;
 	Charac->stopAllActions();
 	float cost = dest.distance(Position)/velocity;
 	Charac->runAction(MoveTo::create(cost, dest));
@@ -336,7 +337,8 @@ void ObjectBase::HeroInit(Sprite*& spr,Vec2 spawnP) {
 	magicpoint = HeroData[h][12];
 	magicpointRecover = HeroData[h][14];
 	velocity = HeroData[h][16];
-	getRadium() = 200;
+	getRadium() = 50;
+	power = 1000;
 	initBloodScale();
 }
 

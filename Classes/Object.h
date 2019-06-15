@@ -30,7 +30,7 @@ public:
 	
 	int& getRadium();			//以引用的形式返回人物的攻击范围
 	int getVelocity();			//获取人物的移动速度
-	int Attack(ObjectBase& ene);	//攻击函数，造成伤害，动画，击杀
+	virtual int Attack(ObjectBase& ene);	//攻击函数，造成伤害，动画，击杀
 	float& AttackPower();				//引用形式返回攻击力
 	int& healthPower();				//引用形式返回目前生命
 	int& totalHealth();				//引用形式返回总生命值
@@ -53,7 +53,7 @@ public:
 	int E_Level();      //获取对手等级数
 
     void Die();					//死亡的时候调用
-	virtual void BeAttack(float n);		//被造成伤害（Attack中调用）
+	void BeAttack(float n);		//被造成伤害（Attack中调用）
 	void setVelocity(int v);	//设置速度
 	void changeVeclocity(int v);   //改变速度
 	void Move(Vec2 dest);		//移动函数，参数为坐标
@@ -165,9 +165,9 @@ protected:
 	//14：法力回复，15：法力回复成长
 	//16：移速（不会成长）
 	float HeroData[3][17] = {
-		{180,16.5,0,1,3182,200,41,2,86,18,50,8.5,440,96,16,1.5,36},
-		{164,13,0,1,3622,316,55,3.5,98,21.5,50,8.5,0,0,0,0,39},
-		{170,8.5,0,1,3229,185,55,2,86,17,50,8.5,490,109,18,1.5,36},
+		{180,16.5,0,1,3182,200,41,2,86,18,50,8.5,440,96,16,1.5,50},
+		{164,13,0,1,3622,316,55,3.5,98,21.5,50,8.5,0,0,0,0,60},
+		{170,8.5,0,1,3229,185,55,2,86,17,50,8.5,490,109,18,1.5,50},
 	};
 	//0：Bowman，1：Savage，2：Wizard
 	

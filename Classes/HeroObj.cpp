@@ -170,25 +170,7 @@ bool& HeroObj::CheckBacking() {
 	return isBacking;
 }
 
-void HeroObj::Kill_reward(ObjectBase& ene) {
-	if (ene.HeroIdentifier <= 3) {
-
-	}
-	else if (ene.HeroIdentifier == 5) {
-		m_exp += 9;
-		m_money += 35;
-		t_money += 35;
-		LvUp();
-	}
-	else if (ene.HeroIdentifier == 6) {
-		m_exp += 7;
-		m_money += 25;
-		t_money += 25;
-		LvUp();
-	}
-}
-
-void HeroObj::BeAttack(float damage) {
+/*void HeroObj::BeAttack(float damage) {
 	nowHealth -= damage * 602 / (602 + armor);
 	if (isBacking) {
 		Interrupt();
@@ -196,7 +178,7 @@ void HeroObj::BeAttack(float damage) {
 	if (nowHealth <= 0) {
 		Die();
 	}
-}
+}*/
 
 //int HeroObj::Attack(ObjectBase& ene) {
 //	if (!attackingFlag) {
@@ -290,39 +272,44 @@ float HeroObj::WaitLessen()
 //}
 
 bool HeroObj::QIsUsed() {
-	return !Qflag;
+	return Qflag;
 }
 
 bool HeroObj::WIsUsed() {
-	return !Wflag;
+	return Wflag;
 }
 
 bool HeroObj::EIsUsed() {
-	return !Eflag;
+	return Eflag;
 }
 
 void HeroObj::Ability1st() {
 	if (QIsUsed()) return;
 	if(HeroIdentifier == 2) {
+		log("Q activate!");
 		velocity += 20;
 		Qrecover = true;
 		attackStrength = true;
-		Qflag = false;
+		Qflag = true;
 		attackingFlag = false;//取消后摇
 	}
 	if (HeroIdentifier == 1) {
 		attackingSpeed += 2;
 		JudgeAttackSpeedLevel();
 		Qrecover = true;
-		Qflag = false;
+		Qflag = true;
 	}
 	if (HeroIdentifier == 3) {
 		if (QActivate) {
 			for (int i = 0; i < Qtarget.size(); i++) {
-				Qtarget[i].BeAttack(power*1.1);
+				Qtarget[i].BeAttack(50+power*1.1);
+				if (Qtarget[i].healthPower() <= 0) {
+					Kill_reward(Qtarget[i]);
+				}
 			}
+			Qtarget.clear();
 			QBoundJudge = false;
-			Qflag = false;
+			Qflag = true;
 			return;
 		}
 		QBoundJudge = true;
@@ -337,8 +324,8 @@ void HeroObj::Qjudge(float delta) {
 			Qrecover = false;
 			attackStrength = false;
 		}
-		if (Qtimer == 6) {
-			Qflag = true;
+		if (Qtimer >= 5) {
+			Qflag = false;
 			Qtimer = 0;
 		}
 	}
@@ -349,13 +336,13 @@ void HeroObj::Qjudge(float delta) {
 			JudgeAttackSpeedLevel();
 		}
 		if (Qtimer == 6) {
-			Qflag = true;
+			Qflag = false;
 			Qtimer = 0;
 		}
 	}
 	if (HeroIdentifier == 3) {
 		if (Qtimer >= 5) {
-			Qflag = true;
+			Qflag = false;
 			Qtimer = 0;
 		}
 	}
@@ -367,27 +354,33 @@ void HeroObj::Ability2st() {
 		armor += 30;
 		magicDenfence += 50;
 		Wrecover = true;
-		Wflag = false;
+		Wflag = true;
 	}
 	if (HeroIdentifier == 1) {
 		if (WActivate) {
 			for (int i = 0; i < Wtarget.size(); i++) {
 				Wtarget[i].BeAttack(attack*0.8);
 			}
+			Wtarget.clear();
 			WBoundJudge = false;
-			Wflag = false;
+			Wflag = true;
 			return;
 		}
 		WBoundJudge = true;				//开启E的范围判断，类似智能施法
 	}
 	if (HeroIdentifier == 3) {
 		if (WActivate) {
-			for (int i = 0; i < Qtarget.size(); i++) {
-				Wtarget[i].BeAttack(power*0.8);
+			for (int i = 0; i < Wtarget.size(); i++) {
+				Wtarget[i].BeAttack(1000+power*0.8);
+				if (Wtarget[i].healthPower() <= 0) {
+					Kill_reward(Wtarget[i]);
+				}
+				log("W launch on %d",Wtarget[i].HeroIdentifier);
 				//这里还需要加入眩晕效果
 			}
+			Wtarget.clear();
 			WBoundJudge = false;
-			Wflag = false;
+			Wflag = true;
 			return;
 		}
 		WBoundJudge = true;
@@ -404,19 +397,19 @@ void HeroObj::Wjudge(float delta) {
 			attackStrength = false;
 		}
 		if (Wtimer >= 6) {
-			Wflag = true;
+			Wflag = false;
 			Wtimer = 0;
 		}
 	}
 	if (HeroIdentifier == 1) {
 		if (Wtimer >= 6) {
-			Wflag = true;
+			Wflag = false;
 			Wtimer = 0;
 		}
 	}
 	if (HeroIdentifier == 3) {
 		if (Wtimer >= 6) {
-			Wflag = true;
+			Wflag = false;
 			Wtimer = 0;
 		}
 	}
@@ -426,10 +419,13 @@ void HeroObj::Ability3st() {
 	if (EIsUsed()) return;
 	if (HeroIdentifier == 2) {
 		if (EActivate) {
-			Charac->runAction(MoveTo::create(1, Etarget->getPosition()));
+			Charac->runAction(MoveTo::create(0.2, Etarget->getPosition()));
 			Etarget->BeAttack(attack*1.5);
+			if (Etarget->healthPower() <= 0) {
+				Kill_reward(*Etarget);
+			}
 			EBoundJudge = false;
-			Eflag = false;
+			Eflag = true;
 			return;
 		}
 		EBoundJudge = true;				//开启E的范围判断，类似智能施法
@@ -441,26 +437,27 @@ void HeroObj::Ability3st() {
 		Wflag = false;
 		Qtimer = 0;
 		Wtimer = 0;//刷新所有技能时间
+		Wflag = true;
 	}
 }
 
 void HeroObj::Ejudge(float delta) {
 	Etimer += delta;
 	if (HeroIdentifier == 2) {
-		if (Etimer == 15) {
-			Eflag = true;
+		if (Etimer >= 15) {
+			Eflag = false;
 			Etimer = 0;
 		}
 	}
 	if (HeroIdentifier == 1) {
-		if (Etimer == 15) {
-			Eflag = true;
+		if (Etimer >= 15) {
+			Eflag = false;
 			Etimer = 0;
 		}
 	}
 	if (HeroIdentifier == 3) {
-		if (Etimer == 25) {
-			Eflag = true;
+		if (Etimer >= 25) {
+			Eflag = false;
 			Etimer = 0;
 		}
 	}
@@ -476,4 +473,107 @@ int HeroObj::tMoney() {
 
 int HeroObj::Money() {
 	return m_money;
+}
+
+void HeroObj::Kill_reward(ObjectBase& ene) {
+	if (ene.HeroIdentifier <= 3) {
+
+	}
+	else if (ene.HeroIdentifier == 5) {
+		m_exp += 9;
+		m_money += 35;
+		t_money += 35;
+		LvUp();
+	}
+	else if (ene.HeroIdentifier == 6) {
+		m_exp += 7;
+		m_money += 25;
+		t_money += 25;
+		LvUp();
+	}
+}
+
+int HeroObj::Attack(ObjectBase& ene) {
+	if (!attackingFlag) {
+		attackingFlag = true;
+		Charac->stopAllActions();
+		Animation * animation = Animation::create();
+		if (HeroIdentifier == 1) {
+			//Animation * animation = Animation::create();
+			for (int i = 1; i <= 3; i++) {
+				__String * frameName = __String::createWithFormat("BowmanAttack%d.png", i);
+				//log("frameName = %s", frameName->getCString());
+				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+				animation->addSpriteFrame(spriteFrame);
+			}
+
+			animation->setDelayPerUnit(0.08f);
+			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+			Animate * action = Animate::create(animation);
+			Charac->runAction(action);
+		}
+		else if (HeroIdentifier == 2) {
+			for (int i = 1; i <= 3; i++) {
+				__String * frameName = __String::createWithFormat("SavageAttack%d.png", i);
+				//log("frameName = %s", frameName->getCString());
+				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+				animation->addSpriteFrame(spriteFrame);
+			}
+
+			animation->setDelayPerUnit(0.08f);
+			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+			Animate * action = Animate::create(animation);
+			Charac->runAction(action);
+		}
+		else if (HeroIdentifier == 3) {
+			for (int i = 1; i <= 4; i++) {
+				__String * frameName = __String::createWithFormat("WizardAttack%d.png", i);
+				//log("frameName = %s", frameName->getCString());
+				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+				animation->addSpriteFrame(spriteFrame);
+			}
+
+			animation->setDelayPerUnit(0.08f);
+			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+			Animate * action = Animate::create(animation);
+			Charac->runAction(action);
+		}
+		else if (HeroIdentifier == 5) {
+			for (int i = 1; i <= 3; i++) {
+				__String * frameName = __String::createWithFormat("CloseWarriorAttack%d.png", i);
+				//log("frameName = %s", frameName->getCString());
+				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+				animation->addSpriteFrame(spriteFrame);
+			}
+
+			animation->setDelayPerUnit(0.08f);
+			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+			Animate * action = Animate::create(animation);
+			Charac->runAction(action);
+		}
+		else if (HeroIdentifier == 6) {
+			for (int i = 1; i <= 3; i++) {
+				__String * frameName = __String::createWithFormat("DistantWarriorAttack%d.png", i);
+				//log("frameName = %s", frameName->getCString());
+				SpriteFrame * spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName->getCString());
+				animation->addSpriteFrame(spriteFrame);
+			}
+
+			animation->setDelayPerUnit(0.08f);
+			animation->setRestoreOriginalFrame(true);     //动画执行后还原初始状态
+
+			Animate * action = Animate::create(animation);
+			Charac->runAction(action);
+		}
+
+		ene.BeAttack(attack);
+		if (ene.healthPower() <= 0) {
+			Kill_reward(ene);
+		}
+	}
+	return attack;
 }

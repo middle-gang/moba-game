@@ -15,8 +15,8 @@ public:
 	void Interrupt();				//打断回城
 	void JudgeBack(float& time, float del);	//传入参数计时值 time 假如回城时间到就回城并且将 time 归零
 	void Kill_reward(ObjectBase& ene);//击杀获得奖励（金钱经验）
-//	virtual int Attack(ObjectBase& ene);	//攻击函数，造成伤害，动画，击杀
-	virtual void BeAttack(float n);		//被造成伤害（Attack中调用）
+	virtual int Attack(ObjectBase& ene);	//攻击函数，造成伤害，动画，击杀
+	//virtual void BeAttack(float n);		//被造成伤害（Attack中调用）
 	//virtual void Die();
 
 	float PhysicBloodSuck();    //物理吸血
