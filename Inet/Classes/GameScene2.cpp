@@ -305,9 +305,11 @@ void receive() {
 							eneObj->Wtarget.push_back(mMinion->Container()[i]);
 						}
 					}
+
 					if (Wplace.distance(heroObj->getPosition()) < 100) {
 						eneObj->Wtarget.push_back(*heroObj);
 					}
+
 					Director::getInstance()->getScheduler()->
 						performFunctionInCocosThread([]() {
 						eneObj->Ability2st();
@@ -316,6 +318,7 @@ void receive() {
 			}
 			else if (buf2[1] == 'e') {
 				if (eneChoice == 1) {
+
 
 				}
 				else if (eneChoice == 2) {
@@ -1378,7 +1381,7 @@ void GameScene2::playMove() {
 	if (pathFound.size() == 1) {
 		Vec2 dest = Vec2(31 * pathFound.front()->x + 16,
 			1024 - (31 * (pathFound.front()->y) + 16) - 32);
-		Hero.getBullet()->setPosition(dest);
+		//Hero.getBullet()->setPosition(dest);
 		Hero.Move(dest);
 		return;
 	}

@@ -12,11 +12,11 @@ void ObjectBase::Die() {
     isAlive = false;
     m_death++;
     Moveable = false;
-    Sequence* seqAct = Sequence::create(MoveTo::create(0, Vec2(-1000, -1000)), NULL);
+    Sequence* seqAct = Sequence::create(MoveTo::create(0, Vec2(-10000000, -1000000)), NULL);
     Charac->runAction(seqAct);
     
-    if(BloodView!=nullptr) BloodView->setPosition(Vec2(-1000,-1000));
-    Position = Vec2(-1000,-1000);
+    if(BloodView!=nullptr) BloodView->setPosition(Vec2(-100000000,-100000000));
+    Position = Vec2(-10000000, -1000000);
 }
 
 /*void ObjectBase::Kill_reward(ObjectBase& ene) {
