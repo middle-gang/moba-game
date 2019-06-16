@@ -155,7 +155,7 @@ void HeroObj::ExpAndMoneyIncrease(float delta) {
 
 void HeroObj::BackToSpawn() {
     
-    SkillEffect = Sprite::createWithSpriteFrameName("Revive1.png");
+   /* SkillEffect = Sprite::createWithSpriteFrameName("Revive1.png");
     SkillEffect->setPosition(Charac->getPosition());
     SkillEffect->stopAllActions();
     
@@ -171,7 +171,7 @@ void HeroObj::BackToSpawn() {
     
     Animate * action = Animate::create(animation);
     SkillEffect->runAction(action);
-    
+    */
     Charac->setPosition(Spawn);
 }
 
@@ -309,7 +309,7 @@ void HeroObj::Ability1st() {
     if(HeroIdentifier == 2) {
         log("Q activate!");
         
-        SkillEffect = Sprite::createWithSpriteFrameName("up1.png");
+        /*SkillEffect = Sprite::createWithSpriteFrameName("up1.png");
         SkillEffect->setPosition(Charac->getPosition());
         SkillEffect->stopAllActions();
         
@@ -324,7 +324,7 @@ void HeroObj::Ability1st() {
         animation->setRestoreOriginalFrame(true);
         
         Animate * action = Animate::create(animation);
-        SkillEffect->runAction(action);
+        SkillEffect->runAction(action);*/
         
         velocity += 20;
         Qrecover = true;
@@ -333,7 +333,7 @@ void HeroObj::Ability1st() {
         attackingFlag = false;//取消后摇
     }
     if (HeroIdentifier == 1) {
-        
+        /*
         SkillEffect = Sprite::createWithSpriteFrameName("up1.png");
         SkillEffect->setPosition(Charac->getPosition());
         SkillEffect->stopAllActions();
@@ -345,12 +345,12 @@ void HeroObj::Ability1st() {
             animation->addSpriteFrame(spriteFrame);
         }
         animation->setDelayPerUnit(0.2f);
-        animation->setLoops(3);
+        animation->setLoops(2);
         animation->setRestoreOriginalFrame(true);
         
         Animate * action = Animate::create(animation);
         SkillEffect->runAction(action);
-        
+        */
         attackingSpeed += 2;
         JudgeAttackSpeedLevel();
         Qrecover = true;
@@ -358,9 +358,9 @@ void HeroObj::Ability1st() {
     }
     if (HeroIdentifier == 3) {
         if (QActivate) {
-            
+         /*
             SkillEffect = Sprite::createWithSpriteFrameName("WizardSkillA1.png");
-            SkillEffect->setPosition(Qtarget[0].getPosition());
+            SkillEffect->setPosition(Charac->getPosition());
             SkillEffect->stopAllActions();
             
             Animation * animation = Animation::create();
@@ -375,7 +375,7 @@ void HeroObj::Ability1st() {
             
             Animate * action = Animate::create(animation);
             SkillEffect->runAction(action);
-            
+            */
             for (int i = 0; i < Qtarget.size(); i++) {
                 Qtarget[i].BeAttack(50+power*1.1);
                 if (Qtarget[i].healthPower() <= 0) {
@@ -426,7 +426,7 @@ void HeroObj::Qjudge(float delta) {
 void HeroObj::Ability2st() {
     if (WIsUsed()) return;
     if (HeroIdentifier == 2) {
-        
+     /*
         SkillEffect = Sprite::createWithSpriteFrameName("up1.png");
         SkillEffect->setPosition(Charac->getPosition());
         SkillEffect->stopAllActions();
@@ -443,7 +443,7 @@ void HeroObj::Ability2st() {
         
         Animate * action = Animate::create(animation);
         SkillEffect->runAction(action);
-        
+       */ 
         
         armor += 30;
         magicDenfence += 50;
@@ -452,7 +452,7 @@ void HeroObj::Ability2st() {
     }
     if (HeroIdentifier == 1) {
         if (WActivate) {
-            
+        /*
             SkillEffect = Sprite::createWithSpriteFrameName("BowmanSkillA1.png");
             SkillEffect->setPosition(Wtarget[0].getPosition());
             SkillEffect->stopAllActions();
@@ -469,7 +469,8 @@ void HeroObj::Ability2st() {
             
             Animate * action = Animate::create(animation);
             SkillEffect->runAction(action);
-            
+         */
+
             for (int i = 0; i < Wtarget.size(); i++) {
                 Wtarget[i].BeAttack(attack*0.8);
             }
@@ -482,7 +483,7 @@ void HeroObj::Ability2st() {
     }
     if (HeroIdentifier == 3) {
         if (WActivate) {
-            
+         /*
             SkillEffect = Sprite::createWithSpriteFrameName("WizardSkillB1.png");
             SkillEffect->setPosition(Wtarget[0].getPosition());
             SkillEffect->stopAllActions();
@@ -499,7 +500,7 @@ void HeroObj::Ability2st() {
             
             Animate * action = Animate::create(animation);
             SkillEffect->runAction(action);
-            
+        */    
             for (int i = 0; i < Wtarget.size(); i++) {
                 Wtarget[i].BeAttack(1000+power*0.8);
                 if (Wtarget[i].healthPower() <= 0) {
@@ -550,7 +551,7 @@ void HeroObj::Ability3st() {
     if (HeroIdentifier == 2) {
         if (EActivate) {
             Charac->runAction(MoveTo::create(0.2, Etarget->getPosition()));
-            
+            /*
             SkillEffect = Sprite::createWithSpriteFrameName("SavageSkillB1.png");
             SkillEffect->setPosition(Etarget->getPosition());
             SkillEffect->stopAllActions();
@@ -567,7 +568,7 @@ void HeroObj::Ability3st() {
             
             Animate * action = Animate::create(animation);
             SkillEffect->runAction(action);
-            
+            */
             Etarget->BeAttack(attack*1.5);
             if (Etarget->healthPower() <= 0) {
                 Kill_reward(*Etarget);

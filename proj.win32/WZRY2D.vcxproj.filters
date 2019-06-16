@@ -16,12 +16,6 @@
     <ClCompile Include="..\Classes\Setting.cpp" />
     <ClCompile Include="..\Classes\源.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="..\Classes\GameScene2.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Object.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\GameScene0.cpp">
       <Filter>NewFilter1</Filter>
     </ClCompile>
@@ -35,9 +29,6 @@
       <Filter>NewFilter1</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\HeroInstuct.cpp" />
-    <ClCompile Include="..\Classes\HeroObj.cpp">
-      <Filter>NewFilter1</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\GameLogoLayer.cpp">
       <Filter>NewFilter1</Filter>
     </ClCompile>
@@ -46,6 +37,15 @@
     </ClCompile>
     <ClCompile Include="..\Classes\ChooseType.cpp">
       <Filter>NewFilter1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Object.cpp">
+      <Filter>NewFilter2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HeroObj.cpp">
+      <Filter>NewFilter2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameScene2.cpp">
+      <Filter>NewFilter2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,12 +63,6 @@
     <ClInclude Include="..\Classes\MinionController.h" />
     <ClInclude Include="..\Classes\Setting.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="..\Classes\Object.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameScene2.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\GameScene0.h">
       <Filter>NewFilter1</Filter>
     </ClInclude>
@@ -82,9 +76,6 @@
       <Filter>NewFilter1</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\HeroInstuct.h" />
-    <ClInclude Include="..\Classes\HeroObj.h">
-      <Filter>NewFilter1</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\GameLogoLayer.h">
       <Filter>NewFilter1</Filter>
     </ClInclude>
@@ -94,6 +85,15 @@
     <ClInclude Include="..\Classes\ChooseType.h">
       <Filter>NewFilter1</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Object.h">
+      <Filter>NewFilter2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HeroObj.h">
+      <Filter>NewFilter2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameScene2.h">
+      <Filter>NewFilter2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
@@ -101,6 +101,9 @@
   <ItemGroup>
     <Filter Include="NewFilter1">
       <UniqueIdentifier>{798415ba-e557-45e9-9c83-9616c1e6baac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NewFilter2">
+      <UniqueIdentifier>{cf8b8f05-fae4-4ef4-b024-9d9f460f6423}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -151,7 +151,7 @@ void connectToServer()
 
 	_sin.sin_family = AF_INET;
 	_sin.sin_port = htons(9527);
-	_sin.sin_addr.S_un.S_addr = inet_addr("172.17.8.213");
+	_sin.sin_addr.S_un.S_addr = inet_addr("192.168.43.230");
 
 	int ret = connect(_sock, (sockaddr*)&_sin, sizeof(sockaddr_in));
 

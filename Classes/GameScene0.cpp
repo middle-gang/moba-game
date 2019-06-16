@@ -38,14 +38,14 @@ bool GameScene0::init()
 
 
 	///技能冷却时间
-	SkillWait[0] = 3;
-	SkillWait[1] = 3;
+	SkillWait[0] = 6;
+	SkillWait[1] = 6;
 	SkillWait[2] = 15;
 	SkillWait[3] = 10;
 	SkillWait[4] = 15;
 
-	m_SkillWait[0] = 3;
-	m_SkillWait[1] = 3;
+	m_SkillWait[0] = 6;
+	m_SkillWait[1] = 6;
 	m_SkillWait[2] = 15;
 	m_SkillWait[3] = 10;
 	m_SkillWait[4] = 15;

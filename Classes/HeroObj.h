@@ -3,7 +3,6 @@
 
 class HeroObj :public ObjectBase {
 public:
-    //cocos2d::Sprite * getSkillEffect();
     const HeroObj HeroObj::operator -(const EquipmentData equip);
     const HeroObj HeroObj::operator +(const EquipmentData equip);
     void LvUp();                                //获取经验值的时候调用，如果升级就改变，不升级不变

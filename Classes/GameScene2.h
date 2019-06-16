@@ -21,7 +21,10 @@ class GameScene2 : public cocos2d::Layer
 	cocos2d::Sprite *_enemyCrystal;
 	cocos2d::Sprite *_enemyTower;
 
-	MinionController flag[2];
+	cocos2d::Sprite * Bullet[5];
+
+
+	MinionController flag[2];;
 
 public:
 	float PosX();
