@@ -99,10 +99,13 @@ void HeroObj::Buy(int EquipNumber) {
     }
 }
 
-void HeroObj::Sale(int locNumber) {
-    if (equip[locNumber] != -1) {
-        equip[locNumber] = -1;
-    }
+void HeroObj::Sale(int locNumber, int Equipnumber) {
+	EquipmentData buf = EquipList.findEquip(Equipnumber);
+	if (equip[locNumber] != -1) {
+		equip[locNumber] = -1;
+		m_money += buf.sellmoney;
+		this->operator-(buf);
+	}
 }
 
 void HeroObj::setMoney(int n) {
@@ -357,7 +360,7 @@ void HeroObj::Ability1st() {
         if (QActivate) {
             
             SkillEffect = Sprite::createWithSpriteFrameName("WizardSkillA1.png");
-            SkillEffect->setPosition(Qtarget[0]->getPosition());
+            SkillEffect->setPosition(Qtarget[0].getPosition());
             SkillEffect->stopAllActions();
             
             Animation * animation = Animation::create();
@@ -451,7 +454,7 @@ void HeroObj::Ability2st() {
         if (WActivate) {
             
             SkillEffect = Sprite::createWithSpriteFrameName("BowmanSkillA1.png");
-            SkillEffect->setPosition(Wtarget[0]->getPosition());
+            SkillEffect->setPosition(Wtarget[0].getPosition());
             SkillEffect->stopAllActions();
             
             Animation * animation = Animation::create();
@@ -481,7 +484,7 @@ void HeroObj::Ability2st() {
         if (WActivate) {
             
             SkillEffect = Sprite::createWithSpriteFrameName("WizardSkillB1.png");
-            SkillEffect->setPosition(Wtarget[0]->getPosition());
+            SkillEffect->setPosition(Wtarget[0].getPosition());
             SkillEffect->stopAllActions();
             
             Animation * animation = Animation::create();

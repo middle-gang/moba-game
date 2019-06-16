@@ -1,4 +1,5 @@
 #include "GameScene0.h"
+#include"MainMenu.h"
 
 USING_NS_CC;
 
@@ -35,6 +36,101 @@ bool GameScene0::init()
 	addChild(m_pGameScene2, 0);
 	m_pGameScene2->setVisible(true);
 
+
+	///技能冷却时间
+	SkillWait[0] = 3;
+	SkillWait[1] = 3;
+	SkillWait[2] = 15;
+	SkillWait[3] = 10;
+	SkillWait[4] = 15;
+
+	m_SkillWait[0] = 3;
+	m_SkillWait[1] = 3;
+	m_SkillWait[2] = 15;
+	m_SkillWait[3] = 10;
+	m_SkillWait[4] = 15;
+
+	for (int i = 0; i < 5; i++) {
+		m_pass[i] = 0;
+		m_SkillUp[i] = true;
+	}
+
+	sprintf(m_Textbuffer, "%d", m_SkillWait[0]);
+	m_pSkillText[0] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
+	m_pSkillText[0]->setPosition(80, 145);
+
+	sprintf(m_Textbuffer, "%d", m_SkillWait[1]);
+	m_pSkillText[1] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
+	m_pSkillText[1]->setPosition(130, 85);
+
+	sprintf(m_Textbuffer, "%d", m_SkillWait[2]);
+	m_pSkillText[2] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
+	m_pSkillText[2]->setPosition(80, 25);
+
+	sprintf(m_Textbuffer, "%d", m_SkillWait[3]);
+	m_pSkillText[3] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
+	m_pSkillText[3]->setPosition(150, 20);
+
+	sprintf(m_Textbuffer, "%d", m_SkillWait[4]);
+	m_pSkillText[4] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
+	m_pSkillText[4]->setPosition(200, 20);
+
+	for (int i = 0; i < 5; i++) {
+		addChild(m_pSkillText[i],3);
+		m_pSkillText[i]->setVisible(false);
+	}
+
+	//////////////技能面板
+	//通用技能
+	pSkillMii[3] = Sprite::create("photo/recover.png");
+	pSkillMii[3]->setPosition(145, 25);
+	pSkillMii1[3] = Sprite::create("photo/recover1.png");
+	pSkillMii1[3]->setPosition(145, 25);
+
+	pSkillMii[4] = Sprite::create("photo/cure.png");
+	pSkillMii[4]->setPosition(195, 25);
+	pSkillMii1[4] = Sprite::create("photo/cure1.png");
+	pSkillMii1[4]->setPosition(195, 25);
+	//人物技能
+	if (myChoice == 1) {
+		pSkillMii[0] = Sprite::create("photo/Houyi/Houyi1.png");
+		pSkillMii1[0] = Sprite::create("photo/Houyi/Houyi1-2.png");
+		pSkillMii[1] = Sprite::create("photo/Houyi/Houyi2.png");
+		pSkillMii1[1] = Sprite::create("photo/Houyi/Houyi2-2.png");
+		pSkillMii[2] = Sprite::create("photo/Houyi/Houyi3.png");
+		pSkillMii1[2] = Sprite::create("photo/Houyi/Houyi3-2.png");
+	}
+	else if (myChoice == 2) {
+		pSkillMii[0] = Sprite::create("photo/Arthur/Arthur1.png");
+		pSkillMii1[0] = Sprite::create("photo/Arthur/Arthur1-2.png");
+		pSkillMii[1] = Sprite::create("photo/Arthur/Arthur2.png");
+		pSkillMii1[1] = Sprite::create("photo/Arthur/Arthur2-2.png");
+		pSkillMii[2] = Sprite::create("photo/Arthur/Arthur3.png");
+		pSkillMii1[2] = Sprite::create("photo/Arthur/Arthur3-2.png");
+	}
+	else {
+		pSkillMii[0] = Sprite::create("photo/Daji/Daji1.png");
+		pSkillMii1[0] = Sprite::create("photo/Daji/Daji1-2.png");
+		pSkillMii[1] = Sprite::create("photo/Daji/Daji2.png");
+		pSkillMii1[1] = Sprite::create("photo/Daji/Daji2-2.png");
+		pSkillMii[2] = Sprite::create("photo/Daji/Daji3.png");
+		pSkillMii1[2] = Sprite::create("photo/Daji/Daji3-2.png");
+	}
+	pSkillMii[0]->setPosition(70, 150);
+	pSkillMii[1]->setPosition(120, 90);
+	pSkillMii[2]->setPosition(70, 30);
+	pSkillMii1[0]->setPosition(70, 150);
+	pSkillMii1[1]->setPosition(120, 90);
+	pSkillMii1[2]->setPosition(70, 30);
+	for (int i = 0; i < 5; i++)
+	{
+		pSkillMii[i]->setVisible(true);
+		pSkillMii1[i]->setVisible(false);
+		addChild(pSkillMii[i], 1);
+		addChild(pSkillMii1[i], 2);
+	}
+
+	//////////卖）装备相关数据初始化      小地图位置初始化
 	memset(&n1, 0, sizeof(n1));
 	memset(&n2, 0, sizeof(n2));
 	memset(&EquipNumber, 100, sizeof(EquipNumber));
@@ -240,54 +336,6 @@ bool GameScene0::init()
 	m_pTime_secText = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 23);
 	m_pTime_secText->setPosition(110, 405);
 	addChild(m_pTime_secText, 3);
-
-	///技能冷却时间
-	SkillWait[0] = 8;
-	SkillWait[1] = 12;
-	SkillWait[2] = 18;
-	SkillWait[3] = 10;
-	SkillWait[4] = 15;
-
-	m_SkillWait[0] = 8;
-	m_SkillWait[1] = 12;
-	m_SkillWait[2] = 18;
-	m_SkillWait[3] = 10;
-	m_SkillWait[4] = 15;
-
-	for (int i = 0; i < 5; i++){
-		m_pass[i] = 0;
-		m_SkillUp[i] = true;
-	}
-
-	sprintf(m_Textbuffer, "%d", m_SkillWait[0]);
-	m_pSkillText[0] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
-	m_pSkillText[0]->setPosition(80, 145);
-	addChild(m_pSkillText[0], 3);
-	m_pSkillText[0]->setVisible(false);
-
-	sprintf(m_Textbuffer, "%d", m_SkillWait[1]);
-	m_pSkillText[1] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
-	m_pSkillText[1]->setPosition(130, 85);
-	addChild(m_pSkillText[1], 3);
-	m_pSkillText[1]->setVisible(false);
-
-	sprintf(m_Textbuffer, "%d", m_SkillWait[2]);
-	m_pSkillText[2] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
-	m_pSkillText[2]->setPosition(80, 25);
-	addChild(m_pSkillText[2], 3);
-	m_pSkillText[2]->setVisible(false);
-
-	sprintf(m_Textbuffer, "%d", m_SkillWait[3]);
-	m_pSkillText[3] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
-	m_pSkillText[3]->setPosition(150, 20);
-	addChild(m_pSkillText[3], 3);
-	m_pSkillText[3]->setVisible(false);
-
-	sprintf(m_Textbuffer, "%d", m_SkillWait[4]);
-	m_pSkillText[4] = Label::createWithTTF(m_Textbuffer, "fonts/msyh.ttc", 20);
-	m_pSkillText[4]->setPosition(200, 20);
-	addChild(m_pSkillText[4], 3);
-	m_pSkillText[4]->setVisible(false);
 
 	////////////////////////////////////////////////////////创建属性1111111界面
 	AttriIsOpen = false;
@@ -923,53 +971,6 @@ bool GameScene0::init()
 	addChild(myHero, 2);
 	//Vec2(_player->getPosition().x - 500, _player->getPosition().y + 235)
 
-	//////////////技能面板
-	//通用技能
-	pAttackMii = MenuItemImage::create("photo/attack.png", "photo/attack-1.png",
-		CC_CALLBACK_1(GameScene0::attack, this));
-	pAttackMii->setPosition(40, 90);
-
-	pSkillMii[3] = MenuItemImage::create("photo/recover.png", "photo/recover1.png", "photo/recover1.png",
-		CC_CALLBACK_1(GameScene0::recover, this));
-	pSkillMii[3]->setPosition(145, 25);
-
-	pSkillMii[4] = MenuItemImage::create("photo/cure.png", "photo/cure1.png", "photo/cure1.png",
-		CC_CALLBACK_1(GameScene0::cure, this));
-	pSkillMii[4]->setPosition(195, 25);
-
-	//人物技能
-	if (myChoice == 1){
-		pSkillMii[0] = MenuItemImage::create("photo/Houyi/Houyi1.png", "photo/Houyi/Houyi1-2.png", "photo/Houyi/Houyi1-2.png",
-			CC_CALLBACK_1(GameScene0::Skill1, this));
-		pSkillMii[1] = MenuItemImage::create("photo/Houyi/Houyi2.png", "photo/Houyi/Houyi2-2.png", "photo/Houyi/Houyi2-2.png",
-			CC_CALLBACK_1(GameScene0::Skill2, this));
-		pSkillMii[2] = MenuItemImage::create("photo/Houyi/Houyi3.png", "photo/Houyi/Houyi3-2.png", "photo/Houyi/Houyi3-2.png",
-			CC_CALLBACK_1(GameScene0::Skill3, this));
-	}
-	else if (myChoice == 2){
-		pSkillMii[0] = MenuItemImage::create("photo/Arthur/Arthur1.png", "photo/Arthur/Arthur1-2.png", "photo/Arthur/Arthur1-2.png",
-			CC_CALLBACK_1(GameScene0::Skill1, this));
-		pSkillMii[1] = MenuItemImage::create("photo/Arthur/Arthur2.png", "photo/Arthur/Arthur2-2.png", "photo/Arthur/Arthur2-2.png",
-			CC_CALLBACK_1(GameScene0::Skill2, this));
-		pSkillMii[2] = MenuItemImage::create("photo/Arthur/Arthur3.png", "photo/Arthur/Arthur3-2.png", "photo/Arthur/Arthur3-2.png",
-			CC_CALLBACK_1(GameScene0::Skill3, this));
-	}
-	else{
-		pSkillMii[0] = MenuItemImage::create("photo/Daji/Daji1.png", "photo/Daji/Daji1-2.png", "photo/Daji/Daji1-2.png",
-			CC_CALLBACK_1(GameScene0::Skill1, this));
-		pSkillMii[1] = MenuItemImage::create("photo/Daji/Daji2.png", "photo/Daji/Daji2-2.png", "photo/Daji/Daji2-2.png",
-			CC_CALLBACK_1(GameScene0::Skill2, this));
-		pSkillMii[2] = MenuItemImage::create("photo/Daji/Daji3.png", "photo/Daji/Daji3-2.png", "photo/Daji/Daji3-2.png",
-			CC_CALLBACK_1(GameScene0::Skill3, this));
-	}
-	pSkillMii[0]->setPosition(70, 150);
-	pSkillMii[1]->setPosition(120, 90);
-	pSkillMii[2]->setPosition(70, 30);
-
-	m_pSkillMenu = Menu::create(pSkillMii[0], pSkillMii[1], pSkillMii[2], pAttackMii, pSkillMii[3], pSkillMii[4], NULL);
-	m_pSkillMenu->setPosition(Vec2::ZERO);
-	addChild(m_pSkillMenu, 1);
-
 	scheduleUpdate();
 	setKeyboardEnabled(true);
 	return true;
@@ -1037,11 +1038,13 @@ void GameScene0::update(float delta){
 			m_SkillWait[i] = SkillWait[i] - (int(m_pass[i]) % 60);
 			sprintf(m_Textbuffer, "%d", m_SkillWait[i]);
 			m_pSkillText[i]->setString(m_Textbuffer);
+			pSkillMii1[i]->setVisible(true);
 		}
 		if (m_SkillWait[i] <= 0){
 			m_pass[i] = 0;
 			m_SkillUp[i] = true;
-			pSkillMii[i]->setEnabled(true);
+			//pSkillMii[i]->setEnabled(true);
+			pSkillMii1[i]->setVisible(false);
 			sprintf(m_Textbuffer, "%d", m_SkillWait[i]);
 			m_pSkillText[i]->setString(m_Textbuffer);
 			m_pSkillText[i]->setVisible(false);
@@ -1172,7 +1175,28 @@ void GameScene0::update(float delta){
 }
 ////键盘事件
 void GameScene0::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event * event){
-	switch (keyCode){
+	switch (keyCode) {
+	case EventKeyboard::KeyCode::KEY_Q: {
+		if (m_pGameScene2->Hero.healthPower() >= 0) {
+			m_SkillUp[0] = false;
+			pSkillMii1[0]->setVisible(true);
+		}
+	}
+										break;
+	case EventKeyboard::KeyCode::KEY_W: {
+		if (m_pGameScene2->Hero.healthPower() >= 0) {
+			m_SkillUp[1] = false;
+			pSkillMii1[1]->setVisible(false);
+		}
+	}
+										break;
+	case EventKeyboard::KeyCode::KEY_E: {
+		if (m_pGameScene2->Hero.healthPower() >= 0) {
+			m_SkillUp[2] = false;
+			pSkillMii1[2]->setVisible(false);
+		}
+	}
+										break;
 	case EventKeyboard::KeyCode::KEY_TAB:{      //属性面板1开关
 		if (!AttriIsOpen&&!ShopIsOpen){
 			AttriIsOpen = true;
@@ -1189,7 +1213,7 @@ void GameScene0::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d:
 			AttriBound(false, true);
 		}
 	}
-	break;
+										 break;
 	case EventKeyboard::KeyCode::KEY_P:{      //商店开关
 		if (!ShopIsOpen&&!AttriIsOpen){
 			ShopIsOpen = true;
@@ -1206,7 +1230,7 @@ void GameScene0::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d:
 			ShopBound(true, false);
 		}
 	}
-	break;
+									   break;
 	case EventKeyboard::KeyCode::KEY_ENTER:{
 		if (ExitIsOpen){
 			Director::getInstance()->end();
@@ -1215,7 +1239,7 @@ void GameScene0::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d:
 #endif
 		}
 	}
-	break;
+										   break;
 	case EventKeyboard::KeyCode::KEY_ESCAPE:{
 		ExitIsOpen = true;
 		m_ExitBack->setVisible(true);
@@ -1249,7 +1273,7 @@ void GameScene0::openAttri2(cocos2d::Ref * pSender){
 	for (int i = 0; i < 16; i++)
 		m_pAttri2Text[i]->setVisible(true);
 	m_pMenu->setEnabled(false);
-	m_pSkillMenu->setEnabled(false);
+	//m_pSkillMenu->setEnabled(false);
 	m_pMaskImage->setVisible(true);
 	m_AttriB1->setVisible(true);
 	m_AttriMenu->setVisible(true);
@@ -1267,7 +1291,7 @@ void GameScene0::closeAttri2(cocos2d::Ref * pSender) {
 			pEquip[i]->setVisible(false);
 	}
 	m_pMenu->setEnabled(true);
-	m_pSkillMenu->setEnabled(true);
+	//m_pSkillMenu->setEnabled(true);
 	m_pMaskImage->setVisible(false);
 	m_AttriB1->setVisible(false);
 	m_AttriB2->setVisible(false);
@@ -1344,7 +1368,7 @@ void GameScene0::openExit(cocos2d::Ref * pSender){
 
 void GameScene0::menuYesCallback(cocos2d::Ref * pSender){
 	TransitionScene * reScene = NULL;
-	Scene *pScene = HelloWorld::createScene();
+	Scene *pScene = MainMenu::createScene();
 	reScene = TransitionCrossFade::create(0.8f, pScene);
 	Director::getInstance()->replaceScene(reScene);
 	//m_IsChangeScene = true;
@@ -1407,7 +1431,7 @@ void GameScene0::ShopTrans(int i) {
 
 void GameScene0::BoundTrans(bool a, bool b) {
 	m_pMenu->setEnabled(a);
-	m_pSkillMenu->setEnabled(a);
+	//m_pSkillMenu->setEnabled(a);
 	m_pMaskImage->setVisible(b);
 }
 
@@ -1767,32 +1791,3 @@ void GameScene0::assist8(cocos2d::Ref * pSender){
 	m_pGameScene2->Hero.Buy(608);
 }
 
-
-void GameScene0::attack(cocos2d::Ref* pSender){
-	//pAttackMii->setEnabled(false);
-}
-
-void GameScene0::recover(cocos2d::Ref* pSender){
-	m_SkillUp[3] = false;
-	pSkillMii[3]->setEnabled(false);
-}
-
-void GameScene0::cure(cocos2d::Ref* pSender){
-	m_SkillUp[4] = false;
-	pSkillMii[4]->setEnabled(false);
-}
-
-void GameScene0::Skill1(cocos2d::Ref* pSender){
-	m_SkillUp[0] = false;
-	pSkillMii[0]->setEnabled(false);
-}
-
-void GameScene0::Skill2(cocos2d::Ref* pSender){
-	m_SkillUp[1] = false;
-	pSkillMii[1]->setEnabled(false);
-}
-
-void GameScene0::Skill3(cocos2d::Ref* pSender){
-	m_SkillUp[2] = false;
-	pSkillMii[2]->setEnabled(false);
-}

@@ -8,6 +8,7 @@
 USING_NS_CC;
 
 float m_atktime = 0, mt_atktime = 0,et_atktime=0, deathtime = 0;
+float mc_atktime = 0, ec_atktime = 0;
 float minionborn = 30,minioncount1=1;
 float minioncount2 = 1.5,minioncount3=2, minioncount4 = 2.5, minioncount5 = 3;
 float minionMove = 1, minionCnt = 0,minionCnt1=0;
@@ -238,6 +239,9 @@ bool GameScene2::init()
     flag[0].setminionDes(Vec2(x, y));
     flag[1].setminionSpawn(Vec2(x, y));
     
+	CrystalInit(0);
+	CrystalInit(1);
+
     
     ValueMap enemyTowerPoint = group->getObject("enemyTower");
     
@@ -329,36 +333,7 @@ void GameScene2::update(float delta){
     if(cryInit[0]) Crystal[0].BloodView->setCurrentProgress(Crystal[0].healthPower());
     if(cryInit[1]) Crystal[1].BloodView->setCurrentProgress(Crystal[1].healthPower());
     
-    
-    if (Tower[0].healthPower() <= 0&&!cryInit[0]) {
-        cryInit[0] = true;
-        _enemyCrystal->setAnchorPoint(Vec2(0.5, 0.5));
-        Crystal[0].attachToSprite(_enemyCrystal);
-        Crystal[0].totalHealth() = 1000;
-        Crystal[0].healthPower() = 1000;
-        Crystal[0].AttackPower() = 50;
-        Crystal[0].getRadium() = 150;
-        Crystal[0].setAttackingSpeed(1.5);
-        Crystal[0].setMoveablity(false);
-        Crystal[0].initBloodScale();
-        this->addChild(Crystal[0].BloodView, 2);
-        Crystal[0].getPosition() = _enemyCrystal->getPosition();
-    }
-    
-    if (Tower[1].healthPower() <= 0 && !cryInit[1]) {
-        cryInit[1] = true;
-        _myCrystal->setAnchorPoint(Vec2(0.5, 0.5));
-        Crystal[1].attachToSprite(_myCrystal);
-        Crystal[1].totalHealth() = 1000;
-        Crystal[1].healthPower() = 1000;
-        Crystal[1].AttackPower() = 50;
-        Crystal[1].getRadium() = 150;
-        Crystal[1].setAttackingSpeed(1.5);
-        Crystal[1].setMoveablity(false);
-        Crystal[1].initBloodScale();
-        this->addChild(Crystal[1].BloodView, 2);
-        Crystal[1].getPosition() = _myCrystal->getPosition();
-    }
+  
     
     if (Tower[0].healthPower() <= 0 && Crystal[0].healthPower() <= 0) Director::getInstance()->replaceScene(HelloWorld::createScene());
     
@@ -686,6 +661,18 @@ void GameScene2::update(float delta){
         Tower[0].Attack(Hero);
     }
     
+	if (Hero.getPosition().distance(Crystal[0].getPosition()) < Crystal[0].getRadium()) {
+		Crystal[0].Attack(Hero);
+	}
+
+	if (Opponent.getPosition().distance(Tower[1].getPosition()) < Tower[1].getRadium()) {
+		Tower[1].Attack(Opponent);
+	}
+
+	if (Opponent.getPosition().distance(Crystal[1].getPosition()) < Crystal[1].getRadium()) {
+		Crystal[1].Attack(Opponent);
+	}
+
     if (Hero.isAttacking()) {
         m_atktime += delta;
         Hero.JudgeAttack(m_atktime);
@@ -701,6 +688,16 @@ void GameScene2::update(float delta){
         Tower[1].JudgeAttack(et_atktime);
     }
     
+	if (Crystal[0].isAttacking()) {
+		mc_atktime += delta;
+		Crystal[0].JudgeAttack(mc_atktime);
+	}
+
+	if (Crystal[1].isAttacking()) {
+		ec_atktime += delta;
+		Crystal[1].JudgeAttack(ec_atktime);
+	}
+
     if (Hero.Death()) {
         deathtime += delta;
         if (deathtime > Hero.DeadTime) {
@@ -1040,4 +1037,30 @@ void GameScene2::playMove() {
     }
     /*Hero.getSprite()->runAction(Sequence::create(MoveTo::create(0.02, dest),
      CCCallFunc::create(this,SEL_CallFunc(&GameScene2::playMove)),NULL));*/
+}
+void GameScene2::CrystalInit(int i)
+{
+	cryInit[i] = true;
+	if (i==0)
+	{
+		_enemyCrystal->setAnchorPoint(Vec2(0.5, 0.5));
+		Crystal[i].attachToSprite(_enemyCrystal);
+	}
+	if (i==1)
+	{
+		_myCrystal->setAnchorPoint(Vec2(0.5, 0.5));
+		Crystal[i].attachToSprite(_myCrystal);
+	}
+	Crystal[i].totalHealth() = 1000;
+	Crystal[i].healthPower() = 1000;
+	Crystal[i].AttackPower() = 800;
+	Crystal[i].getRadium() = 100;
+	Crystal[i].setAttackingSpeed(1.5);
+	Crystal[i].setMoveablity(false);
+	Crystal[i].initBloodScale();
+	this->addChild(Crystal[i].BloodView, 2);
+	if(i==0)
+		Crystal[i].getPosition() = _enemyCrystal->getPosition();
+	if(i==1)
+		Crystal[i].getPosition() = _myCrystal->getPosition();
 }
