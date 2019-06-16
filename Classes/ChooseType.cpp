@@ -1,6 +1,7 @@
 #include "ChooseType.h"
 #include "SimpleAudioEngine.h"
 #include"ChooseCharacter.h"
+#include"MainMenu.h"
 
 USING_NS_CC;
 
@@ -39,16 +40,20 @@ bool ChooseType::init()
 	MenuItemImage *HCMii = MenuItemImage::create("photo/begin/renji.png",
 		"photo/begin/renji1.png",
 		CC_CALLBACK_1(ChooseType::HCCallBack, this));
-	HCMii->setPosition(visibleSize.width / 2, HCMii->getContentSize().height * 3);
+	HCMii->setPosition(visibleSize.width / 2, HCMii->getContentSize().height * 4);
 
 
 	MenuItemImage *HHMii = MenuItemImage::create("photo/begin/lianji.png",
 		"photo/begin/lianji1.png",
 		CC_CALLBACK_1(ChooseType::HHCallBack, this));
-	HHMii->setPosition(visibleSize.width / 2, HHMii->getContentSize().height);
+	HHMii->setPosition(visibleSize.width / 2, HHMii->getContentSize().height*2.5);
 
+	MenuItemImage *BackMii=MenuItemImage::create("photo/begin/back.png",
+		"photo/begin/back1.png",
+		CC_CALLBACK_1(ChooseType::BackMainMenu,this));
+	BackMii->setPosition(visibleSize.width / 2, BackMii->getContentSize().height);
 	
-	Menu* pMainMenu = Menu::create(HCMii,HHMii, NULL);
+	Menu* pMainMenu = Menu::create(HCMii,HHMii,BackMii,NULL);
 	pMainMenu->setPosition(Vec2::ZERO);
 	addChild(pMainMenu, 1);
 	return true;
@@ -62,6 +67,14 @@ void ChooseType::HCCallBack(cocos2d::Ref * pSender)
 void ChooseType::HHCallBack(cocos2d::Ref * pSender)
 {
 	auto startCreate = ChooseCharacter::createScene();
+	auto startCreateChange = TransitionFadeTR::create(1.0f, startCreate);
+	Director::getInstance()->pushScene(startCreateChange);
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("effectmusic1.wav", false);
+}
+
+void ChooseType::BackMainMenu(cocos2d::Ref * pSender)
+{
+	auto startCreate = MainMenu::createScene();
 	auto startCreateChange = TransitionFadeTR::create(1.0f, startCreate);
 	Director::getInstance()->pushScene(startCreateChange);
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("effectmusic1.wav", false);

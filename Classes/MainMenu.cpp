@@ -43,10 +43,8 @@ bool MainMenu::init()
 
 	MenuItemImage *pCloseMii = MenuItemImage::create("photo/begin/exit.png",
 		"photo/begin/exit1.png",
-		CC_CALLBACK_1(MainMenu::StartCallback, this));
+		CC_CALLBACK_1(MainMenu::CloseCallback, this));
 	pCloseMii->setPosition(visibleSize.width / 2, pCloseMii->getContentSize().height);
-	
-	//MenuItemImage *pCloseMii=MenuItemImage::create("photo/")
 
 	Menu* pMainMenu= Menu::create(pStartMii, pCloseMii,NULL);
 	pMainMenu->setPosition(Vec2::ZERO);

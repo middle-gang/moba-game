@@ -314,6 +314,10 @@ Sprite* ObjectBase::getBullet() {
     return Bullet;
 }
 
+Sprite* ObjectBase::getSkillEffect() {
+	return SkillEffect;
+}
+
 void ObjectBase::setAnimeIdentifier(int i) {
     HeroIdentifier = i;
 }

@@ -11,6 +11,7 @@ public:
 	virtual bool init();
 	void HCCallBack(cocos2d::Ref* pSender);
 	void HHCallBack(cocos2d::Ref* pSender);
+	void BackMainMenu(cocos2d::Ref* pSender);
 	// a selector callback
 	// implement the "static create()" method manually
 	CREATE_FUNC(ChooseType);
