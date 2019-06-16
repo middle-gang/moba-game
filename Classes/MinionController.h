@@ -8,10 +8,10 @@ using namespace cocos2d;
 class MinionController
 {
 	std::vector<ObjectBase> minion;
-	int minion_hp[2] = { 100,80 };
+	int minion_hp[2] = { 900,700 };
 	float minion_v=50;
 	int minion_r[2] = { 20,100 };
-	float minion_attack[2] = { 50,30 };
+	float minion_attack[2] = { 300,700 };
 	bool moving=false;
 	ObjectBase ene[999];
 	Vec2 MinionSpawn;

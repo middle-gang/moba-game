@@ -62,8 +62,8 @@ void GameScene2::TowerInit(int i, Sprite*& spr) {
 	Tower[i].SetAtkSpeedLevel(0);
 	Tower[i].JudgeAttackSpeedLevel();
 	//log("%f", Tower[i].attackDelay());
-	Tower[i].totalHealth() = 1000;
-	Tower[i].healthPower() = 1000;
+	Tower[i].totalHealth() = 4000;
+	Tower[i].healthPower() = 4000;
 	Tower[i].AttackPower() = 470;
 	Tower[i].getRadium() = 150;
 	//Tower[i].setAttackingSpeed(1.5);
@@ -82,7 +82,7 @@ void GameScene2::newCloseMinion(int i) {
 	ObjectBase minionbuf;
 	minionbuf.setAnimeIdentifier(5);
 	flag[i].minionInit(minionbuf, 0);
-	minionbuf.setArmor(10);
+	minionbuf.setArmor(100);
 	minionbuf.SetAtkSpeedLevel(0);
 	minionbuf.JudgeAttackSpeedLevel();
 	minionbuf.attachToSprite(minionBuf);
@@ -479,6 +479,17 @@ void GameScene2::update(float delta) {
 			bool tarck = false;
 			float MiniPath = 1500;
 			ObjectBase* target;
+			if (Hero.healthPower() > 0) {
+				float dis = flag[1].Container()[i].getPosition().distance(Hero.getPosition());
+				if (dis < 200) {
+					flag[1].getPlan(i) = Tower[1].getPosition();
+					if (dis < flag[1].Container()[i].getRadium()) {
+						target = &Hero;
+						tarck = true;
+					}
+					ck = true;
+				}
+			}
 			for (int j = 0; j < flag[0].Container().size(); j++) {
 				if (flag[0].Container()[j].healthPower() <= 0) continue;
 				float dis = flag[1].Container()[i].getPosition().distance(flag[0].Container()[j].getPosition());
@@ -955,8 +966,8 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 		Vec2 tileIter = this->tileCoordFromPosition(iter);
 		//log("%d %d", int(tileIter.x), int(tileIter.y));
 		//log("%d", ast.maze[int(tileIter.x)][int(tileIter.y)]);
-		if (ast.maze[int(tileIter.x)][int(tileIter.y)] == 1) {
-			routeColli = true;
+		if (int(tileIter.x) >= 0 && int(tileIter.y) >= 0) {
+			if(ast.maze[int(tileIter.x)][int(tileIter.y)] == 1) routeColli = true;
 		}
 	}
 
@@ -1283,10 +1294,10 @@ void GameScene2::CrystalInit(int i)
 		_myCrystal->setAnchorPoint(Vec2(0.5, 0.5));
 		Crystal[i].attachToSprite(_myCrystal);
 	}
-	Crystal[i].totalHealth() = 1000;
-	Crystal[i].healthPower() = 1000;
-	Crystal[i].AttackPower() = 800;
-	Crystal[i].getRadium() = 100;
+	Crystal[i].totalHealth() = 5000;
+	Crystal[i].healthPower() = 5000;
+	Crystal[i].AttackPower() = 700;
+	Crystal[i].getRadium() = 150;
 	Crystal[i].setAttackingSpeed(1.5);
 	Crystal[i].setMoveablity(false);
 	Crystal[i].initBloodScale();
