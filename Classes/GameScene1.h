@@ -7,6 +7,7 @@
 #include "Object.h"
 #include "MinionController.h"
 #include "HeroObj.h"
+#include <thread>
 
 class GameScene2 : public cocos2d::Layer
 {
@@ -15,20 +16,15 @@ class GameScene2 : public cocos2d::Layer
 	cocos2d::Label *_myLevel;
 	cocos2d::TMXTiledMap* _tileMap;
 	cocos2d::TMXLayer* _collidable;
-    cocos2d::Sprite *_player;
+    cocos2d::Sprite *_player,*EneSpr;
 	cocos2d::Sprite *_myCrystal;
 	cocos2d::Sprite *_myTower;
 	cocos2d::Sprite *_enemyCrystal;
 	cocos2d::Sprite *_enemyTower;
 
-	cocos2d::Sprite * Bullet[5];
-
-
-	MinionController flag[2];;
+	MinionController flag[2];
 
 public:
-	float PosX();
-	float PosY();
 	HeroObj Hero;
 	HeroObj Opponent;
 	ObjectBase Tower[2];
@@ -41,25 +37,26 @@ public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init(); 
 	
-	//kono ¼üÅÌ¼àÌı da
+	//kono é”®ç›˜ç›‘å¬ da
 	virtual void onKeyPressed(EventKeyboard::KeyCode keycode, Event *event);
 	virtual void onKeyReleased(EventKeyboard::KeyCode keycode, Event *event);
 
-	//kono ´¥Ãş¼àÌı da
+	//kono è§¦æ‘¸ç›‘å¬ da
 	virtual bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
     virtual void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
     virtual void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
 	
-	void setPlayerPosition(cocos2d::Vec2 position); //ÉèÖÃÍæ¼ÒµÄÎ»ÖÃ
-    cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);//×ª»¯³ÉÍßÆ¬×ø±ê
-    void setViewpointCenter(cocos2d::Vec2 position);//ÉèÖÃÆÁÄ»ÖĞÑë
+	void setPlayerPosition(cocos2d::Vec2 position); //è®¾ç½®ç©å®¶çš„ä½ç½®
+    cocos2d::Vec2 tileCoordFromPosition(cocos2d::Vec2 position);//è½¬åŒ–æˆç“¦ç‰‡åæ ‡
+    void setViewpointCenter(cocos2d::Vec2 position);//è®¾ç½®å±å¹•ä¸­å¤®
 
-	void newCloseMinion(int i);		//²úÉúĞÂµÄ½üÕ½Ğ¡±ø
-	void newDistantMinion(int i);	//²úÉúĞÂµÄÔ¶³Ì±ø
-	void playMove();				//¸ù¾İA*Ñ°Â·²úÉúµÄÁ´±í½øĞĞÒÆ¶¯
-	void TowerInit(int i,Sprite*& spr);//³õÊ¼»¯Ëş
-	void CrystalInit(int i);
-	//Íò¶ñÖ®Ô´
+	void newCloseMinion(int i);		//äº§ç”Ÿæ–°çš„è¿‘æˆ˜å°å…µ
+	void newDistantMinion(int i);	//äº§ç”Ÿæ–°çš„è¿œç¨‹å…µ
+	void playMove();				//æ ¹æ®A*å¯»è·¯äº§ç”Ÿçš„é“¾è¡¨è¿›è¡Œç§»åŠ¨
+	void TowerInit(int i,Sprite*& spr);//åˆå§‹åŒ–å¡”
+	void CrystalInit(int i,Sprite*& spr);
+
+	//ä¸‡æ¶ä¹‹æº
     virtual void update(float delta);
 
 	// implement the "static create()" method manually

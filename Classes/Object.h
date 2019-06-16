@@ -78,7 +78,8 @@ public:
     Vec2 SpawnPoint();            //获取出生点
     Sprite* getSprite();        //获取人物精灵
     Sprite* getBullet();        //获取子弹（有待设计）
-    Sprite* getSkillEffect();   //获取技能效果
+    Sprite* getSkillEffect();   //获取技能效果 
+	Sprite* getCharac();
     
     ProgressView* BloodView;    //血条
     

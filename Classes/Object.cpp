@@ -318,6 +318,11 @@ Sprite* ObjectBase::getSkillEffect() {
 	return SkillEffect;
 }
 
+Sprite * ObjectBase::getCharac()
+{
+	return Charac;
+}
+
 void ObjectBase::setAnimeIdentifier(int i) {
     HeroIdentifier = i;
 }
