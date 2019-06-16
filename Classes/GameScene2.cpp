@@ -169,6 +169,14 @@ bool GameScene2::init()
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("DistantWarriorAttack.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("DistantWarriorDie.plist");
     
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Revive.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("up.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("WizardSkillA.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("BowmanSkillA.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("WizardSkillB.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("SavageSkillB.plist");
+    
+    
     _tileMap = TMXTiledMap::create("map/MiddleMap.tmx");
     addChild(_tileMap, 0, 100);
     

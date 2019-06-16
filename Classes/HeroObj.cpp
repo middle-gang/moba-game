@@ -152,8 +152,7 @@ void HeroObj::ExpAndMoneyIncrease(float delta) {
 
 void HeroObj::BackToSpawn() {
     
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Revive.plist");
-    cocos2d::Sprite * SkillEffect = Sprite::createWithSpriteFrameName("Revive1.png");
+    SkillEffect = Sprite::createWithSpriteFrameName("Revive1.png");
     SkillEffect->setPosition(Charac->getPosition());
     SkillEffect->stopAllActions();
     
@@ -166,6 +165,7 @@ void HeroObj::BackToSpawn() {
     animation->setDelayPerUnit(0.2f);
     animation->setLoops(3);
     animation->setRestoreOriginalFrame(true);
+    
     Animate * action = Animate::create(animation);
     SkillEffect->runAction(action);
     
@@ -306,8 +306,7 @@ void HeroObj::Ability1st() {
     if(HeroIdentifier == 2) {
         log("Q activate!");
         
-        SpriteFrameCache::getInstance()->addSpriteFramesWithFile("up.plist");
-        cocos2d::Sprite * SkillEffect = Sprite::createWithSpriteFrameName("up1.png");
+        SkillEffect = Sprite::createWithSpriteFrameName("up1.png");
         SkillEffect->setPosition(Charac->getPosition());
         SkillEffect->stopAllActions();
         
@@ -320,6 +319,7 @@ void HeroObj::Ability1st() {
         animation->setDelayPerUnit(0.2f);
         animation->setLoops(3);
         animation->setRestoreOriginalFrame(true);
+        
         Animate * action = Animate::create(animation);
         SkillEffect->runAction(action);
         
@@ -331,8 +331,7 @@ void HeroObj::Ability1st() {
     }
     if (HeroIdentifier == 1) {
         
-        SpriteFrameCache::getInstance()->addSpriteFramesWithFile("up.plist");
-        cocos2d::Sprite * SkillEffect = Sprite::createWithSpriteFrameName("up1.png");
+        SkillEffect = Sprite::createWithSpriteFrameName("up1.png");
         SkillEffect->setPosition(Charac->getPosition());
         SkillEffect->stopAllActions();
         
@@ -345,6 +344,7 @@ void HeroObj::Ability1st() {
         animation->setDelayPerUnit(0.2f);
         animation->setLoops(3);
         animation->setRestoreOriginalFrame(true);
+        
         Animate * action = Animate::create(animation);
         SkillEffect->runAction(action);
         
@@ -356,8 +356,7 @@ void HeroObj::Ability1st() {
     if (HeroIdentifier == 3) {
         if (QActivate) {
             
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("WizardSkillA.plist");
-            cocos2d::Sprite * SkillEffect = Sprite::createWithSpriteFrameName("WizardSkillA1.png");
+            SkillEffect = Sprite::createWithSpriteFrameName("WizardSkillA1.png");
             SkillEffect->setPosition(Qtarget[0]->getPosition());
             SkillEffect->stopAllActions();
             
@@ -370,6 +369,7 @@ void HeroObj::Ability1st() {
             animation->setDelayPerUnit(0.08f);
             animation->setLoops(1);
             animation->setRestoreOriginalFrame(true);
+            
             Animate * action = Animate::create(animation);
             SkillEffect->runAction(action);
             
@@ -424,8 +424,7 @@ void HeroObj::Ability2st() {
     if (WIsUsed()) return;
     if (HeroIdentifier == 2) {
         
-        SpriteFrameCache::getInstance()->addSpriteFramesWithFile("up.plist");
-        cocos2d::Sprite * SkillEffect = Sprite::createWithSpriteFrameName("up1.png");
+        SkillEffect = Sprite::createWithSpriteFrameName("up1.png");
         SkillEffect->setPosition(Charac->getPosition());
         SkillEffect->stopAllActions();
         
@@ -438,6 +437,7 @@ void HeroObj::Ability2st() {
         animation->setDelayPerUnit(0.2f);
         animation->setLoops(3);
         animation->setRestoreOriginalFrame(true);
+        
         Animate * action = Animate::create(animation);
         SkillEffect->runAction(action);
         
@@ -450,8 +450,7 @@ void HeroObj::Ability2st() {
     if (HeroIdentifier == 1) {
         if (WActivate) {
             
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("BowmanSkillA.plist");
-            cocos2d::Sprite * SkillEffect = Sprite::createWithSpriteFrameName("BowmanSkillA1.png");
+            SkillEffect = Sprite::createWithSpriteFrameName("BowmanSkillA1.png");
             SkillEffect->setPosition(Wtarget[0]->getPosition());
             SkillEffect->stopAllActions();
             
@@ -464,6 +463,7 @@ void HeroObj::Ability2st() {
             animation->setDelayPerUnit(0.05f);
             animation->setLoops(1);
             animation->setRestoreOriginalFrame(true);
+            
             Animate * action = Animate::create(animation);
             SkillEffect->runAction(action);
             
@@ -480,8 +480,7 @@ void HeroObj::Ability2st() {
     if (HeroIdentifier == 3) {
         if (WActivate) {
             
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("WizardSkillB.plist");
-            cocos2d::Sprite * SkillEffect = Sprite::createWithSpriteFrameName("WizardSkillB1.png");
+            SkillEffect = Sprite::createWithSpriteFrameName("WizardSkillB1.png");
             SkillEffect->setPosition(Wtarget[0]->getPosition());
             SkillEffect->stopAllActions();
             
@@ -494,6 +493,7 @@ void HeroObj::Ability2st() {
             animation->setDelayPerUnit(0.4f);
             animation->setLoops(1);
             animation->setRestoreOriginalFrame(true);
+            
             Animate * action = Animate::create(animation);
             SkillEffect->runAction(action);
             
@@ -548,8 +548,7 @@ void HeroObj::Ability3st() {
         if (EActivate) {
             Charac->runAction(MoveTo::create(0.2, Etarget->getPosition()));
             
-            SpriteFrameCache::getInstance()->addSpriteFramesWithFile("SavageSkillB.plist");
-            cocos2d::Sprite * SkillEffect = Sprite::createWithSpriteFrameName("SavageSkillB1.png");
+            SkillEffect = Sprite::createWithSpriteFrameName("SavageSkillB1.png");
             SkillEffect->setPosition(Etarget->getPosition());
             SkillEffect->stopAllActions();
             
@@ -562,6 +561,7 @@ void HeroObj::Ability3st() {
             animation->setDelayPerUnit(0.4f);
             animation->setLoops(1);
             animation->setRestoreOriginalFrame(true);
+            
             Animate * action = Animate::create(animation);
             SkillEffect->runAction(action);
             
