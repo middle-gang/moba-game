@@ -9,6 +9,7 @@ USING_NS_CC;
 
 float m_atktime = 0, mt_atktime = 0;
 float e_atktime = 0, et_atktime = 0;
+float mc_atktime = 0, ec_atktime = 0;
 float deathtime = 0, edeathtime = 0;
 float eneHome = 1, myHome = 1;
 float minionborn = 30,minioncount1=1;
@@ -59,19 +60,35 @@ void GameScene2::TowerInit(int i,Sprite*& spr) {
 	Tower[i].SetAtkSpeedLevel(0);
 	Tower[i].JudgeAttackSpeedLevel();
 	//log("%f", Tower[i].attackDelay());
-	Tower[i].totalHealth() = 1000;
-	Tower[i].healthPower() = 1000;
+	Tower[i].totalHealth() = 3000;
+	Tower[i].healthPower() = 3000;
 	Tower[i].AttackPower() = 470;
-	Tower[i].getRadium() = 100;
+	Tower[i].getRadium() = 150;
 	//Tower[i].setAttackingSpeed(1.5);
 	Tower[i].setMoveablity(false);
 	Tower[i].initBloodScale();
+	Tower[i].setArmor(50);
 	if (!Tower[i].BloodView) {
 		//log("yyyyy");
 		return;
 	}
 	this->addChild(Tower[i].BloodView, 2);
 	Tower[i].getPosition() = spr->getPosition();
+}
+void GameScene2::CrystalInit(int i, Sprite*& spr) {
+	cryInit[i] = true;
+	spr->setAnchorPoint(Vec2(0.5, 0.5));
+	Crystal[i].attachToSprite(spr);
+	Crystal[i].totalHealth() = 4500;
+	Crystal[i].healthPower() = 4500;
+	Crystal[i].AttackPower() = 630;
+	Crystal[i].getRadium() = 150;
+	Crystal[i].setAttackingSpeed(1.5);
+	Crystal[i].setMoveablity(false);
+	Crystal[i].initBloodScale();
+	Crystal[i].setArmor(100);
+	this->addChild(Crystal[i].BloodView, 2);
+	Crystal[i].getPosition() = spr->getPosition();
 }
 
 void GameScene2::newCloseMinion(int i) {
@@ -146,6 +163,7 @@ void receive() {
 			}
 			const char* dxy = pos.c_str();
 			desy = atof(dxy);
+
 			Director::getInstance()->getScheduler()->
 				performFunctionInCocosThread([desx, desy]() {eneObj->Move(Vec2(desx, desy)); });
 		}
@@ -180,12 +198,144 @@ void receive() {
 				int Mseq = (res % 1000);
 				//log("%d", Mseq);
 				//if (Mseq > mMinion->Container().size() - 1) return;
-				eneObj->Attack(mMinion->Container()[Mseq]);
+				Director::getInstance()->getScheduler()->
+					performFunctionInCocosThread([Mseq](){
+						eneObj->Attack(mMinion->Container()[Mseq]); 
+					});
 			}
 		}
 		else if (buf2[0] == 'b') {
 			eneObj->CheckBacking() = true;
-			eneObj->getSprite()->stopAllActions();
+			Director::getInstance()->getScheduler()->
+				performFunctionInCocosThread([]() {
+				eneObj->getSprite()->stopAllActions(); });
+		}
+		else if (buf2[0] == 'p') {
+			if (buf2[1] == 'q') {
+				if (eneChoice == 1&&eneChoice==2) {
+					Director::getInstance()->getScheduler()->
+						performFunctionInCocosThread([]() {eneObj->Ability1st(); });
+				}
+				else {
+					Vec2 Qplace;
+					std::string pos;
+				
+					int cur = 2;
+					float desx, desy;
+					while (buf2[cur] != '|') cur++;
+					for (int i = 2; i < cur; i++) {
+						pos.push_back(buf2[i]);
+					}
+					const char* dxs = pos.c_str();
+					desx = atof(dxs);
+					pos.clear();
+					for (int i = cur + 1; buf2[i] != '*'; i++) {
+						pos.push_back(buf2[i]);
+					}
+					const char* dxy = pos.c_str();
+					desy = atof(dxy);
+					log("%f %f", desx, desy);
+					
+					Qplace = Vec2(desx, desy);
+
+					Vec2 Direc = Qplace - eneObj->getPosition();
+					
+					eneObj->QActivate = true;
+
+					for (int i = 0; i < mMinion->Container().size(); i++) {
+						Vec2 dd = mMinion->Container()[i].getPosition() - eneObj->getPosition();
+						//log("%f %f", dd.x ,dd.y);
+						float dy = ccpLength(ccpProject(dd, Direc));
+						float dx = sqrt(ccpLength(dd)*ccpLength(dd) - dy * dy);
+						//log("%f %f", dx, dy);
+						if (dy <= 250 && dx <= 50) {
+							eneObj->Qtarget.push_back(mMinion->Container()[i]);
+						}
+					}
+
+					Vec2 dd = heroObj->getPosition() - eneObj->getPosition();
+					
+					//	log("%f %f", dd.x, dd.y);
+					float dy = ccpLength(ccpProject(dd, Direc));
+					float dx = sqrt(ccpLength(dd)*ccpLength(dd) - dy * dy);
+					//	log("%f %f", dx, dy);
+					if (dy <= 250 && dx <= 50) {
+						eneObj->Qtarget.push_back(*heroObj);
+					}
+					Director::getInstance()->getScheduler()->
+						performFunctionInCocosThread([]() {
+						eneObj->Ability1st(); 
+					});
+				}
+			}
+			if (buf2[1] == 'w') {
+				if (eneChoice == 2&&eneChoice==3) {
+					Director::getInstance()->getScheduler()->
+						performFunctionInCocosThread([]() {
+						eneObj->Ability2st();
+					});
+				}
+				else {
+					Vec2 Wplace;
+					std::string pos;
+
+					int cur = 2;
+					float desx, desy;
+					while (buf2[cur] != '|') cur++;
+					for (int i = 2; i < cur; i++) {
+						pos.push_back(buf2[i]);
+					}
+					const char* dxs = pos.c_str();
+					desx = atof(dxs);
+					pos.clear();
+					for (int i = cur + 1; buf2[i] != '*'; i++) {
+						pos.push_back(buf2[i]);
+					}
+					const char* dxy = pos.c_str();
+					desy = atof(dxy);
+					//log("%f %f", desx, desy);
+
+					Wplace = Vec2(desx, desy);
+					eneObj->WActivate = true;
+					
+					for (int i = 0; i < mMinion->Container().size(); i++) {
+						if (mMinion->Container()[i].getPosition().distance(Wplace) < 100) {
+							eneObj->Wtarget.push_back(mMinion->Container()[i]);
+						}
+					}
+					if (Wplace.distance(heroObj->getPosition()) < 100) {
+						eneObj->Wtarget.push_back(*heroObj);
+					}
+					Director::getInstance()->getScheduler()->
+						performFunctionInCocosThread([]() {
+						eneObj->Ability2st();
+					});
+				}
+			}
+			else if (buf2[1] == 'e') {
+				if (eneChoice == 1) {
+
+				}
+				else if (eneChoice == 2) {
+					eneObj->Etarget = heroObj;
+					Director::getInstance()->getScheduler()->
+						performFunctionInCocosThread([]() {
+						eneObj->Ability3st();
+					});
+				}
+				else if (eneChoice == 3) {
+					Director::getInstance()->getScheduler()->
+						performFunctionInCocosThread([]() {
+						eneObj->Ability3st();
+					});
+				}
+			}
+		}
+		else if (buf2[0] == 's') {
+			Director::getInstance()->getScheduler()->
+				performFunctionInCocosThread([]() {
+				eneObj->getSprite()->stopAllActions();
+			});
 		}
 	}
 }
@@ -333,6 +483,9 @@ bool GameScene2::init()
 	TowerInit(0, _enemyTower);
 	TowerInit(1, _myTower);
 
+	CrystalInit(0, _myCrystal);
+	CrystalInit(1, _enemyCrystal);
+
 	scheduleUpdate();
 	/*this->schedule(schedule_selector(GameScene2::timer1));
 	this->schedule(schedule_selector(GameScene2::timer2));*/
@@ -370,8 +523,8 @@ bool GameScene2::init()
 	eneObj = &Opponent;
 	MyTower = &Tower[side];
 	EneTower = &Tower[!side];
-	mMinion = &flag[0];
-	eMinion = &flag[1];
+	mMinion = &flag[side];
+	eMinion = &flag[!side];
 	return true;
 
 }
@@ -453,6 +606,16 @@ void GameScene2::update(float delta){
 		Hero.Ejudge(delta);
 	}//判断三个技能的冷却时间并进行冷却的计时
 
+	if (Opponent.QIsUsed()) {
+		Opponent.Qjudge(delta);
+	}
+	if (Opponent.WIsUsed()) {
+		Opponent.Wjudge(delta);
+	}
+	if (Opponent.EIsUsed()) {
+		Opponent.Ejudge(delta);
+	}//判断三个技能的冷却时间并进行冷却的计时
+
 	Tower[0].BloodView->setCurrentProgress(Tower[0].healthPower());
 	Tower[1].BloodView->setCurrentProgress(Tower[1].healthPower());
 	
@@ -460,40 +623,10 @@ void GameScene2::update(float delta){
 	if(cryInit[1]) Crystal[1].BloodView->setCurrentProgress(Crystal[1].healthPower());
 	
 
-	if (Tower[0].healthPower() <= 0&&!cryInit[0]) {
-		cryInit[0] = true;
-		_enemyCrystal->setAnchorPoint(Vec2(0.5, 0.5));
-		Crystal[0].attachToSprite(_enemyCrystal);
-		Crystal[0].totalHealth() = 1000;
-		Crystal[0].healthPower() = 1000;
-		Crystal[0].AttackPower() = 50;
-		Crystal[0].getRadium() = 150;
-		Crystal[0].setAttackingSpeed(1.5);
-		Crystal[0].setMoveablity(false);
-		Crystal[0].initBloodScale();
-		this->addChild(Crystal[0].BloodView, 2);
-		Crystal[0].getPosition() = _enemyCrystal->getPosition();
-	}
-
-	if (Tower[1].healthPower() <= 0 && !cryInit[1]) {
-		cryInit[1] = true;
-		_myCrystal->setAnchorPoint(Vec2(0.5, 0.5));
-		Crystal[1].attachToSprite(_myCrystal);
-		Crystal[1].totalHealth() = 1000;
-		Crystal[1].healthPower() = 1000;
-		Crystal[1].AttackPower() = 50;
-		Crystal[1].getRadium() = 150;
-		Crystal[1].setAttackingSpeed(1.5);
-		Crystal[1].setMoveablity(false);
-		Crystal[1].initBloodScale();
-		this->addChild(Crystal[1].BloodView, 2);
-		Crystal[1].getPosition() = _myCrystal->getPosition();
-	}
-
 	if (Tower[0].healthPower() <= 0 && Crystal[0].healthPower() <= 0) Director::getInstance()->replaceScene(HelloWorld::createScene());
 
 	if (_player->getPosition() == prelocation) {
-		_player->stopAllActions();
+		//_player->stopAllActions();
 		if (pathFound.size() > 0) {
 			if (Hero.getPosition() == Vec2(31 * pathFound.front()->x + 16,
 				1024 - (31 * pathFound.front()->y + 16)-32)) {
@@ -523,12 +656,7 @@ void GameScene2::update(float delta){
 
 
 	for (int i = 0; i < flag[0].Container().size(); i++) {
-		if (checkAlive[0][i]) continue;
-		if (flag[0].Container()[i].healthPower() <= 0&&!checkAlive[0][i]) {
-			checkAlive[0][i] = true;
-			this->removeChild(flag[0].Container()[i].getSprite());
-			continue;
-		}
+		if (flag[0].Container()[i].Death()) continue;
 
 		if (flag[0].Container()[i].isAttacking()&& flag[0].Container()[i].healthPower()>0) {
 			flag[0].Judge(i, delta);
@@ -547,12 +675,7 @@ void GameScene2::update(float delta){
 	}
 
 	for (int i = 0; i < flag[1].Container().size() ; i++) {
-		if (checkAlive[1][i]) continue;
-		if (flag[1].Container()[i].healthPower() <= 0 && !checkAlive[1][i]) {
-			checkAlive[1][i] = true;
-			this->removeChild(flag[1].Container()[i].getSprite());
-			continue;
-		}
+		if (flag[1].Container()[i].Death()) continue;
 
 		if (flag[1].Container()[i].isAttacking()) {
 			flag[1].Judge(i, delta);
@@ -571,7 +694,7 @@ void GameScene2::update(float delta){
 	minionCnt += delta;
 	if (minionCnt > 0.4&&reverse) {
 		for (int i = 0; i < flag[0].Container().size(); i++) {
-			if (flag[0].Container()[i].healthPower() <= 0) continue;
+			if (flag[0].Container()[i].Death()) continue;
 			bool ck = false;
 			bool tarck = false;
 			ObjectBase* target;
@@ -623,7 +746,7 @@ void GameScene2::update(float delta){
 		}
 
 		for (int i = 0; i < flag[1].Container().size(); i++) {
-			if (flag[1].Container()[i].healthPower() <= 0) continue;
+			if (flag[1].Container()[i].Death()) continue;
 			bool ck = false;
 			bool tarck = false;
 			float MiniPath = 1500;
@@ -827,6 +950,13 @@ void GameScene2::update(float delta){
 		Tower[!side].Attack(Opponent);
 	}
 
+	if (Hero.getPosition().distance(Crystal[!side].getPosition()) < Crystal[!side].getRadium()) {
+		Crystal[!side].Attack(Hero);
+	}
+	if (Opponent.getPosition().distance(Crystal[side].getPosition()) < Crystal[side].getRadium()) {
+		Crystal[side].Attack(Opponent);
+	}
+
 	if (Hero.isAttacking()) {
 		m_atktime += delta;
 		Hero.JudgeAttack(m_atktime);
@@ -845,6 +975,16 @@ void GameScene2::update(float delta){
 	if (Tower[1].isAttacking()) {
 		et_atktime += delta;
 		Tower[1].JudgeAttack(et_atktime);
+	}
+
+	if (Crystal[0].isAttacking()) {
+		mc_atktime += delta;
+		Crystal[0].JudgeAttack(mc_atktime);
+	}
+
+	if (Crystal[1].isAttacking()) {
+		ec_atktime += delta;
+		Crystal[1].JudgeAttack(ec_atktime);
 	}
 
 	if (Hero.Death()) {
@@ -883,7 +1023,7 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
     //log("onTouchBegan");
 	//log("%f %f", locationInNode.x, locationInNode.y);
 	int eneSide = !side;
-
+	log("%d", eneSide);
 	if (Hero.QBoundJudge == true) {
 		//Vec2 Direc = touch->getLocation() - Hero.getPosition();
 		//log("%f", locationInNode.distance(Hero.getPosition()));
@@ -894,6 +1034,7 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 			for (int i = 0; i < flag[eneSide].Container().size(); i++) {
 				Vec2 dd = flag[eneSide].Container()[i].getPosition() - Hero.getPosition();
 				//log("%f %f", dd.x ,dd.y);
+				if (dd.x*Direc.x < 0 || dd.y*Direc.y < 0) continue;
 				float dy = ccpLength(ccpProject(dd, Direc));
 				float dx = sqrt(ccpLength(dd)*ccpLength(dd) - dy * dy);
 				//log("%f %f", dx, dy);
@@ -907,8 +1048,19 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 			float dx = sqrt(ccpLength(dd)*ccpLength(dd) - dy * dy);
 		//	log("%f %f", dx, dy);
 			if (dy<=250&&dx<=50) {
-				Hero.Wtarget.push_back(Opponent);
+				Hero.Qtarget.push_back(Opponent);
 			}
+
+			std::string Qactivation;
+			Qactivation.push_back('p');
+			Qactivation.push_back('q');
+			Qactivation += std::to_string(locationInNode.x);
+			Qactivation.push_back('|');
+			Qactivation += std::to_string(locationInNode.y);
+			Qactivation.push_back('*');
+			const char* QActorder = Qactivation.c_str();
+			send(_sock, QActorder, 100, 0);
+
 			Hero.Ability1st();
 			return true;
 		}
@@ -951,20 +1103,6 @@ bool GameScene2::onTouchBegan(Touch* touch, Event* event)
 				return true;
 			}
 			else {
-				Hero.WBoundJudge = false;
-			}
-		}
-		if (Hero.HeroIdentifier == 3) {
-			if (locationInNode.distance(Opponent.getPosition()) <= 20 &&
-				locationInNode.distance(Hero.getPosition()) <= 200) {
-			//	log("Wact");
-				Hero.WActivate = true;
-				Hero.Wtarget.push_back(Opponent);
-				Hero.Ability2st();
-				return true;
-			}
-			else {
-			//	log("W fail");
 				Hero.WBoundJudge = false;
 			}
 		}
@@ -1125,25 +1263,69 @@ void GameScene2::onKeyPressed(EventKeyboard::KeyCode keycode, Event *event) {
 	if (keycode == EventKeyboard::KeyCode::KEY_Q) {
 		//log("Q is pressed!%d should be activate",Hero.HeroIdentifier);
 		if (Hero.QIsUsed()) return;
-		if (Hero.HeroIdentifier == 1) Hero.Ability1st();
-		if (Hero.HeroIdentifier == 2) Hero.Ability1st();
+		if (Hero.HeroIdentifier == 1 || Hero.HeroIdentifier == 2) {
+			Hero.Ability1st();
+			char Qorder[100] = {};
+			Qorder[0] = 'p';
+			Qorder[1] = 'q';
+			Qorder[2] = '*';
+			send(_sock, Qorder, 100, 0);
+		}
 		if (Hero.HeroIdentifier == 3) Hero.QBoundJudge = true;
 	}
 	if (keycode == EventKeyboard::KeyCode::KEY_W) {
 		if (Hero.WIsUsed()) return;
 		if (Hero.HeroIdentifier == 1) Hero.WBoundJudge = true;
-		if (Hero.HeroIdentifier == 2) Hero.Ability2st();
-		if (Hero.HeroIdentifier == 3) Hero.WBoundJudge = true;
+		if (Hero.HeroIdentifier == 2) {
+			Hero.Ability2st();
+			char Worder[100] = {};
+			Worder[0] = 'p';
+			Worder[1] = 'w';
+			Worder[2] = '*';
+			send(_sock, Worder, 100, 0);
+		}
+		if (Hero.HeroIdentifier == 3) {
+			if (Opponent.getPosition().distance(Hero.getPosition()) <= 100) {
+				Hero.Wtarget.push_back(Opponent);
+				Hero.Ability2st(); 
+				char Worder[100] = {};
+				Worder[0] = 'p';
+				Worder[1] = 'w';
+				Worder[2] = '*';
+				send(_sock, Worder, 100, 0);
+			}
+		}
 	}
 	if (keycode == EventKeyboard::KeyCode::KEY_E) {
 		if (Hero.EIsUsed()) return;
 		if (Hero.HeroIdentifier == 1) {
 
 		}
-		if (Hero.HeroIdentifier == 2) Hero.EBoundJudge = true;
-		if (Hero.HeroIdentifier == 3) Hero.Ability3st();
+		if (Hero.HeroIdentifier == 2) {
+			if(Opponent.getPosition().distance(Hero.getPosition())<=100){
+				Hero.Etarget = &Opponent;
+				Hero.Ability3st();
+				char Eorder[100] = {};
+				Eorder[0] = 'p';
+				Eorder[1] = 'e';
+				Eorder[2] = '*';
+				send(_sock, Eorder, 100, 0);
+			}
+		}
+		if (Hero.HeroIdentifier == 3) {
+			char Eorder[100] = {};
+			Eorder[0] = 'p';
+			Eorder[1] = 'e';
+			Eorder[2] = '*';
+			send(_sock, Eorder, 100, 0);
+			Hero.Ability3st();
+		}
 	}
 	if (keycode == EventKeyboard::KeyCode::KEY_S) {
+		char stopActionOrder[100] = {};
+		stopActionOrder[0] = 's';
+		stopActionOrder[1] = '*';
+		send(_sock, stopActionOrder, 100, 0);
 		Hero.getSprite()->stopAllActions();
 	}
 }

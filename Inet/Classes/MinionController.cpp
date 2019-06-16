@@ -40,7 +40,6 @@ void MinionController::MoveToTarget() {
 	for (int i = 0; i < minion.size(); i++) {
 		if (minion[i].healthPower() <= 0) continue;
 		minion[i].getSprite()->stopAllActions();
-		
 		minion[i].Move(Plan[i]);
 	}
 }

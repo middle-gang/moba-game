@@ -1,5 +1,5 @@
 #include "Help.h"
-#include "hero.h"
+#include "HeroInstuct.h"
 #include "Daji.h"
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"

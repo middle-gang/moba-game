@@ -285,7 +285,7 @@ bool HeroObj::EIsUsed() {
 
 void HeroObj::Ability1st() {
 	if (QIsUsed()) return;
-	if(HeroIdentifier == 2) {
+	if(HeroIdentifier == 2){
 		log("Q activate!");
 		velocity += 20;
 		Qrecover = true;
@@ -302,7 +302,7 @@ void HeroObj::Ability1st() {
 	if (HeroIdentifier == 3) {
 		if (QActivate) {
 			for (int i = 0; i < Qtarget.size(); i++) {
-				Qtarget[i].BeAttack(50+power*1.1);
+				Qtarget[i].BeAttack(1000+power*1.1);
 				if (Qtarget[i].healthPower() <= 0) {
 					Kill_reward(Qtarget[i]);
 				}
@@ -369,21 +369,17 @@ void HeroObj::Ability2st() {
 		WBoundJudge = true;				//开启E的范围判断，类似智能施法
 	}
 	if (HeroIdentifier == 3) {
-		if (WActivate) {
-			for (int i = 0; i < Wtarget.size(); i++) {
-				Wtarget[i].BeAttack(1000+power*0.8);
-				if (Wtarget[i].healthPower() <= 0) {
-					Kill_reward(Wtarget[i]);
-				}
-				log("W launch on %d",Wtarget[i].HeroIdentifier);
-				//这里还需要加入眩晕效果
+		for (int i = 0; i < Wtarget.size(); i++) {
+			Wtarget[i].BeAttack(1000 + power * 0.8);
+			if (Wtarget[i].healthPower() <= 0) {
+				Kill_reward(Wtarget[i]);
 			}
-			Wtarget.clear();
-			WBoundJudge = false;
-			Wflag = true;
-			return;
+			log("W launch on %d", Wtarget[i].HeroIdentifier);
+			//这里还需要加入眩晕效果
 		}
-		WBoundJudge = true;
+		Wtarget.clear();
+		Wflag = true;
+		return;
 	}
 }
 
@@ -418,17 +414,14 @@ void HeroObj::Wjudge(float delta) {
 void HeroObj::Ability3st() {
 	if (EIsUsed()) return;
 	if (HeroIdentifier == 2) {
-		if (EActivate) {
-			Charac->runAction(MoveTo::create(0.2, Etarget->getPosition()));
-			Etarget->BeAttack(attack*1.5);
-			if (Etarget->healthPower() <= 0) {
-				Kill_reward(*Etarget);
-			}
-			EBoundJudge = false;
-			Eflag = true;
-			return;
+		Charac->runAction(MoveTo::create(0.2, Etarget->getPosition()));
+		Etarget->BeAttack(attack*1.5);
+		if (Etarget->healthPower() <= 0) {
+			Kill_reward(*Etarget);
 		}
-		EBoundJudge = true;				//开启E的范围判断，类似智能施法
+		EBoundJudge = false;
+		Eflag = true;
+		return;
 	}
 	if (HeroIdentifier == 1) {
 	}
