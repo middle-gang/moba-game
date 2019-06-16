@@ -11,11 +11,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{68,68}</string>
+                <string>{34,34}</string>
                 <key>spriteSourceSize</key>
-                <string>{68,68}</string>
+                <string>{34,34}</string>
                 <key>textureRect</key>
-                <string>{{0,0},{68,68}}</string>
+                <string>{{0,0},{34,34}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -26,11 +26,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{68,68}</string>
+                <string>{34,34}</string>
                 <key>spriteSourceSize</key>
-                <string>{68,68}</string>
+                <string>{34,34}</string>
                 <key>textureRect</key>
-                <string>{{68,0},{68,68}}</string>
+                <string>{{34,0},{34,34}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -46,9 +46,9 @@
             <key>realTextureFileName</key>
             <string>Revive.png</string>
             <key>size</key>
-            <string>{136,68}</string>
+            <string>{68,34}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:8a09e0ef2028bf4630496f9e1c14cf7d:dccfaa4327be2e08f4799cefd7a99d99:4bc5e2af1b5c2e21a2f402a6d1605d1c$</string>
+            <string>$TexturePacker:SmartUpdate:fe868a5c872907e0ca981de069da7f23:385d588b4d51b67a206aead6834c13d4:4bc5e2af1b5c2e21a2f402a6d1605d1c$</string>
             <key>textureFileName</key>
             <string>Revive.png</string>
         </dict>
