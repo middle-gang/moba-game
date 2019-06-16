@@ -3,9 +3,7 @@
 #include "Avene.h"
 #include "Help.h"
 #include "GameScene.h"
-#include "GameScene2.h"
 #include "AnimationEdition.h"
-#include"GameScene0.h"
 #include"ChooseCharacter.h"
 
 USING_NS_CC;

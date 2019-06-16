@@ -3,7 +3,6 @@
 
 #include "cocos2d.h"
 #include"GameScene2.h"
-#include"HelloWorldScene.h"
 #include"GlobalVal.h"
 #include"DataDefine.h"
 
@@ -67,6 +66,13 @@ private:
 	float m_pass[6];
 
 	cocos2d::Label *m_pSkillText[6];
+	//技能面板
+	//cocos2d::MenuItemImage *pAttackMii;
+	//cocos2d::MenuItemImage*pSkillMii[6];
+	cocos2d::Sprite*pSkillMii[6];
+	cocos2d::Sprite*pSkillMii1[6];
+	//cocos2d::Menu *m_pSkillMenu;
+
 
 	///装备栏
 
@@ -148,13 +154,6 @@ private:
 
 	//显示按钮：属性，商店，退出
 	cocos2d::Menu *m_pMenu;
-
-	//技能面板
-	cocos2d::MenuItemImage *pAttackMii;
-	cocos2d::MenuItemImage*pSkillMii[6];
-
-	cocos2d::Menu *m_pSkillMenu;
-
 
 public:
 	void BoundTrans(bool a, bool b);
@@ -280,17 +279,6 @@ public:
 	void openExit(cocos2d::Ref* pSender);
 	void menuYesCallback(cocos2d::Ref* pSender);
 	void menuNoCallback(cocos2d::Ref* pSender);
-	///技能函数
-	void Skill1(cocos2d::Ref* pSender);
-	void Skill2(cocos2d::Ref* pSender);
-	void Skill3(cocos2d::Ref* pSender);
-
-	void attack(cocos2d::Ref* pSender);
-	void recover(cocos2d::Ref* pSender);
-	void cure(cocos2d::Ref* pSender);
-
-
-
 public:
 	static cocos2d::Scene* createScene();
 

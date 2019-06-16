@@ -55,7 +55,7 @@ public:
 	void newDistantMinion(int i);	//产生新的远程兵
 	void playMove();				//根据A*寻路产生的链表进行移动
 	void TowerInit(int i,Sprite*& spr);//初始化塔
-
+	void CrystalInit(int i);
 	//万恶之源
     virtual void update(float delta);
 

@@ -39,5 +39,5 @@ private:
 	CREATE_FUNC(ChooseCharacter);
 };
 
-#endif // __HELLOWORLD_SCENE_H__
+#endif //__ChooseCharacter_H__
 

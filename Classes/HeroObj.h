@@ -1,91 +1,92 @@
 #include "Object.h"
+#include "cocos2d.h"
 
 class HeroObj :public ObjectBase {
 public:
-	const HeroObj HeroObj::operator -(const EquipmentData equip);
-	const HeroObj HeroObj::operator +(const EquipmentData equip);
-	void LvUp();								//»ñÈ¡¾­ÑéÖµµÄÊ±ºòµ÷ÓÃ£¬Èç¹ûÉı¼¶¾Í¸Ä±ä£¬²»Éı¼¶²»±ä
-	void setHomerecover();                       //ÉèÖÃÔÚ¼ÒÖĞµÄ»ØÑª»ØÀ¶Á¿
-	void removeHomerecover();                    //Àë¿ª¼ÒÈ¡Ïû»ØÑª»ØÀ¶
-	void ExpAndMoneyIncrease(float delta);		//½ğ±ÒºÍ¾­ÑéµÄ×ÔÈ»Ôö³¤
-	void Buy(int EquipNumber);					//Âò¶«Î÷
-	void Sale(int locationNum,int Equipnumber);					//Âô¶«Î÷£¨×°±¸À¸Ä³¸öÎ»ÖÃµÄ£©
-	void setMoney(int n);						//ÉèÖÃ½ğÇ®£¨µ÷ÊÔÓÃ£©
-	void BackToSpawn();				//»Øµ½³öÉúµã
-	void Interrupt();				//´ò¶Ï»Ø³Ç
-	void JudgeBack(float& time, float del);	//´«Èë²ÎÊı¼ÆÊ±Öµ time ¼ÙÈç»Ø³ÇÊ±¼äµ½¾Í»Ø³Ç²¢ÇÒ½« time ¹éÁã
-	void Kill_reward(ObjectBase& ene);//»÷É±»ñµÃ½±Àø£¨½ğÇ®¾­Ñé£©
-	virtual int Attack(ObjectBase& ene);	//¹¥»÷º¯Êı£¬Ôì³ÉÉËº¦£¬¶¯»­£¬»÷É±
-	//virtual void BeAttack(float n);		//±»Ôì³ÉÉËº¦£¨AttackÖĞµ÷ÓÃ£©
-	//virtual void Die();
-
-	float PhysicBloodSuck();    //ÎïÀíÎüÑª
-	float MagicBloodSuck();     //·¨ÊõÎüÑª
-	float WaitLessen();         //ÀäÈ´Ëõ¼õ
-
-	bool& CheckBacking();
-	bool QIsUsed();		//Q¼¼ÄÜÊÇ·ñÊ¹ÓÃ
-	bool WIsUsed();		//W¼¼ÄÜÊÇ·ñÊ¹ÓÃ
-	bool EIsUsed();		//E»úÄÜÊÇ·ñÊ¹ÓÃ
-
-	void Ability1st();
-	void Ability2st();
-	void Ability3st();
-
-	void Qjudge(float delta);
-	void Wjudge(float delta);
-	void Ejudge(float delta);
-
-	int Level();
-	int tMoney();
-	int Money();
-
-	bool EBoundJudge = false;
-	bool EActivate = false;
-	HeroObj* Etarget;
-
-	bool WBoundJudge = false;
-	bool WActivate = false;
-	std::vector<ObjectBase> Wtarget;
-
-	bool QBoundJudge = false;
-	bool QActivate = false;
-	std::vector<ObjectBase> Qtarget;
-
-	int m_kill = 0;				//ÎÒµÄ»÷É±
-//	int m_death = 0;			//ÎÒµÄËÀÍö
-
-	int m_money = 0;//ÎÒµÄ½ğÇ®
-	int t_money = 0;//×Ü»ñµÃ½ğÇ®Êı
-	int m_exp;//ÎÒµÄ¾­ÑéÖµ
-	int MyLevel = 1;//ÎÒµÄµÈ¼¶
-
-
-	int equip[6] = { -1,-1,-1,-1,-1,-1 };
+    //cocos2d::Sprite * getSkillEffect();
+    const HeroObj HeroObj::operator -(const EquipmentData equip);
+    const HeroObj HeroObj::operator +(const EquipmentData equip);
+    void LvUp();                                //è·å–ç»éªŒå€¼çš„æ—¶å€™è°ƒç”¨ï¼Œå¦‚æœå‡çº§å°±æ”¹å˜ï¼Œä¸å‡çº§ä¸å˜
+    void setHomerecover();                       //è®¾ç½®åœ¨å®¶ä¸­çš„å›è¡€å›è“é‡
+    void removeHomerecover();                    //ç¦»å¼€å®¶å–æ¶ˆå›è¡€å›è“
+    void ExpAndMoneyIncrease(float delta);        //é‡‘å¸å’Œç»éªŒçš„è‡ªç„¶å¢é•¿
+    void Buy(int EquipNumber);                    //ä¹°ä¸œè¥¿
+	void HeroObj::Sale(int locNumber, int Equipnumber) ;                    //å–ä¸œè¥¿ï¼ˆè£…å¤‡æ æŸä¸ªä½ç½®çš„ï¼‰
+    void setMoney(int n);                        //è®¾ç½®é‡‘é’±ï¼ˆè°ƒè¯•ç”¨ï¼‰
+    void BackToSpawn();                //å›åˆ°å‡ºç”Ÿç‚¹
+    void Interrupt();                //æ‰“æ–­å›åŸ
+    void JudgeBack(float& time, float del);    //ä¼ å…¥å‚æ•°è®¡æ—¶å€¼ time å‡å¦‚å›åŸæ—¶é—´åˆ°å°±å›åŸå¹¶ä¸”å°† time å½’é›¶
+    void Kill_reward(ObjectBase& ene);//å‡»æ€è·å¾—å¥–åŠ±ï¼ˆé‡‘é’±ç»éªŒï¼‰
+    virtual int Attack(ObjectBase& ene);    //æ”»å‡»å‡½æ•°ï¼Œé€ æˆä¼¤å®³ï¼ŒåŠ¨ç”»ï¼Œå‡»æ€
+    // virtual void BeAttack(float n);        //è¢«é€ æˆä¼¤å®³ï¼ˆAttackä¸­è°ƒç”¨ï¼‰
+    //virtual void Die();
+    
+    float PhysicBloodSuck();    //ç‰©ç†å¸è¡€
+    float MagicBloodSuck();     //æ³•æœ¯å¸è¡€
+    float WaitLessen();         //å†·å´ç¼©å‡
+    
+    bool& CheckBacking();
+    bool QIsUsed();        //QæŠ€èƒ½æ˜¯å¦ä½¿ç”¨
+    bool WIsUsed();        //WæŠ€èƒ½æ˜¯å¦ä½¿ç”¨
+    bool EIsUsed();        //EæŠ€èƒ½æ˜¯å¦ä½¿ç”¨
+    
+    void Ability1st();
+    void Ability2st();
+    void Ability3st();
+    
+    void Qjudge(float delta);
+    void Wjudge(float delta);
+    void Ejudge(float delta);
+    
+    int Level();
+    int tMoney();
+    int Money();
+    
+    bool EBoundJudge = false;
+    bool EActivate = false;
+    HeroObj* Etarget;
+    
+    bool WBoundJudge = false;
+    bool WActivate = false;
+    std::vector<ObjectBase> Wtarget;
+    
+    bool QBoundJudge = false;
+    bool QActivate = false;
+    std::vector<ObjectBase> Qtarget;
+    
+    int m_kill = 0;                //æˆ‘çš„å‡»æ€
+    //    int m_death = 0;            //æˆ‘çš„æ­»äº¡
+    
+    int m_money = 0;//æˆ‘çš„é‡‘é’±
+    int t_money = 0;//æ€»è·å¾—é‡‘é’±æ•°
+    int m_exp;//æˆ‘çš„ç»éªŒå€¼
+    int MyLevel = 1;//æˆ‘çš„ç­‰çº§
+    
+    
+    int equip[6] = { -1,-1,-1,-1,-1,-1 };
 private:
-
-	Equipment EquipList;		//×°±¸ĞÅÏ¢
-
-	float physicBloodSuck = 0;//ÎïÀíÎüÑª
-	float magicBloodSuck = 0;//·¨ÊõÎüÑª
-	float waitLessen = 0;//ÀäÈ´Ëõ¼õ
-
-	float Qtimer = 0;		//Q¼¼ÄÜ¼ÆÊ±Æ÷
-	float Wtimer = 0;		//W¼¼ÄÜ¼ÆÊ±Æ÷
-	float Etimer = 0;		//E¼¼ÄÜ¼ÆÊ±Æ÷
-
-	bool Qflag = false;		//Q¼¼ÄÜ×´Ì¬
-	bool Wflag = false;		//W¼¼ÄÜ×´Ì¬
-	bool Eflag = false;		//E¼¼ÄÜ×´Ì¬
-
-	bool Qrecover = false;
-	bool Wrecover = false;
-	bool Erecover = false;
-
-	bool attackStrength = false;	//ÊÇ·ñ²úÉúÆÕ¹¥Ç¿»¯
-
-	bool isBacking = false;		//ÊÇ·ñÕıÔÚ»Ø³Ç
-
-//	int equip[6] = { -1,-1,-1,-1,-1,-1 };
+    
+    Equipment EquipList;        //è£…å¤‡ä¿¡æ¯
+    
+    float physicBloodSuck = 0;//ç‰©ç†å¸è¡€
+    float magicBloodSuck = 0;//æ³•æœ¯å¸è¡€
+    float waitLessen = 0;//å†·å´ç¼©å‡
+    
+    float Qtimer = 0;        //QæŠ€èƒ½è®¡æ—¶å™¨
+    float Wtimer = 0;        //WæŠ€èƒ½è®¡æ—¶å™¨
+    float Etimer = 0;        //EæŠ€èƒ½è®¡æ—¶å™¨
+    
+    bool Qflag = false;        //QæŠ€èƒ½çŠ¶æ€
+    bool Wflag = false;        //WæŠ€èƒ½çŠ¶æ€
+    bool Eflag = false;        //EæŠ€èƒ½çŠ¶æ€
+    
+    bool Qrecover = false;
+    bool Wrecover = false;
+    bool Erecover = false;
+    
+    bool attackStrength = false;    //æ˜¯å¦äº§ç”Ÿæ™®æ”»å¼ºåŒ–
+    
+    bool isBacking = false;        //æ˜¯å¦æ­£åœ¨å›åŸ
+    
+    //    int equip[6] = { -1,-1,-1,-1,-1,-1 };
 };
-

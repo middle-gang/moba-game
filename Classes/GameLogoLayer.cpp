@@ -1,6 +1,6 @@
 #include "GameLogoLayer.h"
 #include "SimpleAudioEngine.h"
-#include "HelloWorldScene.h"
+#include"MainMenu.h"
 
 USING_NS_CC;
 
@@ -34,10 +34,10 @@ bool GameLogoLayer::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	Sprite *pLogoBackSpr = Sprite::create("image/logo/logo.png");
-	pLogoBackSpr->setPosition(origin.x + visibleSize.width / 2.0f,
+	Sprite *pLogoBack = Sprite::create("image/logo/logo.png");
+	pLogoBack->setPosition(origin.x + visibleSize.width / 2.0f,
 		origin.y + visibleSize.height / 2.0f);
-	this->addChild(pLogoBackSpr, 0, LOGOBACKID);   //ID便于获取
+	this->addChild(pLogoBack, 0, LOGOBACKID);   //ID便于获取
 
 	m_LogoPassTime = 0.0f;
 	m_LogoInTime = 0.6f;
@@ -77,7 +77,7 @@ void GameLogoLayer::update(float delta)
 	}
 	else{
 		if (!m_IsChangeScene){
-			Scene *pScene = HelloWorld::createScene();
+			Scene *pScene = MainMenu::createScene();
 			Director::getInstance()->replaceScene(pScene);
 			m_IsChangeScene = true;
 		}

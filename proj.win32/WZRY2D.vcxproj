@@ -157,6 +157,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Avene.cpp" />
     <ClCompile Include="..\Classes\Blood.cpp" />
     <ClCompile Include="..\Classes\ChooseCharacter.cpp" />
+    <ClCompile Include="..\Classes\ChooseType.cpp" />
     <ClCompile Include="..\Classes\Daji.cpp" />
     <ClCompile Include="..\Classes\DataDefine.cpp" />
     <ClCompile Include="..\Classes\GameLogoLayer.cpp" />
@@ -168,6 +169,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\HeroInstuct.cpp" />
     <ClCompile Include="..\Classes\HeroObj.cpp" />
     <ClCompile Include="..\Classes\Houyi.cpp" />
+    <ClCompile Include="..\Classes\MainMenu.cpp" />
     <ClCompile Include="..\Classes\menuScene1st.cpp" />
     <ClCompile Include="..\Classes\MinionController.cpp" />
     <ClCompile Include="..\Classes\Object.cpp" />
@@ -183,6 +185,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Avene.h" />
     <ClInclude Include="..\Classes\Blood.h" />
     <ClInclude Include="..\Classes\ChooseCharacter.h" />
+    <ClInclude Include="..\Classes\ChooseType.h" />
     <ClInclude Include="..\Classes\Daji.h" />
     <ClInclude Include="..\Classes\GameLogoLayer.h" />
     <ClInclude Include="..\Classes\GameScene0.h" />
@@ -193,6 +196,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\HeroInstuct.h" />
     <ClInclude Include="..\Classes\HeroObj.h" />
     <ClInclude Include="..\Classes\Houyi.h" />
+    <ClInclude Include="..\Classes\MainMenu.h" />
     <ClInclude Include="..\Classes\menuScene1st.h" />
     <ClInclude Include="..\Classes\MinionController.h" />
     <ClInclude Include="..\Classes\Object.h" />

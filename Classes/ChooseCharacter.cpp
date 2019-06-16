@@ -4,7 +4,7 @@
 #include "SimpleAudioEngine.h"
 #include"GlobalVal.h"
 #include"HelloWorldScene.h"
-#include"Avene.h"
+#include"ChooseType.h"
 USING_NS_CC;
 
 Scene* ChooseCharacter::createScene()
@@ -148,14 +148,16 @@ void ChooseCharacter::enterGameCallBack(cocos2d::Ref * pSender)
 		Scene *pScene = GameScene0::createScene();
 		reScene = TransitionCrossFade::create(0.8f, pScene);
 		Director::getInstance()->replaceScene(reScene);
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("effectmusic1.wav", false);
 		m_IsChangeScene = true;
 	}
 }
 
 void ChooseCharacter::returnMainMenu(cocos2d::Ref * pSender)
 {
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("effectmusic1.wav", false);
 	TransitionScene * reScene = NULL;
-	Scene *pScene = Avene::createScene();
+	Scene *pScene = ChooseType::createScene();
 	reScene = TransitionCrossFade::create(0.8f, pScene);
 	Director::getInstance()->replaceScene(reScene);
 	m_IsChangeScene = true;

@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>WizardSkillB_01.png</key>
+            <key>WizardSkillB1.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -19,7 +19,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>WizardSkillB_02.png</key>
+            <key>WizardSkillB2.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -34,7 +34,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>WizardSkillB_03.png</key>
+            <key>WizardSkillB3.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -63,7 +63,7 @@
             <key>size</key>
             <string>{31,225}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:4000db5ae7666121646513402f86ca7a:1e77998bcdf6bdf76665df35a7885cfe:fd76bdbe769d519d140a9341da639e85$</string>
+            <string>$TexturePacker:SmartUpdate:d7a8bdbfbafe43bc0165afa24c4cd64d:1e77998bcdf6bdf76665df35a7885cfe:fd76bdbe769d519d140a9341da639e85$</string>
             <key>textureFileName</key>
             <string>WizardSkillB.png</string>
         </dict>
