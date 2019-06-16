@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="10">
+ <tileset firstgid="1" name="dg_grounds32" tilewidth="32" tileheight="32" tilecount="171" columns="9">
+  <image source="dg_grounds32.jpg" width="288" height="608"/>
+ </tileset>
+ <tileset firstgid="172" name="collidable_tiles" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="collidable_tiles.jpg" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="Collidable" type="bool" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer id="1" name="background" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJydl0GqwkAQROcCgttA7hEIZBUQPICrgPC3gmcQ/gEEV173K/SDStmTxL9ohiTDVHV1Tc9kKqVMK3GR8fCK5yseMr7fta84vmIfcbTw9zy/1z1ZOO47dgvxNA5trN0Kjj8fF/BPgZ1hHZJ3N9GiTcYxRjgqhyV8NCDGFR3gcQssatUmHDX/Wg1Uf2KMNcaKFtQDPo8Yf4WD1qqG/yN5Kxfqew3+mSZ4EqysRuo/1/rHgvfqJfVxjUPGKas/2OcKh1OZe3Yf+V9FD8fLfPsMrrrWxfCnCr5zYGzLvCfUsPGCazBJ3uDDIdsX8LhK3vi9lju96iDz0QFcQvXYJ9jooXlv6RNwuJX5vjxbDOXTb4qtNanpXdNE64QGneE3ga3+dmzlkOXdRixpQ/6DcRiCg++1LRzoS+pLPOcc6F9dYILfCb6fVWscxjLnTe/X89L7pGJnHL7Rwc9d5YEWWoNH4LgHtAa+XrOBQxZw8PxZ03VwDZqIe3z/rw5ag4fMXdIBfs7xGx3A9j2r/FwHsDvJ22OLDpyVnv/TsPukBuBmPu3je9abFJ9+Mln+lzKv7bCQZ7ZHqI/ui+ysAEfP+F084yly7Su5ui/u5XOP1s4rv19wn72I7kPZlv8Q87MeRZ2z80Lvcpq/76+ufPpgSfvsvp/1SsV2fDRgXd2HtXowXzmQPxyye5zXAfy71AAeYPgZkflAc/c7a+ZL9KD39BLKAU/i0ZonqJ9zqN2lFF81aARPx77M+6964Sz6NeUz/9o/juKjQ1Pmvc+fwVjaJ3zTWtfw/X8QLfbJMxwZ1/qE3ymX8Nf+m7N56lt849pn/3Aaf0TtFbg=
+  </data>
+ </layer>
+ <layer id="2" name="collidable" width="32" height="32" opacity="0.66">
+  <data encoding="base64" compression="zlib">
+   eJy9k1EOwCAIQ7n/WTzk/gnQB+JMzIyDttZ6zOyIae67Pf3wvFFNVL/Fr7j+4vf/XvqQcU+0T7KizlXhRfVRfkm+PWeFS/wjvSSDGx6Ss6s8TvNAe27P0uXP6q347zErjK5mfxdKQ0cb9V9hVGOah45Gyq187vC/eKNU2+0bJ+fs4NxoqGopjhpTD4gGOqYe0DvKOIkGwm1ur8pppee49ZbHtMfzK+6bjKuebP3qjWe9BGtbw9R/hUcxsnVnUg0WfCf66b1UGrb5ozv0eNH+tgaVcxM1G/wKP9K0zU+yV9V/3BuEaA==
+  </data>
+ </layer>
+ <objectgroup id="3" name="objects">
+  <object id="1" name="hero" x="110.5" y="110.5" width="2" height="2"/>
+  <object id="6" name="myCrystal" x="207.5" y="192" width="2" height="2"/>
+  <object id="7" name="myTower" x="399.5" y="384" width="2" height="2"/>
+  <object id="8" name="enemyTower" x="623.5" y="608" width="2" height="2"/>
+  <object id="9" name="enemyCrystal" x="815.5" y="800" width="2" height="2"/>
+ </objectgroup>
+</map>
