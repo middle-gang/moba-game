@@ -192,6 +192,7 @@ void ChooseCharacter::enterGameCallBack(cocos2d::Ref * pSender)
 			recv(_sock, recvFser, 100, 0);
 			if (recvFser[0] == 'u') {
 				side = recvFser[1] - '0';
+				
 				eneChoice = recvFser[2] - '0';
 				break;
 			}
