@@ -212,17 +212,19 @@ void receive() {
 		}
 		else if (buf2[0] == 'p') {
 			if (buf2[1] == 'q') {
-				if (eneChoice == 1&&eneChoice==2) {
+				if (eneChoice == 1||eneChoice==2) {
 					Director::getInstance()->getScheduler()->
 						performFunctionInCocosThread([]() {eneObj->Ability1st(); });
 				}
-				else {
+				else{
+					//log("%d", eneChoice);
 					Vec2 Qplace;
 					std::string pos;
 				
 					int cur = 2;
 					float desx, desy;
 					while (buf2[cur] != '|') cur++;
+					//log("%d", eneChoice);
 					for (int i = 2; i < cur; i++) {
 						pos.push_back(buf2[i]);
 					}
@@ -269,7 +271,7 @@ void receive() {
 				}
 			}
 			if (buf2[1] == 'w') {
-				if (eneChoice == 2&&eneChoice==3) {
+				if (eneChoice == 2||eneChoice==3) {
 					Director::getInstance()->getScheduler()->
 						performFunctionInCocosThread([]() {
 						eneObj->Ability2st();
@@ -530,6 +532,7 @@ bool GameScene2::init()
 }
 
 void GameScene2::update(float delta){
+	//log("%d", eneChoice);
 	Hero.getPosition() = Hero.getSprite()->getPosition();
 	
 	if (Hero.getPosition().x<=Hero.SpawnPoint().x + 30 &&
